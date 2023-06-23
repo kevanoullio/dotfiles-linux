@@ -119,6 +119,13 @@ fi
 # Default starting directory
 cd /mnt/c/Users/kevan
 
+# Start the ssh agent automatically when opening a new terminal
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval "$(ssh-agent -s)"
+  ssh-add
+fi
+
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/kevanoullio/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
