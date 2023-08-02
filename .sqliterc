@@ -1,20 +1,8 @@
 # Set the default output mode to "column" for better readability
 .mode column
 
-# Set the column width to extend until the end of the available terminal window space (or shared among columns):
-.width -1
-
 # Show column headers in query results
 .headers on
 
 # Set the display of NULL values to "NULL"
 .nullvalue NULL
-
-# Enable case-sensitive pattern matching
-.case_sensitive on
-
-# Enable auto-completion for command typing
-.autocomplete on
-
-# Save command history to the specified file
-.history ~/.sqlite_history
