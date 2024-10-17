@@ -146,3 +146,6 @@ unset __conda_setup
 
 # Starship config
 eval "$(starship init bash)"
+
+# Starship nerf-font
+starship preset nerd-font-symbols -o ~/.config/starship.toml
