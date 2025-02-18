@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Update package list
+sudo apt update
+
+# Install necessary tools
+sudo apt install -y curl git
+
+# Clone my dotfiles repository if it doesn't exist
+if [ ! -d "~/dotfiles" ]; then
+    git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+else
+    echo "Dotfiles repository already exists."
+fi
+
+# Copy .rc files
+cp ~/dotfiles/.bashrc ~/.bashrc
+cp ~/dotfiles/.vimrc ~/.vimrc
+cp ~/dotfiles/.sqliterc ~/.sqliterc
+
+# Copy the entire .config directory
+cp -r ~/dotfiles/.config ~/.config
+
+# Source the new .bashrc
+source ~/.bashrc
+
+echo "Common setup complete!"
