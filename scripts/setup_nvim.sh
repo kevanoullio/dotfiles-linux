@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Neovim download guide: https://github.com/neovim/neovim/wiki/Installing-Neovim/921fe8c40c34dd1f3fb35d5b48c484db1b8ae94b
 # Update package list and install Neovim
 sudo apt update
 sudo apt install -y neovim curl git
