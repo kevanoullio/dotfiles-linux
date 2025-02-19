@@ -17,8 +17,14 @@ vim.opt.incsearch = true      -- Incremental search
 vim.opt.ignorecase = true     -- Ignore case when searching
 vim.opt.smartcase = true      -- Override ignorecase if search contains uppercase
 
--- File Formatting
-vim.opt.fileformat = "unix"   -- Ensure files are saved with LF line endings
+-- File Formatting: Ensure files are saved with LF line endings
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        if vim.bo.modifiable then
+            vim.opt_local.fileformat = "unix"
+        end
+    end,
+})
 
 -- Autocommands to handle trailing whitespaces and newlines
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -35,4 +41,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
     end,
 })
-

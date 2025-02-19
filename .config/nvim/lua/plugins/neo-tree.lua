@@ -1,0 +1,18 @@
+-- nvim-neo-tree plugin
+-- https://github.com/nvim-neo-tree/neo-tree.nvim
+return {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+        "MunifTanjim/nui.nvim",
+        -- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
+    },
+    config = function()
+        require("neo-tree").setup({
+            -- Your configuration comes here
+            -- or leave it empty to use the default settings
+        })
+    end,
+}

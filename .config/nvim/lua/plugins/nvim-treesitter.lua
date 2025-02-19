@@ -4,7 +4,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
     config = function()
-        require("nvim-treesitter.configs").setup({
+        local config = require("nvim-treesitter.configs")
+        config.setup({
             -- Set languages to setup parsers (can also use TSInstall command in nvim)
             ensure_installed = {
                 "c", "cpp", "c_sharp",
