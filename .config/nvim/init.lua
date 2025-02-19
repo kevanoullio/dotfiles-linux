@@ -1,13 +1,35 @@
--- Keymapping and Binding
+-- Global variables
 vim.g.leader = " "
 
--- Define the local plugins
+-- Key mappings
+-- Telescope key mappings
+vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files, {})
+vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, {})
+-- nvim-tree key mappings
+vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+
+
+-- Define the local plugins to be installed
 local plugins = {
     -- Catppuccin colorscheme
     { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
     -- Telescope fuzzy finder tool
-    { "nvim-telescope/telescope.nvim", tag = "0.1.8", dependencies = { "nvim-lua/plenary.nvim" } }
+    { "nvim-telescope/telescope.nvim", tag = "0.1.8", dependencies = { "nvim-lua/plenary.nvim" } },
+    -- nvim-tree file explorer
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        dependencies = {
+            "nvim-tree/nvim-web-devicons", -- optional
+        },
+        config = function()
+            require("nvim-tree").setup {}
+        end,
+    }
 }
+
+-- Define the options for the lazy.nvim package manager
 local opts = {}
 
 -- Setup lazy.vim package manager
@@ -22,26 +44,25 @@ vim.cmd.colorscheme "catppuccin"
 -- Setup telescope.nvim fuzzy finder tool
 -- https://github.com/nvim-telescope/telescope.nvim
 local builtin = require("telescope.builtin")
-vim.keymap.set('n', '<C-p>', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+
 
 -- Setup nvim-treesitter
 -- https://github.com/nvim-treesitter/nvim-treesitter
 require("lazy").setup({{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}})
 local config = require("nvim-treesitter.configs")
 -- Set languages to setup parsers (can also use TSInstall command in nvim)
-configs.setup({
-      "c", "cpp", "c_sharp",
-      "lua", "vim", "vimdoc", "query",
-      "html", "css" "javascript", "typescript", "json",
-      "python", "java", "kotlin", "go", "ruby", "php", "rust"
-      "sql", "sqlite", "yaml", "toml"
-      },
-      sync_install = false,  -- Install parsers asynchronously (false: synchronously)
-      highlight = { enable = true }, -- Enable syntax highlighting for installed parsers
-      indent = { enable = true },  -- Enable automatic indentation based on the syntax tree for the installed parsers
-    })
-
+config.setup({
+    ensure_installed = {
+        "c", "cpp", "c_sharp",
+        "lua", "vim", "vimdoc", "query",
+        "html", "css", "javascript", "typescript", "json",
+        "python", "java", "kotlin", "go", "ruby", "php", "rust",
+        "sql", "sqlite", "yaml", "toml"
+    },
+    sync_install = false,  -- Install parsers asynchronously (false: synchronously)
+    highlight = { enable = true }, -- Enable syntax highlighting for installed parsers
+    indent = { enable = true },  -- Enable automatic indentation based on the syntax tree for the installed parsers
+})
 
 -- Common Neovim Settings
 vim.opt.expandtab = true      -- Use spaces instead of tabs
