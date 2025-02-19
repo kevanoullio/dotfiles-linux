@@ -1,4 +1,4 @@
--- Setup Catpuccin color scheme/theme
+-- Setup Catppuccin color scheme/theme
 -- https://github.com/catppuccin/nvim
-require("catpuccin").setup()
+require("catppuccin").setup()
 vim.cmd.colorscheme "catppuccin"

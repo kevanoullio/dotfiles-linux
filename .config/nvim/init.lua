@@ -1,11 +1,11 @@
 -- Global variables
 vim.g.leader = " "
 
--- Source key mappings
-require('config.keymappings')
-
 -- Source plugins
-require('plugins.plugins')
+require('plugins.lazy')
+
+-- Source key mappings (plugins must be sourced first)
+require('config.keymappings')
 
 -- Source settings
 require('config.settings')

@@ -1,4 +1,5 @@
--- Bootstrap lazy.nvim
+-- Bootstrap lazy.nvim package manager
+-- https://github.com/folke/lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -25,7 +26,7 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     -- import your plugins
-    { import = "plugins" },
+    { import = "plugins.plugins" },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.

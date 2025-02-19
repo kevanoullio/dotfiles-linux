@@ -10,25 +10,37 @@ sudo apt install -y neovim
 # Create necessary directories for Neovim
 mkdir -p ~/.config/nvim/lua/config ~/.config/nvim/lua/plugins
 
+# Function to copy files with prompt
+copy_file() {
+    local src=$1
+    local dest=$2
+
+    if [ -f "$dest" ]; then
+        read -p "$dest already exists. Do you want to overwrite it? (y/n): " choice
+        case "$choice" in
+            y|Y ) cp -u "$src" "$dest" && echo "Copied $src to $dest" || echo "Error copying $src to $dest";;
+            n|N ) echo "Skipped $src";;
+            * ) echo "Invalid choice. Skipped $src";;
+        esac
+    else
+        cp -u "$src" "$dest" && echo "Copied $src to $dest" || echo "Error copying $src to $dest"
+    fi
+}
+
 # Copy my Neovim configuration files
-# Copy my init.lua file
-cp -u ~/dotfiles-linux/.config/nvim/init.lua ~/.config/nvim/
-# Copy my keymappings.lua file
-cp -u ~/dotfiles-linux/.config/nvim/lua/config/keymappings.lua ~/.config/nvim/lua/config/
-# Copy my plugins.lua file
-cp -u ~/dotfiles-linux/.config/nvim/lua/plugins/plugins.lua ~/.config/nvim/lua/plugins/
-# Copy my plugin_setup.lua file
-cp -u ~/dotfiles-linux/.config/nvim/lua/config/plugin_setup.lua ~/.config/nvim/lua/config/
-# Copy my settings.lua file
-cp -u ~/dotfiles-linux/.config/nvim/lua/config/settings.lua ~/.config/nvim/lua/config/
-# Copy my theme.lua file
-cp -u ~/dotfiles-linux/.config/nvim/lua/config/theme.lua ~/.config/nvim/lua/config/
-# Copy my lazy.lua file
-cp -u ~/dotfiles-linux/.config/nvim/lua/plugins/lazy.lua ~/.config/nvim/lua/plugins/
+copy_file ../.config/nvim/init.lua ~/.config/nvim/init.lua
+copy_file ../.config/nvim/lua/config/keymappings.lua ~/.config/nvim/lua/config/keymappings.lua
+copy_file ../.config/nvim/lua/plugins/plugins.lua ~/.config/nvim/lua/plugins/plugins.lua
+copy_file ../.config/nvim/lua/config/settings.lua ~/.config/nvim/lua/config/settings.lua
+copy_file ../.config/nvim/lua/config/theme.lua ~/.config/nvim/lua/config/theme.lua
+copy_file ../.config/nvim/lua/plugins/lazy.lua ~/.config/nvim/lua/plugins/lazy.lua
 
 # lazy.nvim package manager: https://github.com/folke/lazy.nvim 
-
 # Install lazy.nvim package manager
-git clone https://github.com/folke/lazy.nvim.git ~/.local/share/nvim/site/pack/packer/start/lazy.nvim
+if [ -d ~/.local/share/nvim/site/pack/packer/start/lazy.nvim ]; then
+    echo "lazy.nvim already installed, skipping clone."
+else
+    git clone https://github.com/folke/lazy.nvim.git ~/.local/share/nvim/site/pack/packer/start/lazy.nvim && echo "Cloned lazy.nvim" || echo "Error cloning lazy.nvim"
+fi
 
 echo "Neovim setup complete!"
