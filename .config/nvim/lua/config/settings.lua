@@ -3,6 +3,8 @@ vim.opt.expandtab = true      -- Use spaces instead of tabs
 vim.opt.tabstop = 4           -- Number of spaces that a tab counts for
 vim.opt.softtabstop = 4       -- Number of spaces for a tab in insert mode
 vim.opt.shiftwidth = 4        -- Number of spaces for indentation
+vim.opt.autoindent = true     -- Copy indent from current line when starting a new line
+vim.opt.smartindent = true    -- Automatically insert one extra level of indentation in some cases
 
 -- Line Numbers and Scrolling
 vim.opt.number = true         -- Show line numbers
@@ -41,3 +43,4 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
     end,
 })
+
