@@ -15,6 +15,9 @@ vim.keymap.set('i', '<C-?>', function() require("which-key").show({ mode = "i" }
 
 -- nvim-lspconfig
 vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, { desc = "Show hover information" })
+vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, { desc = "Go to definition" })
+vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, {}, { desc = "Code action" })
+
 
 -- Register key mappings with which-key
 local wk = require("which-key")
