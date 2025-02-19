@@ -12,3 +12,4 @@ mkdir -p ~/.config
 cp ~/dotfiles-linux/.config/starship.toml ~/.config/starship.toml
 
 echo "Starship prompt setup complete!"
+

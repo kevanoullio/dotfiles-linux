@@ -18,3 +18,4 @@ cp -r ~/dotfiles-linux/.config ~/.config
 source ~/.bashrc
 
 echo "Common setup complete!"
+
