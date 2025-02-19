@@ -50,3 +50,4 @@ local plugins = {
 }
 
 return plugins
+

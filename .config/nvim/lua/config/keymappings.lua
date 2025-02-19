@@ -5,3 +5,4 @@ vim.keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, {})
 
 -- nvim-tree key mappings
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+
