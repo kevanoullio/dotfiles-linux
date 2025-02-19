@@ -30,13 +30,22 @@ copy_file() {
     fi
 }
 
+# Function to copy all files in a directory
+copy_directory() {
+    local src_dir=$1
+    local dest_dir=$2
+
+    mkdir -p "$dest_dir"
+    for src_file in "$src_dir"/*; do
+        local dest_file="$dest_dir/$(basename "$src_file")"
+        copy_file "$src_file" "$dest_file"
+    done
+}
+
 # Copy my Neovim configuration files
 copy_file "$SCRIPT_DIR/../.config/nvim/init.lua" ~/.config/nvim/init.lua
-copy_file "$SCRIPT_DIR/../.config/nvim/lua/config/keymappings.lua" ~/.config/nvim/lua/config/keymappings.lua
-copy_file "$SCRIPT_DIR/../.config/nvim/lua/plugins/plugins.lua" ~/.config/nvim/lua/plugins/plugins.lua
-copy_file "$SCRIPT_DIR/../.config/nvim/lua/config/settings.lua" ~/.config/nvim/lua/config/settings.lua
-copy_file "$SCRIPT_DIR/../.config/nvim/lua/config/theme.lua" ~/.config/nvim/lua/config/theme.lua
-copy_file "$SCRIPT_DIR/../.config/nvim/lua/plugins/lazy.lua" ~/.config/nvim/lua/plugins/lazy.lua
+copy_directory "$SCRIPT_DIR/../.config/nvim/lua/config" ~/.config/nvim/lua/config
+copy_directory "$SCRIPT_DIR/../.config/nvim/lua/plugins" ~/.config/nvim/lua/plugins
 
 # lazy.nvim package manager: https://github.com/folke/lazy.nvim 
 # Install lazy.nvim package manager
