@@ -3,12 +3,15 @@
 # Neovim install guide: https://youtu.be/zHTeCSVAFNY?si=FonpL2CO8R85TGe4
 # Neovim download guide: https://github.com/neovim/neovim/wiki/Installing-Neovim/921fe8c40c34dd1f3fb35d5b48c484db1b8ae94b
 
-# Update package list and install Neovim
+# Update package list and install Neovim and ripgrep
 sudo apt update
-sudo apt install -y neovim
+sudo apt install -y neovim ripgrep # ripgrep is a dependency for telescope (a faster alternative to grep)
 
 # Create necessary directories for Neovim
 mkdir -p ~/.config/nvim/lua/config ~/.config/nvim/lua/plugins
+
+# Get the directory of the script
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # Function to copy files with prompt
 copy_file() {
@@ -28,12 +31,12 @@ copy_file() {
 }
 
 # Copy my Neovim configuration files
-copy_file ../.config/nvim/init.lua ~/.config/nvim/init.lua
-copy_file ../.config/nvim/lua/config/keymappings.lua ~/.config/nvim/lua/config/keymappings.lua
-copy_file ../.config/nvim/lua/plugins/plugins.lua ~/.config/nvim/lua/plugins/plugins.lua
-copy_file ../.config/nvim/lua/config/settings.lua ~/.config/nvim/lua/config/settings.lua
-copy_file ../.config/nvim/lua/config/theme.lua ~/.config/nvim/lua/config/theme.lua
-copy_file ../.config/nvim/lua/plugins/lazy.lua ~/.config/nvim/lua/plugins/lazy.lua
+copy_file "$SCRIPT_DIR/../.config/nvim/init.lua" ~/.config/nvim/init.lua
+copy_file "$SCRIPT_DIR/../.config/nvim/lua/config/keymappings.lua" ~/.config/nvim/lua/config/keymappings.lua
+copy_file "$SCRIPT_DIR/../.config/nvim/lua/plugins/plugins.lua" ~/.config/nvim/lua/plugins/plugins.lua
+copy_file "$SCRIPT_DIR/../.config/nvim/lua/config/settings.lua" ~/.config/nvim/lua/config/settings.lua
+copy_file "$SCRIPT_DIR/../.config/nvim/lua/config/theme.lua" ~/.config/nvim/lua/config/theme.lua
+copy_file "$SCRIPT_DIR/../.config/nvim/lua/plugins/lazy.lua" ~/.config/nvim/lua/plugins/lazy.lua
 
 # lazy.nvim package manager: https://github.com/folke/lazy.nvim 
 # Install lazy.nvim package manager
