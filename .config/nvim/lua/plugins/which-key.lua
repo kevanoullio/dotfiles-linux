@@ -1,4 +1,4 @@
--- which-key plugin
+-- which-key keybinding hints plugin
 -- https://github.com/folke/which-key.nvim
 return {
     "folke/which-key.nvim",
@@ -18,3 +18,4 @@ return {
         },
     },
 }
+

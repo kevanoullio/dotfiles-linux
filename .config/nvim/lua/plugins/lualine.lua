@@ -1,4 +1,4 @@
--- lualine plugin
+-- lualine statusline plugin
 -- https://github.com/nvim-lualine/lualine.nvim
 return {
     "https://github.com/nvim-lualine/lualine.nvim",

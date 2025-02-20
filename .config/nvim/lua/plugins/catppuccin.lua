@@ -1,4 +1,4 @@
--- Catppuccin colorscheme
+-- Catppuccin colorscheme plugin
 -- https://github.com/catppuccin/catppuccin
 return {
     "catppuccin/nvim",
@@ -9,3 +9,4 @@ return {
         vim.cmd.colorscheme "catppuccin"
     end,
 }
+

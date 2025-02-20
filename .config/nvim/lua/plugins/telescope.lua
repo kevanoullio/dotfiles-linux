@@ -1,4 +1,4 @@
--- Telescope fuzzy finder tool
+-- Telescope fuzzy finder plugin
 -- https://github.com/nvim-telescope/telescope.nvim
 return {
     "nvim-telescope/telescope.nvim",

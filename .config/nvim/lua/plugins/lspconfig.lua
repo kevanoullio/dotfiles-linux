@@ -1,6 +1,7 @@
--- mason-lsp plugin
+-- mason, mason-lspconfig, and nvim-lspconfig plugins
 -- https://github.com/williamboman/mason.nvim
 -- https://github.com/williamboman/mason-lspconfig.nvim
+-- https://github.com/neovim/nvim-lspconfig
 return {
     {
         "williamboman/mason.nvim",
@@ -19,6 +20,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         config = function()
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local lspconfig = require("lspconfig")
             lspconfig.lua_ls.setup({})
         end

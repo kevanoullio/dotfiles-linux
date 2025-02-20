@@ -1,4 +1,4 @@
--- nvim-neo-tree plugin
+-- nvim-neo-tree file explorer plugin
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 return {
     "nvim-neo-tree/neo-tree.nvim",
@@ -16,3 +16,4 @@ return {
         })
     end,
 }
+
