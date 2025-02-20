@@ -5,7 +5,9 @@
 
 # Update package list and install Neovim and ripgrep
 sudo apt update
-sudo apt install -y neovim ripgrep # ripgrep is a dependency for telescope (a faster alternative to grep)
+sudo apt install -y neovim
+sudo apt install -y ripgrep # ripgrep is a dependency for telescope (a faster alternative to grep)
+sudo apt install -y unzip # unzip is a dependency for installing stylua via :Mason (formatter for lsp stuff)
 
 # Create necessary directories for Neovim
 mkdir -p ~/.config/nvim/lua/config ~/.config/nvim/lua/plugins

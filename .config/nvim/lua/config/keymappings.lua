@@ -1,14 +1,14 @@
 -- Key mappings
 
--- Telescope key
+-- Telescope
 vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files, { desc = "Find Files" })  -- Commonly used for file finder
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = "Find Files" })  -- Standard leader key mapping
 vim.keymap.set('n', '<leader>lg', require('telescope.builtin').live_grep, { desc = "Live Grep" })
 
--- neo-tree key
+-- neo-tree
 vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { noremap = true, silent = true, desc = "Toggle Neo-tree" })
 
--- which-key key
+-- which-key
 vim.keymap.set('n', '<leader>?', function() require("which-key").show({ mode = "n" }) end, { desc = "Show Normal Mode Keymaps (which-key)" })
 vim.keymap.set('v', '<leader>?', function() require("which-key").show({ mode = "v" }) end, { desc = "Show Visual Mode Keymaps (which-key)" })
 vim.keymap.set('i', '<C-?>', function() require("which-key").show({ mode = "i" }) end, { desc = "Show Insert Mode Keymaps (which-key)" })
@@ -18,6 +18,8 @@ vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, { desc = "Show hove
 vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, { desc = "Go to definition" })
 vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, {}, { desc = "Code action" })
 
+-- none-ls aka null-ls
+vim.keymap.set('n', '<leader>gf', vim.lsp.buf.format, {})
 
 -- Register key mappings with which-key
 local wk = require("which-key")
