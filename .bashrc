@@ -124,7 +124,7 @@ fi
 
 # Start the ssh agent automatically when opening a new terminal
 if [ -z "$SSH_AUTH_SOCK" ]; then
-  eval "$(ssh-agent -s)"
+  eval "$(ssh-agent -s)" > /dev/null
   ssh-add
 fi
 
@@ -149,3 +149,8 @@ eval "$(starship init bash)"
 
 # Starship nerf-font
 starship preset nerd-font-symbols -o ~/.config/starship.toml
+
+
+# Launch neofetch at startup
+neofetch
+
