@@ -41,10 +41,7 @@ end
 require("lazy").setup({
   spec = {
     -- Load plugins from the plugins directory and its subdirectories
-    unpack(load_plugins_from("plugins/ui")),
-    unpack(load_plugins_from("plugins/tools")),
-    unpack(load_plugins_from("plugins/lsp")),
-    unpack(load_plugins_from("plugins/themes")),
+    unpack(load_plugins_from("plugins")),
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.

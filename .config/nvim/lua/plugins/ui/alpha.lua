@@ -40,6 +40,24 @@ return {
         -- Set the default theme
         set_theme("default")
 
+        -- Function to prompt user to select a theme
+        local function select_theme()
+            local theme_names = vim.tbl_keys(themes)
+            -- Build items manually:
+            local items = {}
+            for i, name in ipairs(theme_names) do
+                table.insert(items, string.format("%d. %s", i, name))
+            end
+
+            local choice = vim.fn.inputlist(items)
+            if choice > 0 and choice <= #theme_names then
+                set_theme(theme_names[choice])
+            end
+        end
+
+        -- Make select_theme function global
+        _G.select_theme = select_theme
+
         -- Set header
         dashboard.section.header.val = {
             [[                               __                ]],
@@ -68,17 +86,6 @@ return {
 
         -- Apply the dashboard configuration
         alpha.setup(dashboard.opts)
-
-        -- Function to prompt user to select a theme
-        local function select_theme()
-            local theme_names = vim.tbl_keys(themes)
-            local choice = vim.fn.inputlist(vim.tbl_map(function(name, index)
-                return string.format("%d. %s", index, name)
-            end, theme_names))
-            if choice > 0 and choice <= #theme_names then
-                set_theme(theme_names[choice])
-            end
-        end
     end
 }
 

@@ -21,7 +21,9 @@ copy_file() {
     local src=$1
     local dest=$2
 
-    if [ -f "$dest" ]; then
+    if [ -d "$src" ]; then
+        cp -r "$src" "$dest" && echo "Copied directory $src to $dest" || echo "Error copying directory $src to $dest"
+    elif [ -f "$dest" ]; then
         read -p "$dest already exists. Do you want to overwrite it? (y/n): " choice
         case "$choice" in
             y|Y ) cp -u "$src" "$dest" && echo "Copied $src to $dest" || echo "Error copying $src to $dest";;
@@ -33,7 +35,7 @@ copy_file() {
     fi
 }
 
-# Function to copy all files in a directory
+# Function to copy all files in a directory recursively
 copy_directory() {
     local src_dir=$1
     local dest_dir=$2
@@ -41,7 +43,11 @@ copy_directory() {
     mkdir -p "$dest_dir"
     for src_file in "$src_dir"/*; do
         local dest_file="$dest_dir/$(basename "$src_file")"
-        copy_file "$src_file" "$dest_file"
+        if [ -d "$src_file" ]; then
+            copy_directory "$src_file" "$dest_file"
+        else
+            copy_file "$src_file" "$dest_file"
+        fi
     done
 }
 
