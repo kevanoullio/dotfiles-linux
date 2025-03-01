@@ -22,15 +22,33 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+local function load_plugins_from(dir)
+  local plugin_list = {}
+  local path = vim.fn.stdpath("config") .. "/lua/" .. dir
+  local files = vim.fn.globpath(path, "**/*.lua", false, true) -- Scan recursively
+
+  for _, file in ipairs(files) do
+    local module_name = file:match("lua/(.+)%.lua$"):gsub("/", ".") -- Convert path to module name
+    if not module_name:match("%.init$") then -- Avoid init.lua if present
+      table.insert(plugin_list, require(module_name))
+    end
+  end
+
+  return plugin_list
+end
+
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- import all plugins from the plugins directory
-    { import = "plugins" },
+    -- Load plugins from the plugins directory and its subdirectories
+    unpack(load_plugins_from("plugins/ui")),
+    unpack(load_plugins_from("plugins/tools")),
+    unpack(load_plugins_from("plugins/lsp")),
+    unpack(load_plugins_from("plugins/themes")),
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
+  install = { colorscheme = { "habamax", "catppuccin", "gruvbox" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
