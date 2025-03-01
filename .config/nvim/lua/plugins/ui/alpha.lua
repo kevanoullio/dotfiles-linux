@@ -37,8 +37,19 @@ return {
             end
         end
 
-        -- Set the default theme
-        set_theme("default")
+        local theme_file = vim.fn.stdpath("data") .. "/selected_theme.txt"
+
+        -- Try reading a previously saved theme
+        local user_theme
+        if vim.fn.filereadable(theme_file) == 1 then
+            user_theme = vim.fn.readfile(theme_file)[1]
+        end
+
+        if user_theme and themes[user_theme] then
+            set_theme(user_theme)
+        else
+            set_theme("default")
+        end
 
         -- Function to prompt user to select a theme
         local function select_theme()
@@ -51,7 +62,10 @@ return {
 
             local choice = vim.fn.inputlist(items)
             if choice > 0 and choice <= #theme_names then
-                set_theme(theme_names[choice])
+                local selected = theme_names[choice]
+                set_theme(selected)
+                -- Save the selected theme to a file
+                vim.fn.writefile({ selected }, theme_file)
             end
         end
 
