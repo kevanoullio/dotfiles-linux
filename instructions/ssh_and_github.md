@@ -36,9 +36,23 @@ cat ~/.ssh/id_ed25519.pub | xclip -selection clipboard
 - Go to GitHub and log in.
 - Navigate to Settings > SSH and GPG keys > New SSH key.
 - Paste the public key into the "Key" field and give it a title.
+- Select "Authentication" as the key type.
 - Click Add SSH key.
 
-### 4. Test if the SSH Key Works
+### 4. Start the ssh-agent and Add Your SSH Key
+- Start the ssh-agent in the background:
+
+```bash
+eval "$(ssh-agent -s)"
+```
+
+- Add your SSH private key to the ssh-agent:
+
+```bash
+ssh-add ~/.ssh/id_ed25519
+```
+
+### 5. Test if the SSH Key Works
 - Test the SSH key by running the following command in the terminal:
 
 ```bash
