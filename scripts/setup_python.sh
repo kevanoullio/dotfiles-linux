@@ -15,8 +15,8 @@ else
     echo "Miniconda is already installed."
 fi
 
-# Set up the base Conda environment with Python 3.11.4
-conda install python=3.11.4 -y
+# Set up the base Conda environment with Python 3.12.10
+conda install python=3.12.10 -y
 
 # Install common Python packages
 conda install -y numpy pandas matplotlib
