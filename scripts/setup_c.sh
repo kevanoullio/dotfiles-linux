@@ -14,7 +14,7 @@ sudo apt update
 # Install C development tools
 sudo apt install -y build-essential gdb valgrind cmake
 
-# Summary of versions
+# Print completion message
 print_env_setup_complete "$env_title" "$env_verb" \
     "GCC" "gcc --version | head -n1" \
     "G++" "g++ --version | head -n1" \

@@ -17,7 +17,7 @@ if [ ! -f /etc/apt/sources.list.d/fastfetch.list ]; then
   echo "deb [signed-by=/etc/apt/keyrings/fastfetch.gpg] https://fastfetch-cli.github.io/deb stable main" | sudo tee /etc/apt/sources.list.d/fastfetch.list > /dev/null
 fi
 
-# Update package
+# Update package list
 sudo apt update
 
 # Install addon packages
@@ -29,6 +29,6 @@ fastfetch_verb="Startup"
 fastfetch_block_code='command -v fastfetch >/dev/null 2>&1 && fastfetch'
 add_block_to_file "$fastfetch_title" "$fastfetch_verb" "$fastfetch_block_code"
 
-# Print completion summary
+# Print completion message
 print_completion_message "$env_title" "$env_verb" \
   "Fastfetch" "fastfetch --version | head -n1"
