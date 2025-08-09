@@ -103,7 +103,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -122,35 +121,11 @@ fi
 # Default starting directory
 # cd /mnt/c/Users/kevan
 
+
+# >>> SSH config >>>
 # Start the ssh agent automatically when opening a new terminal
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval "$(ssh-agent -s)" > /dev/null
   ssh-add
 fi
-
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/kevanoullio/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/kevanoullio/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/kevanoullio/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/kevanoullio/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# Starship config
-eval "$(starship init bash)"
-
-# Starship nerf-font
-starship preset nerd-font-symbols -o ~/.config/starship.toml
-
-
-# Launch neofetch at startup
-neofetch
-
+# <<< SSH config <<<
