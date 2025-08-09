@@ -3,6 +3,53 @@
 # Global default managed shell RC file (override by exporting MANAGED_SHELL_RC before sourcing)
 : "${MANAGED_SHELL_RC:=$HOME/.bashrc}"
 
+# Package manager detection (idempotent)
+# Exports: PKG_MANAGER, PKG_UPDATE_COMMAND, PKG_INSTALL_COMMAND
+_detect_package_manager() {
+    if [ -n "${PKG_MANAGER:-}" ]; then
+        return 0
+    fi
+    if command -v yay >/dev/null 2>&1; then
+        PKG_MANAGER=yay
+        PKG_UPDATE_COMMAND="yay -Sy"
+        PKG_INSTALL_COMMAND="yay -S --noconfirm"
+    elif command -v pacman >/dev/null 2>&1; then
+        PKG_MANAGER=pacman
+        PKG_UPDATE_COMMAND="sudo pacman -Sy"
+        PKG_INSTALL_COMMAND="sudo pacman -S --noconfirm"
+    elif command -v apt >/dev/null 2>&1; then
+        PKG_MANAGER=apt
+        PKG_UPDATE_COMMAND="sudo apt update"
+        PKG_INSTALL_COMMAND="sudo apt install -y"
+    elif command -v snap >/dev/null 2>&1; then
+        PKG_MANAGER=snap
+        PKG_UPDATE_COMMAND=":"
+        PKG_INSTALL_COMMAND="sudo snap install"
+    elif command -v flatpak >/dev/null 2>&1; then
+        PKG_MANAGER=flatpak
+        PKG_UPDATE_COMMAND="flatpak update -y"
+        PKG_INSTALL_COMMAND="flatpak install -y flathub"
+    elif command -v dnf >/dev/null 2>&1; then
+        PKG_MANAGER=dnf
+        PKG_UPDATE_COMMAND="sudo dnf -y makecache"
+        PKG_INSTALL_COMMAND="sudo dnf install -y"
+    elif command -v zypper >/dev/null 2>&1; then
+        PKG_MANAGER=zypper
+        PKG_UPDATE_COMMAND="sudo zypper refresh"
+        PKG_INSTALL_COMMAND="sudo zypper install -y"
+    else
+        echo "Unsupported package manager. Exiting." >&2
+        return 1
+    fi
+    export PKG_MANAGER PKG_UPDATE_COMMAND PKG_INSTALL_COMMAND
+}
+
+# Convenience wrappers (used by scripts):
+# if a supported package manager is detected, eval executes the update command.
+pm_update() { _detect_package_manager || return 1; eval "$PKG_UPDATE_COMMAND"; }
+# ... eval executes the full command, combining the install command and the package names.
+pm_install() { _detect_package_manager || return 1; eval "$PKG_INSTALL_COMMAND" "$@"; }
+
 # Helper: check if a block already exists in the target rc file
 # Usage: _block_exists_in_file <title> <verb> [rc_file]
 _block_exists_in_file() {
