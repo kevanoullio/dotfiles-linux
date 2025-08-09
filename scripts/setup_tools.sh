@@ -15,7 +15,7 @@ sudo apt update
 sudo apt install -y curl git wget jq tree htop fzf ripgrep
 
 # Print completion message
-print_env_setup_complete "Tools" \
+print_env_setup_complete "$env_title $env_verb" \
     "Curl" "curl --version | head -n1" \
     "Git" "git --version" \
     "jq" "jq --version" \
