@@ -8,10 +8,14 @@ env_title="Python environment"
 env_verb="setup"
 echo "Starting $env_title $env_verb..."
 
-# Update package list and install prerequisites
+# Detect package manager (safe if already detected by main_setup)
+_detect_package_manager || { echo "Failed to detect a supported package manager." >&2; exit 1; }
+echo "Using package manager: $PKG_MANAGER"
+
+# Ensure prerequisite packages are installed
 echo "Updating package list and installing prerequisites..."
-sudo apt update
-sudo apt install -y wget
+pm_update || { echo "Package list update failed" >&2; exit 1; }
+pm_install wget || { echo "Failed to install wget" >&2; exit 1; }
 
 # Install Miniconda (if not already installed)
 if [ ! -d "$HOME/miniconda3" ]; then
