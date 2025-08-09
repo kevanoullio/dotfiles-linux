@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Import helper functions
-source "$(dirname "$0")/utils.sh"
+source "$(dirname "$0")/../utils.sh"
 
 # Begin setup message
 env_title="Addons"

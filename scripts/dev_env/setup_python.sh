@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source utils.sh for bashrc helpers
-source "$(dirname "$0")/utils.sh"
+source "$(dirname "$0")/../utils.sh"
 
 # Begin setup message
 env_title="Python environment"
@@ -36,6 +36,9 @@ if ! command -v conda >/dev/null 2>&1; then
     echo "Error: conda command not available. Aborting." >&2
     exit 1
 fi
+
+# Add the conda-forge channel
+conda config --add channels conda-forge
 
 # Set up the base Conda environment with Python 3.12
 conda install python=3.12 -y

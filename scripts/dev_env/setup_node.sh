@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Import all functions from utils.sh
-source "$(dirname "$0")/utils.sh"
+source "$(dirname "$0")/../utils.sh"
 
 # Begin setup message
 env_title="Node.js environment"

@@ -4,7 +4,7 @@
 # Neovim download guide: https://github.com/neovim/neovim/wiki/Installing-Neovim/921fe8c40c34dd1f3fb35d5b48c484db1b8ae94b
 
 # Import helper functions
-source "$(dirname "$0")/utils.sh"
+source "$(dirname "$0")/../utils.sh"
 
 # Begin setup message
 env_title="Neovim"

@@ -12,14 +12,12 @@ _detect_package_manager || exit 1
 echo "Using package manager: $PKG_MANAGER"
 
 # Run individual setup scripts (they will reuse exported vars)
-bash "$SCRIPT_DIR/copy_files.sh" || exit 1
-bash "$SCRIPT_DIR/setup_tools.sh" || exit 1
-bash "$SCRIPT_DIR/setup_nvim.sh" || exit 1
-bash "$SCRIPT_DIR/setup_starship.sh" || exit 1
-bash "$SCRIPT_DIR/setup_c.sh" || exit 1
-bash "$SCRIPT_DIR/setup_python.sh" || exit 1
-bash "$SCRIPT_DIR/setup_node.sh" || exit 1
-bash "$SCRIPT_DIR/setup_addons.sh" || exit 1
+bash "$SCRIPT_DIR/dotfiles/main_dotfiles.sh" || exit 1
+bash "$SCRIPT_DIR/cli_tools/main_cli_tools.sh" || exit 1
+bash "$SCRIPT_DIR/dev_env/main_dev_env.sh" || exit 1
+
+# THIS DOES NOT INSTALL ALL SHELLS AUTOMATICALLY!!!
+# PLEASE INSTALL YOUR DESIRED SHELL MANUALLY.
 
 echo "All setups complete!"
 

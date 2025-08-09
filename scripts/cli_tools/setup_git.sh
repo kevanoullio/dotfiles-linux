@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Import helper functions
-source "$(dirname "$0")/utils.sh"
+source "$(dirname "$0")/../utils.sh"
 
 # Begin setup message
-env_title="Terminal Tools"
+env_title="Git-related Tools"
 env_verb="setup"
 echo "Starting $env_title $env_verb..."
 
@@ -14,14 +14,8 @@ echo "Using package manager: $PKG_MANAGER"
 
 # Update package list and install necessary tools
 pm_update || { echo "Package list update failed" >&2; exit 1; }
-pm_install curl git wget jq tree htop fzf ripgrep || { echo "Failed to install terminal tools" >&2; exit 1; }
+pm_install git || { echo "Failed to install terminal tools" >&2; exit 1; }
 
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
-    "Curl" "curl --version | head -n1" \
-    "Git" "git --version" \
-    "jq" "jq --version" \
-    "tree" "tree --version" \
-    "htop" "htop --version" \
-    "fzf" "fzf --version" \
-    "ripgrep" "rg --version | head -n1"
+    "Git" "git --version"
