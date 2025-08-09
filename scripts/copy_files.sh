@@ -20,6 +20,6 @@ cp -r ~/dotfiles-linux/.config ~/.config
 source ~/.bashrc
 
 # Print completion message
-print_env_setup_complete "$env_title $env_verb" \
+print_completion_message "$env_title" "$env_verb" \
   "Bash" "bash --version | head -n1"
 

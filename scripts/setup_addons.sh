@@ -8,20 +8,23 @@ env_title="Addons"
 env_verb="setup"
 echo "Starting $env_title $env_verb..."
 
-# Add external repositories (one per addon as required)
-# Fastfetch repository (only add if not present)
-if [ ! -f /etc/apt/sources.list.d/fastfetch.list ]; then
-  echo "Adding Fastfetch repository..."
-  sudo mkdir -p /etc/apt/keyrings
-  curl -fsSL https://raw.githubusercontent.com/fastfetch-cli/fastfetch/master/repo/KEY.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/fastfetch.gpg
-  echo "deb [signed-by=/etc/apt/keyrings/fastfetch.gpg] https://fastfetch-cli.github.io/deb stable main" | sudo tee /etc/apt/sources.list.d/fastfetch.list > /dev/null
+# Detect package manager (safe if already detected by main_setup)
+_detect_package_manager || { echo "Failed to detect a supported package manager." >&2; exit 1; }
+echo "Using package manager: $PKG_MANAGER"
+
+# Add external repositories (apt-specific for fastfetch)
+if [ "$PKG_MANAGER" = "apt" ]; then
+  if [ ! -f /etc/apt/sources.list.d/fastfetch.list ]; then
+    echo "Adding Fastfetch repository..."
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://raw.githubusercontent.com/fastfetch-cli/fastfetch/master/repo/KEY.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/fastfetch.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/fastfetch.gpg] https://fastfetch-cli.github.io/deb stable main" | sudo tee /etc/apt/sources.list.d/fastfetch.list > /dev/null
+  fi
 fi
 
-# Update package list
-sudo apt update
-
-# Install addon packages
-sudo apt install -y fastfetch
+# Update package list and install fastfetch
+pm_update || { echo "Package list update failed" >&2; exit 1; }
+pm_install fastfetch || { echo "Failed to install fastfetch" >&2; exit 1; }
 
 # Add a block to rc file to run fastfetch at shell start
 fastfetch_title="Fastfetch"
