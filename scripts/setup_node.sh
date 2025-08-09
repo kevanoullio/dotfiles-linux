@@ -1,28 +1,41 @@
 #!/bin/bash
 
+# Import all functions from utils.sh
+source "$(dirname "$0")/utils.sh"
+
+# Begin setup message
+env_title="Node.js environment"
+env_verb="setup"
+echo "Starting $env_title $env_verb..."
+
 # Update package list and install prerequisites
 echo "Updating package list and installing prerequisites..."
 sudo apt update
-sudo apt install -y curl wget build-essential
+sudo apt install -y curl
 
 # Install NVM (Node Version Manager) if not already installed
 if [ ! -d "$HOME/.nvm" ]; then
     echo "Installing NVM (Node Version Manager)..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-
-    # Source nvm to make it available in current session
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
     echo "NVM installed successfully!"
 else
     echo "NVM is already installed."
-    # Source nvm to make it available in current session
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 fi
+
+# Define NVM initialization block parameters
+node_title="Node Version Manager"
+node_verb="Initialization"
+node_setup_code='export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'
+
+# Add NVM initialization block to managed rc file
+add_block_to_file "$node_title" "$node_verb" "$node_setup_code"
+
+# Source NVM for current session so we can run nvm commands below
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Install Node.js LTS version
 echo "Installing Node.js LTS version..."
@@ -30,19 +43,11 @@ nvm install --lts
 nvm use --lts
 nvm alias default node
 
-# Verify Node.js and npm installation
-echo "Verifying installation..."
-node_version=$(node --version)
-npm_version=$(npm --version)
-echo "Node.js version: $node_version"
-echo "npm version: $npm_version"
-
 # Update npm to latest version
 echo "Updating npm to latest version..."
 npm install -g npm@latest
 
-# # Install common Node.js packages globally
-# echo "Installing common Node.js packages..."
+# # Optional: install common global packages (uncomment to enable)
 # npm install -g \
 #     nodemon \
 #     eslint \
@@ -64,10 +69,7 @@ npm install -g npm@latest
 #     fi
 # done
 
-echo ""
-echo "Node.js environment setup complete!"
-echo "Installed Node.js version: $node_version"
-echo "Installed npm version: $(npm --version)"
-echo ""
-echo "To use Node.js in new terminal sessions, make sure to restart your terminal"
-echo "or run: source ~/.bashrc"
+# Print completion message
+print_completion_message "$env_title" "$env_verb" \
+  "Node.js" "node --version" \
+  "npm" "npm --version"
