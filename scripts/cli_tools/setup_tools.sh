@@ -14,13 +14,14 @@ echo "Using package manager: $PKG_MANAGER"
 
 # Update package list and install necessary tools
 pm_update || { echo "Package list update failed" >&2; exit 1; }
-pm_install curl wget jq tree htop fzf ripgrep || { echo "Failed to install terminal tools" >&2; exit 1; }
+pm_install curl wget jq bat tree fzf ripgrep htop || { echo "Failed to install terminal tools" >&2; exit 1; }
 
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
     "Curl" "curl --version | head -n1" \
     "jq" "jq --version" \
+    "bat" "bat --version | head -n1" \
     "tree" "tree --version" \
-    "htop" "htop --version" \
     "fzf" "fzf --version" \
-    "ripgrep" "rg --version | head -n1"
+    "ripgrep" "rg --version | head -n1" \
+    "htop" "htop --version"
