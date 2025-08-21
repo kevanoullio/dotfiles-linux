@@ -4,7 +4,7 @@
 source "$(dirname "$0")/../utils.sh"
 
 # Begin setup message
-env_title="Common Terminal Tools"
+env_title="OpenSSH"
 env_verb="setup"
 echo "Starting $env_title $env_verb..."
 
@@ -12,16 +12,10 @@ echo "Starting $env_title $env_verb..."
 _detect_package_manager || { echo "Failed to detect a supported package manager." >&2; exit 1; }
 echo "Using package manager: $PKG_MANAGER"
 
-# Update package list and install necessary tools
+# Update package list and install openssh
 pm_update || { echo "Package list update failed" >&2; exit 1; }
-pm_install curl wget jq bat tree fzf ripgrep htop || { echo "Failed to install terminal tools" >&2; exit 1; }
+pm_install openssh || { echo "Failed to install openssh" >&2; exit 1; }
 
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
-    "Curl" "curl --version | head -n1" \
-    "jq" "jq --version" \
-    "bat" "bat --version | head -n1" \
-    "tree" "tree --version" \
-    "fzf" "fzf --version" \
-    "ripgrep" "rg --version | head -n1" \
-    "htop" "htop --version"
+    "OpenSSH" "ssh -V 2>&1 | head -n1"

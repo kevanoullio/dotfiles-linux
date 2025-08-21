@@ -12,10 +12,10 @@ _detect_package_manager || exit 1
 echo "Using package manager: $PKG_MANAGER"
 
 # Run individual setup scripts (they will reuse exported vars)
-bash "$SCRIPT_DIR/setup_tools.sh" || exit 1
+bash "$SCRIPT_DIR/setup_ssh.sh" || exit 1
 bash "$SCRIPT_DIR/setup_git.sh" || exit 1
+bash "$SCRIPT_DIR/setup_core.sh" || exit 1
 bash "$SCRIPT_DIR/setup_nvim.sh" || exit 1
-bash "$SCRIPT_DIR/setup_starship.sh" || exit 1
 bash "$SCRIPT_DIR/setup_addons.sh" || exit 1
 
 echo "All cli tools setups complete!"
