@@ -9,9 +9,9 @@ env_verb="copying"
 echo "Starting $env_title $env_verb..."
 
 # Copy .rc files (overwrite to ensure latest from dotfiles repo)
-cp ~/dotfiles-linux/rc_files/.bashrc ~/.bashrc
-cp ~/dotfiles-linux/rc_files/.vimrc ~/.vimrc
-cp ~/dotfiles-linux/rc_files/.sqliterc ~/.sqliterc
+cp ~/dotfiles-linux/home/.bashrc ~/.bashrc
+cp ~/dotfiles-linux/home/.vimrc ~/.vimrc
+cp ~/dotfiles-linux/home/.sqliterc ~/.sqliterc
 
 # Copy the entire .config directory (merge/overwrite)
 cp -r ~/dotfiles-linux/.config ~/.config
