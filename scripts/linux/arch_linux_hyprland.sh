@@ -1,0 +1,3 @@
+Hyprland
+Wayland
+Rofi
