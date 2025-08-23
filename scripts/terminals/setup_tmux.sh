@@ -14,8 +14,15 @@ echo "Using package manager: $PKG_MANAGER"
 
 # Update package list and install tmux
 pm_update || { echo "Package list update failed" >&2; exit 1; }
-pm_install tmux || { echo "Failed to install tmux" >&2; exit 1; }
+pm_install tmux xclip || { echo "Failed to install tmux" >&2; exit 1; }
+
+# Copy my tmux configuration file
+copy_file "$SCRIPT_DIR/../../home/.tmux.conf" ~/.tmux.conf
 
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
-    "tmux" "tmux --version | head -n1"
+    "tmux" "tmux --version | head -n1" \
+    "xclip" "xclip --version"
+
+echo "xclip allows you to copy text from tmux to your system's clipboard.
+Enter copy mode: Ctrl + B followed by [, press y after selecting text to copy it directly to system clipboard."
