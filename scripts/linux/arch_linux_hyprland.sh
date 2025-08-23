@@ -26,7 +26,8 @@ dolphin or nautilus
 
 # Install other fonts
 noto-fonts — covers most Unicode
-ttf-font-awesome — for icons in Rofi or status bars
+otf-font-awesome — for icons in Rofi or status bars
+ttf-cascadia-mono-nerd — for full terminal theme styling
 
 # Install other tools
 firefox
