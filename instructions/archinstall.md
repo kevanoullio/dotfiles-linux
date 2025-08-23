@@ -56,7 +56,7 @@
     - Locales
     - Disk configuration
     - Swap
-    - Bootloader --> [preferably Grub]
+    - Bootloader --> [preferably systemd-boot, less bloat than Grub]
     - Hostname
     - Authentication
         - Root password --> [can leave blank but need one sudo user]
