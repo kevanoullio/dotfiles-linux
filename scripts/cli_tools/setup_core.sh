@@ -28,3 +28,4 @@ print_completion_message "$env_title" "$env_verb" \
     "fd" "fd --version | head -n1" \
     "ripgrep" "rg --version | head -n1" \
     "htop" "htop --version" \
+    # "xclip" "xclip --version"
