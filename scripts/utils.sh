@@ -123,6 +123,44 @@ add_block_to_file() {
     echo "$title $verb block written to end of $file."
 }
 
+download_zip() {
+    local url="$1" dest_zip="$2"
+    echo "Downloading $url ..."
+    curl -L "$url" -o "$dest_zip" || { echo "Download failed: $url" >&2; exit 1; }
+}
+
+unzip_to_tmpdir() {
+    local zipfile="$1" tmpdir="$2"
+    echo "Extracting $zipfile ..."
+    unzip -o "$zipfile" -d "$tmpdir" || { echo "Unzip failed: $zipfile" >&2; exit 1; }
+}
+
+move_folder_to_dest() {
+    local src_dir="$1" folder_name="$2" dest_dir="$3"
+    # If folder_name exists in src_dir, move it to dest_dir
+    if [ -d "$src_dir/$folder_name" ]; then
+        mkdir -p "$dest_dir"
+        mv "$src_dir/$folder_name" "$dest_dir/"
+    else
+        echo "Expected folder $folder_name not found in $src_dir" >&2
+        exit 1
+    fi
+}
+
+# Generic: install_from_zip <zip_url> <dest_dir> <folder_name>
+install_from_zip() {
+    local zip_url="$1" dest_dir="$2" folder_name="$3"
+    local tmpdir
+    tmpdir=$(mktemp -d)
+    local zipfile="$tmpdir/$(basename "$zip_url")"
+    download_zip "$zip_url" "$zipfile"
+    unzip_to_tmpdir "$zipfile" "$tmpdir"
+    move_folder_to_dest "$tmpdir" "$folder_name" "$dest_dir"
+    fc-cache -fv
+    rm -rf "$tmpdir"
+    echo "$folder_name installed to $dest_dir/$folder_name"
+}
+
 # Function for printing completion message
 # Usage: print_completion_message <env_title> <env_verb> [<Name> <VersionCommand>]...
 print_completion_message() {
