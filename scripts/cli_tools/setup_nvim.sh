@@ -64,9 +64,9 @@ copy_directory() {
 }
 
 # Copy my Neovim configuration files
-copy_file "$SCRIPT_DIR/../.config/nvim/init.lua" ~/.config/nvim/init.lua
-copy_directory "$SCRIPT_DIR/../.config/nvim/lua/config" ~/.config/nvim/lua/config
-copy_directory "$SCRIPT_DIR/../.config/nvim/lua/plugins" ~/.config/nvim/lua/plugins
+copy_file "$SCRIPT_DIR/../../home.config/nvim/init.lua" ~/.config/nvim/init.lua
+copy_directory "$SCRIPT_DIR/../../home.config/nvim/lua/config" ~/.config/nvim/lua/config
+copy_directory "$SCRIPT_DIR/../../home.config/nvim/lua/plugins" ~/.config/nvim/lua/plugins
 
 # lazy.nvim package manager: https://github.com/folke/lazy.nvim
 # Install lazy.nvim package manager

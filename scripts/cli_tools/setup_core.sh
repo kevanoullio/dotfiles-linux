@@ -14,6 +14,7 @@ echo "Using package manager: $PKG_MANAGER"
 
 # Update package list and install necessary tools
 pm_update || { echo "Package list update failed" >&2; exit 1; }
+# pm_install curl wget jq bat tree fzf fd ripgrep htop xclip || { echo "Failed to install core cli tools" >&2; exit 1; }
 pm_install curl wget jq bat tree fzf fd ripgrep htop || { echo "Failed to install core cli tools" >&2; exit 1; }
 
 # Print completion message
@@ -26,4 +27,4 @@ print_completion_message "$env_title" "$env_verb" \
     "fzf" "fzf --version" \
     "fd" "fd --version | head -n1" \
     "ripgrep" "rg --version | head -n1" \
-    "htop" "htop --version"
+    "htop" "htop --version" \

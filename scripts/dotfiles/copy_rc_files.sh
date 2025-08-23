@@ -8,13 +8,10 @@ env_title="RC File"
 env_verb="copying"
 echo "Starting $env_title $env_verb..."
 
-# Copy .rc files (overwrite to ensure latest from dotfiles repo)
-cp ~/dotfiles-linux/home/.bashrc ~/.bashrc
-cp ~/dotfiles-linux/home/.vimrc ~/.vimrc
-cp ~/dotfiles-linux/home/.sqliterc ~/.sqliterc
+echo "Choose which RC Files you'd like to overrite"
 
-# Copy the entire .config directory (merge/overwrite)
-cp -r ~/dotfiles-linux/.config ~/.config
+# Copy the entire home directory with -i (interactive) -v (verbose)
+cp -riv ~/dotfiles-linux/home/* ~/
 
 # Source the new .bashrc for current session
 source ~/.bashrc
