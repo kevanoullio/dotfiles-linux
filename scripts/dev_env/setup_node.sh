@@ -51,6 +51,10 @@ nvm alias default node
 echo "Updating npm to latest version..."
 npm install -g npm@latest
 
+# Install pnpm (fast, disk space efficient package manager)
+echo "Installing pnpm..."
+npm install -g pnpm
+
 # # Optional: install common global packages (uncomment to enable)
 # npm install -g \
 #     nodemon \
@@ -76,4 +80,5 @@ npm install -g npm@latest
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
   "Node.js" "node --version" \
-  "npm" "npm --version"
+  "npm" "npm --version" \
+  "pnpm" "pnpm --version"
