@@ -21,7 +21,9 @@ pnpm install  # This reads package.json and creates pnpm-lock.yaml
    - Change `npm install <package>` to `pnpm add <package>`
    - Change `npm install -g <package>` to `pnpm add -g <package>`
 
-4. **Batch conversion script** (run this in your projects parent directory):
+4. **Batch conversion script** (automates steps 1-2 for multiple projects):
+
+   If you have many projects to convert, this script will automatically convert all npm projects in subdirectories. Save this as `convert_to_pnpm.sh` and run it in your projects parent directory (e.g., if you have `~/projects/app1/`, `~/projects/app2/`, etc., run it from `~/projects/`):
 
 ```bash
 #!/bin/bash
@@ -35,6 +37,15 @@ for dir in */; do
   fi
 done
 ```
+
+   **What it does:**
+   - Loops through all subdirectories
+   - Checks if each directory contains a `package.json` (indicating it's a Node.js project)
+   - Removes `node_modules` and `package-lock.json` 
+   - Runs `pnpm install` to reinstall dependencies with pnpm
+   - Creates `pnpm-lock.yaml` for each project
+
+   **Why use it:** Saves time when converting multiple projects instead of doing steps 1-2 manually for each one.
 
 5. **Remove global npm packages** (optional):
 
