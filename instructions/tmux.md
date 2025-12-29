@@ -1,5 +1,6 @@
-tmux Plugin Manager
-https://github.com/tmux-plugins/tpm
+## tmux Plugin Manager (TPM)
+
+[TPM (tmux Plugin Manager)](https://github.com/tmux-plugins/tpm) is the recommended way to manage tmux plugins. It allows you to easily install, update, and remove plugins that extend tmux's functionality.
 
 
 ## Saving and Restoring tmux Sessions
