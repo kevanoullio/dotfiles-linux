@@ -3,6 +3,28 @@
 [TPM (tmux Plugin Manager)](https://github.com/tmux-plugins/tpm) is the recommended way to manage tmux plugins. It allows you to easily install, update, and remove plugins that extend tmux's functionality.
 
 
+### Installing TPM (tmux Plugin Manager)
+
+You can install TPM (tmux Plugin Manager) in one of two ways:
+
+**1. Using a package manager (if available):**
+
+For Arch Linux (AUR):
+```sh
+yay -S tmux-plugin-manager
+```
+For other distributions, check your package manager or use the manual method below.
+
+
+**2. Manual installation (works everywhere):**
+
+To install TPM manually, simply clone the TPM repository:
+```sh
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+No further steps are required—cloning the repo completes the installation. After this, restart tmux and press `prefix + I` to install plugins listed in your `.tmux.conf`.
+
+
 ## Saving and Restoring tmux Sessions
 
 ### Automatic (Recommended)
