@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Global default managed shell RC file (override by exporting MANAGED_SHELL_RC before sourcing)
 : "${MANAGED_SHELL_RC:=$HOME/.bashrc}"
 
@@ -147,18 +146,94 @@ move_folder_to_dest() {
     fi
 }
 
-# Generic: install_from_zip <zip_url> <dest_dir> <folder_name>
+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+###############################################
+# ZIP helpers
+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+#+###############################################
+
+# Generic: install_from_zip <zip_url> <dest_dir> [folder_name]
+#
+# Generic unzip installer with NO specific behavior.
+#
+# Behavior:
+# - Downloads zip to a tmp directory.
+# - Extracts into a separate tmp subdirectory (so the zip file never mixes with extracted files).
+# - If folder_name is provided, moves that folder into dest_dir.
+# - If folder_name is empty, copies ALL extracted contents into dest_dir.
 install_from_zip() {
-    local zip_url="$1" dest_dir="$2" folder_name="$3"
-    local tmpdir
+    local zip_url="$1" dest_dir="$2" folder_name="${3:-}"
+    local tmpdir zipfile extract_dir
+
     tmpdir=$(mktemp -d)
-    local zipfile="$tmpdir/$(basename "$zip_url")"
+    zipfile="$tmpdir/$(basename "$zip_url")"
+    extract_dir="$tmpdir/extracted"
+
+    # Ensure temporary files are always cleaned up
+    trap 'rm -rf "$tmpdir"' RETURN
+
+    mkdir -p "$extract_dir" "$dest_dir"
+
     download_zip "$zip_url" "$zipfile"
-    unzip_to_tmpdir "$zipfile" "$tmpdir"
-    move_folder_to_dest "$tmpdir" "$folder_name" "$dest_dir"
-    fc-cache -fv
-    rm -rf "$tmpdir"
-    echo "$folder_name installed to $dest_dir/$folder_name"
+    unzip_to_tmpdir "$zipfile" "$extract_dir"
+
+    if [ -n "$folder_name" ]; then
+        if [ ! -d "$extract_dir/$folder_name" ]; then
+            echo "Expected folder $folder_name not found in $extract_dir" >&2
+            return 1
+        fi
+        mv "$extract_dir/$folder_name" "$dest_dir/"
+        echo "Installed folder '$folder_name' from $(basename "$zip_url") to $dest_dir"
+        return 0
+    fi
+
+    # Copy everything extracted (including README/LICENSE/etc.) into dest_dir
+    cp -a "$extract_dir/." "$dest_dir/"
+    echo "Installed contents from $(basename "$zip_url") to $dest_dir"
+}
+
+# Font-specific: install_font_zip_to_dir <zip_url> <fonts_basedir> <font_dir_name>
+#
+# Installs a Nerd Fonts zip into its own directory under the font base dir.
+# Example:
+#   install_font_zip_to_dir <url> ~/.local/share/fonts FiraCode
+#
+# Why a separate directory?
+# - Keeps fonts organized (one folder per font family).
+# - Avoids mixing different font families in the same folder.
+# - Preserves extra files like README/LICENSE.
+install_font_zip_to_dir() {
+    local zip_url="$1" fonts_basedir="$2" font_dir_name="$3"
+    local dest_dir tmpdir zipfile
+    local fc_cache_bin="fc-cache"
+
+    if [ -z "$zip_url" ] || [ -z "$fonts_basedir" ] || [ -z "$font_dir_name" ]; then
+        echo "Usage: install_font_zip_to_dir <zip_url> <fonts_basedir> <font_dir_name>" >&2
+        return 1
+    fi
+
+    # Prefer the system fontconfig tool if present (avoids Conda/other shims)
+    if [ -x /usr/bin/fc-cache ]; then
+        fc_cache_bin="/usr/bin/fc-cache"
+    fi
+
+    dest_dir="$fonts_basedir/$font_dir_name"
+    mkdir -p "$dest_dir"
+
+    tmpdir=$(mktemp -d)
+    zipfile="$tmpdir/$(basename "$zip_url")"
+
+    # Ensure temporary files are always cleaned up
+    trap 'rm -rf "$tmpdir"' RETURN
+
+    download_zip "$zip_url" "$zipfile"
+
+    # Extract directly into the destination font directory so we keep *all* files
+    # (ttf/otf + README/LICENSE) and avoid leaving behind random tmp.* folders.
+    unzip -o "$zipfile" -d "$dest_dir" || { echo "Unzip failed: $zipfile" >&2; return 1; }
+
+    # Refresh font cache for the base font directory (user fonts)
+    "$fc_cache_bin" -fv "$fonts_basedir" >/dev/null 2>&1 || true
+
+    echo "Installed $(basename "$zip_url") to $dest_dir"
 }
 
 # Function for printing completion message

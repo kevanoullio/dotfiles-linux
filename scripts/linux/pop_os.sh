@@ -11,7 +11,7 @@ env_verb="install"
 echo "Starting $env_title $env_verb..."
 
 # Install CaskaydiaMono Nerd Font using dedicated script
-"$(dirname "$0")/../fonts/install_nerd_font.sh"
+"$(dirname "$0")/../fonts/install_all_nerd_fonts.sh"
 
 # Configure Pop_OS! settings
 echo "Configuring Pop_OS! settings..."
