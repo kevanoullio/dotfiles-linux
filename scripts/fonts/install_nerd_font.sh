@@ -11,7 +11,8 @@ env_verb="install"
 echo "Starting $env_title $env_verb..."
 
 # Install CaskaydiaMono Nerd Font to get Font Awesome, Material Design, Devicons, etc
-FONT_FOLDER="CascadiaMono"
+# FONT_FOLDER="CascadiaMono"
+FONT_FOLDER="" # No subfolder, fonts are at the root of the zip
 FONT_DIR="$HOME/.local/share/fonts"
 FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/CascadiaMono.zip"
 
