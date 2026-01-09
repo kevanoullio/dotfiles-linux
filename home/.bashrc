@@ -169,7 +169,7 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 # Starship config
 eval "$(starship init bash)"
 
-# Starship nerd-font preset
+# Load Starship nerd-font preset at startup (NOTE: overwrites startship.toml file)
 starship preset nerd-font-symbols -o ~/.config/starship.toml
 
 # -----------------------------------------------------------------------------
