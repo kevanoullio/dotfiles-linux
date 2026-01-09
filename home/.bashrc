@@ -121,10 +121,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Default starting directory
-# cd /mnt/c/Users/kevan
-
-
 # >>> SSH config >>>
 # Start the ssh agent automatically when opening a new terminal
 if [ -z "$SSH_AUTH_SOCK" ]; then
