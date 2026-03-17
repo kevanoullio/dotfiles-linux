@@ -49,7 +49,7 @@ format = "via [$symbol$environment]($style) "
 
 [python]
 symbol = " "
-format = "via [$symbol$version]($style) "
+format = "via [${symbol}${version} (\\($virtualenv\\))]($style) "
 
 # Command Duration
 [cmd_duration]
