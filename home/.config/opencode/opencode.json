@@ -1,0 +1,78 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "model": "ollama/gtp-oss:20b",
+  "provider": {
+    "lm-studio": {
+      "models": {
+        "qwen3-coder-next-80b-mxfp4": {
+          "name": "qwen3-coder-next-80b-mxfp4"
+        }
+      },
+      "name": "LM Studio",
+      "options": {
+        "baseURL": "http://localhost:1234/v1"
+      }
+    },
+    "ollama": {
+      "models": {
+        "quant-agent-80b": {
+          "name": "quant-agent-80b"
+        },
+        "qwen3-coder-next": {
+          "name": "qwen3-coder-next"
+        },
+        "gpt-oss:120b": {
+          "name": "gpt-oss:120b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "reasoningEffort": "high",
+              "parameters": { "temperature": 0.7, "num_ctx": 24576 },
+              "system": "Reasoning: high. You are a System Architect. Focus on modularity, scalability, and design patterns. Propose a multi-file structure before writing code."
+            },
+            "logic": {
+              "name": "Logic Lead (Deep Flow)",
+              "reasoningEffort": "high",
+              "parameters": { "temperature": 0.3, "num_ctx": 32768 },
+              "system": "Reasoning: high. You are the Logic Lead. Solve complex algorithmic problems and ensure type-safety across the stack. Trace every logic branch before responding."
+            },
+            "security": {
+              "name": "Security & Perf Audit",
+              "reasoningEffort": "medium",
+              "parameters": { "temperature": 0.1, "num_ctx": 16384 },
+              "system": "Reasoning: medium. You are a Security Auditor. Scan code for vulnerabilities, race conditions, and memory leaks. Refactor for maximum performance."
+            }
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "gpt-oss:20b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "reasoningEffort": "high",
+              "parameters": { "temperature": 0.7, "num_ctx": 24576 },
+              "system": "Reasoning: high. You are a System Architect. Focus on modularity, scalability, and design patterns. Propose a multi-file structure before writing code."
+            },
+            "logic": {
+              "name": "Logic Lead (Deep Flow)",
+              "reasoningEffort": "high",
+              "parameters": { "temperature": 0.3, "num_ctx": 32768 },
+              "system": "Reasoning: high. You are the Logic Lead. Solve complex algorithmic problems and ensure type-safety across the stack. Trace every logic branch before responding."
+            },
+            "security": {
+              "name": "Security & Perf Audit",
+              "reasoningEffort": "medium",
+              "parameters": { "temperature": 0.1, "num_ctx": 16384 },
+              "system": "Reasoning: medium. You are a Security Auditor. Scan code for vulnerabilities, race conditions, and memory leaks. Refactor for maximum performance."
+            }
+          }
+        },
+      },
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      }
+    }
+  }
+}
