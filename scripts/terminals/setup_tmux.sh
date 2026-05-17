@@ -28,7 +28,7 @@ fi
 # git clone https://github.com/omerxx/tmux-sessionx ~/.tmux/plugins/tmux-sessionx
 
 # Get the directory of the script
-SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+SCRIPT_DIR=$(get_script_dir)
 
 # Copy my tmux configuration file
 copy_file "$SCRIPT_DIR/../../home/.tmux.conf" "$HOME/.tmux.conf"
