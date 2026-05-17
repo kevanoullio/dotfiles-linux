@@ -45,7 +45,8 @@ Install these plugins (managed by TPM):
 	 run '~/.tmux/plugins/tpm/tpm'
 	 ```
 2. Start tmux and press `prefix` + `I` to install plugins.
-3. Use `prefix` + `Ctrl-s` to save, `prefix` + `Ctrl-r` to restore.
+3. Continuum is configured to auto-save every 15 minutes and auto-restore sessions on tmux start (including after reboot).
+4. Manual save: `prefix` + `Ctrl-s`, Manual restore: `prefix` + `Ctrl-r`.
 
 ### Manual Installation
 
@@ -63,5 +64,6 @@ Add the same plugin lines to your `.tmux.conf` as above.
 **Usage:**
 - Save session: `prefix` + `Ctrl-s`
 - Restore session: `prefix` + `Ctrl-r`
+- Auto-restore: Enabled by default via continuum (sessions restore on next tmux start, even after reboot)
 
 See each plugin's README for advanced options.

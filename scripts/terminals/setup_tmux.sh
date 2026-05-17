@@ -27,6 +27,12 @@ fi
 # git clone https://github.com/tmux-plugins/tmux-continuum ~/.tmux/plugins/tmux-continuum
 # git clone https://github.com/omerxx/tmux-sessionx ~/.tmux/plugins/tmux-sessionx
 
+# Auto-install TPM plugins if TPM directory exists
+if [ -d "$TPM_DIR" ]; then
+    echo "Installing tmux plugins via TPM..."
+    "$TPM_DIR/bin/install_plugins" 2>/dev/null || echo "TPM plugin install failed. Run 'prefix + I' inside tmux to install manually."
+fi
+
 # Get the directory of the script
 SCRIPT_DIR=$(get_script_dir)
 
