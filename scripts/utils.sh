@@ -134,6 +134,115 @@ unzip_to_tmpdir() {
     unzip -o "$zipfile" -d "$tmpdir" || { echo "Unzip failed: $zipfile" >&2; exit 1; }
 }
 
+# Create a directory with error handling and user-friendly messages.
+# Exits the script with status 1 on failure.
+create_directory() {
+    local dir="$1"
+    if [ -d "$dir" ]; then
+        echo "Directory '$dir' already exists."
+        return 0
+    fi
+    echo "Creating directory '$dir'..."
+    if ! mkdir -p "$dir"; then
+        echo "Error: Failed to create directory '$dir'" >&2
+        exit 1
+    fi
+    echo "Successfully created directory '$dir'."
+}
+
+# Function to copy a single file with overwrite prompt and error handling.
+# Exits the script with status 1 on failure.
+copy_file() {
+    local src="$1"
+    local dest="$2"
+
+    if [ ! -f "$src" ]; then
+        echo "Error: Source file '$src' does not exist." >&2
+        exit 1
+    fi
+
+    create_directory "$(dirname "$dest")"
+
+    if [ -f "$dest" ]; then
+        read -p "File '$dest' already exists. Do you want to overwrite it? (y/n): " choice
+        case "$choice" in
+            y|Y)
+                if ! cp -f "$src" "$dest"; then
+                    echo "Error: Failed to copy '$src' to '$dest'" >&2
+                    exit 1
+                fi
+                echo "Successfully copied '$src' to '$dest'."
+                ;;
+            n|N)
+                echo "Skipped copying '$src' to '$dest'."
+                ;;
+            *)
+                echo "Invalid choice. Skipped copying '$src' to '$dest'."
+                ;;
+        esac
+    else
+        if ! cp -f "$src" "$dest"; then
+            echo "Error: Failed to copy '$src' to '$dest'" >&2
+            exit 1
+        fi
+        echo "Successfully copied '$src' to '$dest'."
+    fi
+}
+
+# Function to copy all files in a directory recursively with error handling.
+# Exits the script with status 1 on failure.
+copy_directory() {
+    local src_dir="$1"
+    local dest_dir="$2"
+    local prompt_for_dir="${3:-1}"
+
+    if [ ! -d "$src_dir" ]; then
+        echo "Error: Source directory '$src_dir' does not exist." >&2
+        exit 1
+    fi
+
+    local overwrite_all=0
+    if [ "$prompt_for_dir" -eq 1 ] && [ -d "$dest_dir" ]; then
+        read -p "Directory '$dest_dir' already exists. Do you want to overwrite the entire directory? (y/n): " choice
+        case "$choice" in
+            y|Y) overwrite_all=1 ;;
+            n|N) overwrite_all=0 ;;
+            *) echo "Invalid choice. Skipping directory copy."; return 0 ;;
+        esac
+    elif [ -d "$dest_dir" ]; then
+        overwrite_all=0
+    fi
+
+    if [ "$overwrite_all" -eq 1 ]; then
+        echo "Removing existing directory '$dest_dir'..."
+        if ! rm -rf "$dest_dir"; then
+            echo "Error: Failed to remove existing directory '$dest_dir'" >&2
+            exit 1
+        fi
+    fi
+
+    create_directory "$dest_dir"
+
+    shopt -s nullglob dotglob
+    for src_item in "$src_dir"/*; do
+        local dest_item="$dest_dir/$(basename "$src_item")"
+        if [ -d "$src_item" ]; then
+            copy_directory "$src_item" "$dest_item" 0
+        else
+            if [ "$overwrite_all" -eq 1 ]; then
+                if ! cp -f "$src_item" "$dest_item"; then
+                    echo "Error: Failed to copy '$src_item' to '$dest_item'" >&2
+                    exit 1
+                fi
+                echo "Successfully copied '$src_item' to '$dest_item'."
+            else
+                copy_file "$src_item" "$dest_item"
+            fi
+        fi
+    done
+    shopt -u nullglob dotglob
+}
+
 move_folder_to_dest() {
     local src_dir="$1" folder_name="$2" dest_dir="$3"
     # If folder_name exists in src_dir, move it to dest_dir
