@@ -135,6 +135,16 @@ unzip_to_tmpdir() {
     unzip -o "$zipfile" -d "$tmpdir" || { echo "Unzip failed: $zipfile" >&2; exit 1; }
 }
 
+# Function: get_script_dir
+# Returns the absolute directory of the currently executing script.
+# Must be called after utils.sh is sourced.
+get_script_dir() {
+    local src="$0"
+    local resolved
+    resolved=$(readlink -f "$src")
+    dirname "$resolved"
+}
+
 # Create a directory with error handling and user-friendly messages.
 # Exits the script with status 1 on failure.
 create_directory() {
