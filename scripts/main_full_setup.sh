@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the directory of the script
-SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+SCRIPT_DIR=$(get_script_dir)
 
 # Source utils for package manager detection and exports
 source "$SCRIPT_DIR/utils.sh" || { echo "Failed to source utils.sh" >&2; exit 1; }
