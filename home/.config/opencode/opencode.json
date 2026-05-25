@@ -51,7 +51,8 @@
               "name": "System Architect",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 32768,
+                "num_ctx": 131072,
+                "num_gpu": 24,
                 "temperature": 0.7,
                 "top_p": 0.9
               },
@@ -61,7 +62,8 @@
               "name": "Deterministic Builder",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 32768,
+                "num_ctx": 131072,
+                "num_gpu": 24,
                 "temperature": 0.2,
                 "repeat_penalty": 1.15,
                 "frequency_penalty": 0.2,
@@ -73,7 +75,8 @@
               "name": "Security & Performance Auditor",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 32768,
+                "num_ctx": 131072,
+                "num_gpu": 24,
                 "temperature": 0.35,
                 "repeat_penalty": 1.2,
                 "frequency_penalty": 0.25,
@@ -87,10 +90,11 @@
           "name": "qwen3-coder-next",
           "variants": {
             "architect": {
-              "name": "Repository Architect & Planner",
+              "name": "System Architect",
               "parameters": {
                 "temperature": 0.7,
                 "num_ctx": 262144,
+                "num_gpu": 12,
                 "top_p": 0.8,
                 "top_k": 20,
                 "repeat_penalty": 1.05
@@ -98,10 +102,11 @@
               "system": "You are an advanced Repository Architect. Leverage your massive context window to ingest every relevant project file, file trees, and multi-file dependencies. Provide holistic technical blueprints, clean system design documentation, and step-by-step implementation roadmaps for downstream development."
             },
             "builder": {
-              "name": "Agentic Code Builder",
+              "name": "Deterministic Builder",
               "parameters": {
                 "temperature": 0.2,
                 "num_ctx": 262144,
+                "num_gpu": 12,
                 "top_p": 0.8,
                 "top_k": 20,
                 "repeat_penalty": 1.0
@@ -109,10 +114,11 @@
               "system": "You are a highly precise, environment-aware Code Builder. Your task is to write clean, production-grade, syntactically perfect code based strictly on architectural plans. Focus on tool integration, robust error handling, and immediate compilation readiness without generating conversational filler."
             },
             "security": {
-              "name": "Long-Context Vulnerability Auditor",
+              "name": "Security & Performance Auditor",
               "parameters": {
                 "temperature": 0.4,
                 "num_ctx": 262144,
+                "num_gpu": 12,
                 "top_p": 0.8,
                 "top_k": 20,
                 "repeat_penalty": 1.05
@@ -229,7 +235,8 @@
               "name": "System Architect",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 32768,
+                "num_ctx": 131072,
+                "num_gpu": 24,
                 "temperature": 0.7,
                 "top_p": 0.9
               },
@@ -239,7 +246,8 @@
               "name": "Deterministic Builder",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 32768,
+                "num_ctx": 131072,
+                "num_gpu": 24,
                 "temperature": 0.2,
                 "repeat_penalty": 1.15,
                 "frequency_penalty": 0.2,
@@ -251,7 +259,8 @@
               "name": "Security & Performance Auditor",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 32768,
+                "num_ctx": 131072,
+                "num_gpu": 24,
                 "temperature": 0.35,
                 "repeat_penalty": 1.2,
                 "frequency_penalty": 0.25,
