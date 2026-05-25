@@ -1,0 +1,322 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "model": "ollama/gtp-oss:20b",
+  "provider": {
+    "lm-studio": {
+      "models": {
+        "gpt-oss:120b": {
+          "name": "gpt-oss:120b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.7,
+                "top_p": 0.9
+              },
+              "system": "Reasoning: high. You are an expert Software Architect. Your job is strictly to analyze codebases, directory structures, and feature requests to generate immaculate, step-by-step technical implementation plans. Focus on modularity, scalability, and clean system design."
+            },
+            "builder": {
+              "name": "Deterministic Builder",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.2,
+                "repeat_penalty": 1.15,
+                "frequency_penalty": 0.2,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are precise Logic and Implementation Engine, the Logical Lead Engineer. Your sole task is to take architecture plans or audit blueprints and implement them into clean, functional, error-free code. Adhere strictly to the requested plan without adding unprompted features and ensure type-safety across the stack."
+            },
+            "auditor": {
+              "name": "Security & Performance Auditor",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.35,
+                "repeat_penalty": 1.2,
+                "frequency_penalty": 0.25,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are an expert Application Security Engineer and Performance Profiler. Your sole task is to scan the codebase for vulnerabilities, memory leaks, race conditions, and performance bottlenecks. Generate a highly detailed audit report and a step-by-step optimization plan containing isolated, targeted code examples demonstrating the fixes. Do not attempt to implement the full code changes or refactor whole files yourself; full codebase implementation is strictly deferred to the downstream engineer."
+            }
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "gpt-oss:20b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.7,
+                "top_p": 0.9
+              },
+              "system": "Reasoning: high. You are an expert Software Architect. Your job is strictly to analyze codebases, directory structures, and feature requests to generate immaculate, step-by-step technical implementation plans. Focus on modularity, scalability, and clean system design."
+            },
+            "builder": {
+              "name": "Deterministic Builder",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.2,
+                "repeat_penalty": 1.15,
+                "frequency_penalty": 0.2,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are precise Logic and Implementation Engine, the Logical Lead Engineer. Your sole task is to take architecture plans or audit blueprints and implement them into clean, functional, error-free code. Adhere strictly to the requested plan without adding unprompted features and ensure type-safety across the stack."
+            },
+            "auditor": {
+              "name": "Security & Performance Auditor",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.35,
+                "repeat_penalty": 1.2,
+                "frequency_penalty": 0.25,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are an expert Application Security Engineer and Performance Profiler. Your sole task is to scan the codebase for vulnerabilities, memory leaks, race conditions, and performance bottlenecks. Generate a highly detailed audit report and a step-by-step optimization plan containing isolated, targeted code examples demonstrating the fixes. Do not attempt to implement the full code changes or refactor whole files yourself; full codebase implementation is strictly deferred to the downstream engineer."
+            }
+          }
+        },
+        "qwen/qwen3-coder-next": {
+          "name": "qwen3-coder-next",
+          "variants": {
+            "architect": {
+              "name": "Repository Architect & Planner",
+              "parameters": {
+                "temperature": 0.7,
+                "num_ctx": 262144,
+                "top_p": 0.8,
+                "top_k": 20,
+                "repeat_penalty": 1.05
+              },
+              "system": "You are an advanced Repository Architect. Leverage your massive context window to ingest every relevant project file, file trees, and multi-file dependencies. Provide holistic technical blueprints, clean system design documentation, and step-by-step implementation roadmaps for downstream development."
+            },
+            "builder": {
+              "name": "Agentic Code Builder",
+              "parameters": {
+                "temperature": 0.2,
+                "num_ctx": 262144,
+                "top_p": 0.8,
+                "top_k": 20,
+                "repeat_penalty": 1.0
+              },
+              "system": "You are a highly precise, environment-aware Code Builder. Your task is to write clean, production-grade, syntactically perfect code based strictly on architectural plans. Focus on tool integration, robust error handling, and immediate compilation readiness without generating conversational filler."
+            },
+            "security": {
+              "name": "Long-Context Vulnerability Auditor",
+              "parameters": {
+                "temperature": 0.4,
+                "num_ctx": 262144,
+                "top_p": 0.8,
+                "top_k": 20,
+                "repeat_penalty": 1.05
+              },
+              "system": "You are an Application Security Auditor and Performance Engineer. Review extensive codebase files simultaneously to trace memory leaks, thread safety issues, race conditions, and cryptographic vulnerabilities. Output specialized, targeted patch suggestions and optimization reports without full-file rewrites."
+            }
+          }
+        },
+        "qwen3.6:35b-a3b": {
+          "name": "qwen3.6:35b-a3b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "parameters": {
+                "temperature": 1.0,
+                "num_ctx": 262144,
+                "num_gpu": 20,
+                "top_p": 0.95,
+                "top_k": 20,
+                "presence_penalty": 0.5
+              },
+              "options": {
+                "enable_thinking": true,
+                "preserve_thinking": true
+              },
+              "system": "You are an advanced Repository Architect. Utilize your deep reasoning capabilities to think through structural dependencies, system design, and file layouts step-by-step before outputting your technical blueprints."
+            },
+            "builder": {
+              "name": "Deterministic Builder",
+              "parameters": {
+                "temperature": 0.6,
+                "num_ctx": 262144,
+                "num_gpu": 20,
+                "top_p": 0.8,
+                "top_k": 20,
+                "presence_penalty": 0.0
+              },
+              "options": {
+                "enable_thinking": false
+              },
+              "system": "You are a precise and deterministic Code Builder. Your task is to bypass conversational filler and immediately output clean, production-grade code adhering strictly to the architectural plan provided."
+            },
+            "security": {
+              "name": "Security & Performance Auditor",
+              "parameters": {
+                "temperature": 1.0,
+                "num_ctx": 262144,
+                "num_gpu": 20,
+                "top_p": 0.95,
+                "top_k": 20,
+                "presence_penalty": 0.3
+              },
+              "options": {
+                "enable_thinking": true
+              },
+              "system": "You are an Application Security Engineer. Deeply analyze the provided code blocks for memory leaks, architectural flaws, and performance bottlenecks. Think through edge cases extensively before rendering your optimization patch report."
+            }
+          }
+        },
+      },
+      "name": "LM Studio",
+      "options": {
+        "baseURL": "http://localhost:1234/v1"
+      }
+    },
+    "ollama": {
+      "models": {
+        "quant-agent-80b": {
+          "name": "quant-agent-80b"
+        },
+        "gpt-oss:120b": {
+          "name": "gpt-oss:120b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.7,
+                "top_p": 0.9
+              },
+              "system": "Reasoning: high. You are an expert Software Architect. Your job is strictly to analyze codebases, directory structures, and feature requests to generate immaculate, step-by-step technical implementation plans. Focus on modularity, scalability, and clean system design."
+            },
+            "builder": {
+              "name": "Deterministic Builder",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.2,
+                "repeat_penalty": 1.15,
+                "frequency_penalty": 0.2,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are precise Logic and Implementation Engine, the Logical Lead Engineer. Your sole task is to take architecture plans or audit blueprints and implement them into clean, functional, error-free code. Adhere strictly to the requested plan without adding unprompted features and ensure type-safety across the stack."
+            },
+            "auditor": {
+              "name": "Security & Performance Auditor",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.35,
+                "repeat_penalty": 1.2,
+                "frequency_penalty": 0.25,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are an expert Application Security Engineer and Performance Profiler. Your sole task is to scan the codebase for vulnerabilities, memory leaks, race conditions, and performance bottlenecks. Generate a highly detailed audit report and a step-by-step optimization plan containing isolated, targeted code examples demonstrating the fixes. Do not attempt to implement the full code changes or refactor whole files yourself; full codebase implementation is strictly deferred to the downstream engineer."
+            }
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "gpt-oss:20b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.7,
+                "top_p": 0.9
+              },
+              "system": "Reasoning: high. You are an expert Software Architect. Your job is strictly to analyze codebases, directory structures, and feature requests to generate immaculate, step-by-step technical implementation plans. Focus on modularity, scalability, and clean system design."
+            },
+            "builder": {
+              "name": "Deterministic Builder",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.2,
+                "repeat_penalty": 1.15,
+                "frequency_penalty": 0.2,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are precise Logic and Implementation Engine, the Logical Lead Engineer. Your sole task is to take architecture plans or audit blueprints and implement them into clean, functional, error-free code. Adhere strictly to the requested plan without adding unprompted features and ensure type-safety across the stack."
+            },
+            "auditor": {
+              "name": "Security & Performance Auditor",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 32768,
+                "temperature": 0.35,
+                "repeat_penalty": 1.2,
+                "frequency_penalty": 0.25,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high. You are an expert Application Security Engineer and Performance Profiler. Your sole task is to scan the codebase for vulnerabilities, memory leaks, race conditions, and performance bottlenecks. Generate a highly detailed audit report and a step-by-step optimization plan containing isolated, targeted code examples demonstrating the fixes. Do not attempt to implement the full code changes or refactor whole files yourself; full codebase implementation is strictly deferred to the downstream engineer."
+            }
+          }
+        },
+        "qwen3.6:35b-a3b": {
+          "name": "qwen3.6:35b-a3b",
+          "variants": {
+            "architect": {
+              "name": "System Architect",
+              "parameters": {
+                "temperature": 1.0,
+                "num_ctx": 131072,
+                "num_gpu": 20,
+                "top_p": 0.95,
+                "top_k": 20,
+                "presence_penalty": 0.5
+              },
+              "options": {
+                "enable_thinking": true,
+                "preserve_thinking": true
+              },
+              "system": "You are an advanced System Architect operating in OpenCode's Plan Mode. Your task is to think deeply through structural dependencies, performance layout, and file trees to generate an exhaustive technical implementation blueprint. CRITICAL REQUIREMENT: You must structurally divide your master plan into separate, sequential, bite-sized phases. Use your file-writing tool to save each independent phase as a distinct Markdown file under the directory `.opencode/plans/` (e.g., `phase_1_setup.md`, `phase_2_core.md`). Do not dump a single massive plan into the chat console; decouple them cleanly so a downstream builder can execute them sequentially."
+            },
+            "builder": {
+              "name": "Deterministic Builder",
+              "parameters": {
+                "temperature": 0.3,
+                "num_ctx": 65536,
+                "num_gpu": 20,
+                "top_p": 0.8,
+                "top_k": 20,
+                "presence_penalty": 0.0
+              },
+              "options": {
+                "enable_thinking": false
+              },
+              "system": "You are a precise and deterministic Code Builder operating in OpenCode's Build Mode. Your job is to consume a specific, pre-chunked phase Markdown design file (from `.opencode/plans/`) alongside the target source files. Bypass all conversational filler and immediately execute the modifications required by that specific phase file using your file editing and terminal tools. Focus completely on code fidelity and test readiness for the current phase without jumping ahead to future steps."
+            },
+            "security": {
+              "name": "Security & Performance Auditor",
+              "parameters": {
+                "temperature": 0.4,
+                "num_ctx": 131072,
+                "num_gpu": 20,
+                "top_p": 0.85,
+                "top_k": 20,
+                "presence_penalty": 0.2
+              },
+              "options": {
+                "enable_thinking": true
+              },
+              "system": "You are an Application Security Engineer and Core Performance Auditor operating in OpenCode's Plan Mode. Use your reasoning trace to aggressively hunt for memory leaks, thread safety issues, race conditions, and bottlenecks. CRITICAL REQUIREMENT: Do not generate a single sprawling audit report. You must isolate your findings and targeted optimization patches into separate execution phases. Use your file-writing tool to export these phases as separate files inside `.opencode/plans/` (e.g., `audit_phase_1_vulns.md`, `audit_phase_2_perf.md`), keeping them completely isolated for the downstream development engineer."
+            }
+          }
+        }
+      },
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      }
+    }
+  }
+}
