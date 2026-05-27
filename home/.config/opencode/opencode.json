@@ -1,11 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
-  "model": "ollama/gtp-oss:20b",
+  "model": "lm-studio/openai/gpt-oss:20b",
   "provider": {
     "lm-studio": {
       "models": {
-        "gpt-oss:120b": {
+        "openai/gpt-oss:120b": {
           "name": "gpt-oss:120b",
           "variants": {
             "system_architect": {
@@ -17,7 +17,7 @@
                 "temperature": 0.7,
                 "top_p": 0.9
               },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/system_architect.txt}"
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/system_architect.txt}"
             },
             "security_auditor": {
               "name": "Security Auditor",
@@ -30,7 +30,7 @@
                 "frequency_penalty": 0.25,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/security_auditor.txt}"
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/security_auditor.txt}"
             },
             "performance_auditor": {
               "name": "Performance Auditor",
@@ -43,7 +43,7 @@
                 "frequency_penalty": 0.25,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/performance_auditor.txt}"
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/performance_auditor.txt}"
             },
             "code_reviewer": {
               "name": "Code Reviewer",
@@ -51,75 +51,93 @@
               "parameters": {
                 "num_ctx": 65536,
                 "num_gpu": 7,
-                "temperature": 0.4,
-                "top_p": 0.9
+                "temperature": 0.3,
+                "top_p": 0.85,
+                "repeat_penalty": 1.15,
+                "frequency_penalty": 0.3,
+                "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/code_reviewer.txt}"
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/code_reviewer.txt}"
             }
           }
         },
-        "gpt-oss:20b": {
+        "openai/gpt-oss:20b": {
           "name": "gpt-oss:20b",
           "variants": {
             "documentation_engineer": {
               "name": "Documentation Engineer",
               "parameters": {
-                "num_ctx": 131072,
+                "num_ctx": 65536,
                 "num_gpu": 22,
                 "temperature": 0.5,
                 "top_p": 0.9
               },
-              "system": "{file:./.opencode/prompts/documentation_engineer.txt}"
+              "system": "Reasoning: medium.\n\n{file:~/.config/opencode/prompts/documentation_engineer.txt}"
             },
             "system_architect": {
               "name": "System Architect",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 131072,
+                "num_ctx": 65536,
                 "num_gpu": 22,
                 "temperature": 0.7,
                 "top_p": 0.9
               },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/system_architect.txt}"
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/system_architect.txt}"
             },
-            "code_builder": {
-              "name": "Deterministic Builder",
+            "security_auditor": {
+              "name": "Security Auditor",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 131072,
+                "num_ctx": 65536,
+                "num_gpu": 22,
+                "temperature": 0.35,
+                "repeat_penalty": 1.2,
+                "frequency_penalty": 0.25,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/security_auditor.txt}"
+            },
+            "performance_auditor": {
+              "name": "Performance Auditor",
+              "reasoningEffort": "high",
+              "parameters": {
+                "num_ctx": 65536,
+                "num_gpu": 22,
+                "temperature": 0.35,
+                "repeat_penalty": 1.2,
+                "frequency_penalty": 0.25,
+                "presence_penalty": 0.1
+              },
+              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/performance_auditor.txt}"
+            },
+            "plan_extractor": {
+              "name": "Plan Extractor",
+              "reasoningEffort": "low",
+              "parameters": {
+                "num_ctx": 65536,
+                "num_gpu": 22,
+                "temperature": 0.0,
+                "top_p": 1.0,
+                "top_k": 1,
+                "repeat_penalty": 1.0,
+                "frequency_penalty": 0.0,
+                "presence_penalty": 0.0
+              },
+              "system": "Reasoning: low.\n\n{file:~/.config/opencode/prompts/plan_extractor.txt}"
+            },
+            "code_builder": {
+              "name": "Code Builder",
+              "reasoningEffort": "medium",
+              "parameters": {
+                "num_ctx": 65536,
                 "num_gpu": 22,
                 "temperature": 0.2,
                 "repeat_penalty": 1.15,
                 "frequency_penalty": 0.2,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/code_builder.txt}"
-            },
-            "security_auditor": {
-              "name": "Security Auditor",
-              "reasoningEffort": "high",
-              "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 22,
-                "temperature": 0.35,
-                "repeat_penalty": 1.2,
-                "frequency_penalty": 0.25,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/security_auditor.txt}"
-            },
-            "performance_auditor": {
-              "name": "Performance Auditor",
-              "reasoningEffort": "high",
-              "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 22,
-                "temperature": 0.35,
-                "repeat_penalty": 1.2,
-                "frequency_penalty": 0.25,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: high.\n\n{file:./.opencode/prompts/performance_auditor.txt}"
+              "system": "Reasoning: medium.\n\n{file:~/.config/opencode/prompts/code_builder.txt}"
             }
           }
         },
@@ -136,7 +154,7 @@
                 "top_k": 20,
                 "repeat_penalty": 1.05
               },
-              "system": "{file:./.opencode/prompts/refactor_specialist.txt}"
+              "system": "{file:~/.config/opencode/prompts/refactor_specialist.txt}"
             },
             "system_architect": {
               "name": "System Architect",
@@ -148,7 +166,7 @@
                 "top_k": 20,
                 "repeat_penalty": 1.05
               },
-              "system": "{file:./.opencode/prompts/system_architect.txt}"
+              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
             },
             "backend_engineer": {
               "name": "Backend Engineer",
@@ -160,7 +178,7 @@
                 "top_k": 20,
                 "repeat_penalty": 1.1
               },
-              "system": "{file:./.opencode/prompts/backend_engineer.txt}"
+              "system": "{file:~/.config/opencode/prompts/backend_engineer.txt}"
             },
             "security_auditor": {
               "name": "Security Auditor",
@@ -172,7 +190,7 @@
                 "top_k": 20,
                 "repeat_penalty": 1.05
               },
-              "system": "{file:./.opencode/prompts/security_auditor.txt}"
+              "system": "{file:~/.config/opencode/prompts/security_auditor.txt}"
             },
             "performance_auditor": {
               "name": "Performance Auditor",
@@ -184,7 +202,20 @@
                 "top_k": 20,
                 "repeat_penalty": 1.05
               },
-              "system": "{file:./.opencode/prompts/performance_auditor.txt}"
+              "system": "{file:~/.config/opencode/prompts/performance_auditor.txt}"
+            },
+            "code_reviewer": {
+              "name": "Code Reviewer",
+              "parameters": {
+                "num_ctx": 131072,
+                "num_gpu": 12,
+                "temperature": 0.2,
+                "top_p": 0.85,
+                "top_k": 20,
+                "repeat_penalty": 1.1,
+                "presence_penalty": 0.1
+              },
+              "system": "{file:~/.config/opencode/prompts/code_reviewer.txt}"
             },
             "debugging_specialist": {
               "name": "Debugging Specialist",
@@ -196,11 +227,11 @@
                 "top_k": 20,
                 "repeat_penalty": 1.05
               },
-              "system": "{file:./.opencode/prompts/debugging_specialist.txt}"
+              "system": "{file:~/.config/opencode/prompts/debugging_specialist.txt}"
             }
           }
         },
-        "qwen3.6:35b-a3b": {
+        "qwen/qwen3.6:35b-a3b": {
           "name": "qwen3.6:35b-a3b",
           "variants": {
             "system_architect": {
@@ -217,37 +248,7 @@
                 "enable_thinking": true,
                 "preserve_thinking": true
               },
-              "system": "{file:./.opencode/prompts/system_architect.txt}"
-            },
-            "dependency_auditor": {
-              "name": "Dependency Auditor",
-              "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
-                "temperature": 0.4,
-                "top_p": 0.85,
-                "top_k": 20,
-                "presence_penalty": 0.1
-              },
-              "options": {
-                "enable_thinking": true
-              },
-              "system": "{file:./.opencode/prompts/dependency_auditor.txt}"
-            },
-            "code_builder": {
-              "name": "Code Builder",
-              "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 21,
-                "temperature": 0.3,
-                "top_p": 0.8,
-                "top_k": 20,
-                "presence_penalty": 0.0
-              },
-              "options": {
-                "enable_thinking": false
-              },
-              "system": "{file:./.opencode/prompts/code_builder.txt}"
+              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
             },
             "security_auditor": {
               "name": "Security Auditor",
@@ -262,7 +263,7 @@
               "options": {
                 "enable_thinking": true
               },
-              "system": "{file:./.opencode/prompts/security_auditor.txt}"
+              "system": "{file:~/.config/opencode/prompts/security_auditor.txt}"
             },
             "performance_auditor": {
               "name": "Performance Auditor",
@@ -277,7 +278,53 @@
               "options": {
                 "enable_thinking": true
               },
-              "system": "{file:./.opencode/prompts/performance_auditor.txt}"
+              "system": "{file:~/.config/opencode/prompts/performance_auditor.txt}"
+            },
+            "dependency_auditor": {
+              "name": "Dependency Auditor",
+              "parameters": {
+                "num_ctx": 131072,
+                "num_gpu": 20,
+                "temperature": 0.4,
+                "top_p": 0.85,
+                "top_k": 20,
+                "presence_penalty": 0.1
+              },
+              "options": {
+                "enable_thinking": true
+              },
+              "system": "{file:~/.config/opencode/prompts/dependency_auditor.txt}"
+            },
+            "plan_extractor": {
+              "name": "Plan Extractor",
+              "parameters": {
+                "num_ctx": 65536,
+                "num_gpu": 21,
+                "temperature": 0.0,
+                "top_p": 1.0,
+                "top_k": 1,
+                "repeat_penalty": 1.0,
+                "presence_penalty": 0.0
+              },
+              "options": {
+                "enable_thinking": false
+              },
+              "system": "{file:~/.config/opencode/prompts/plan_extractor.txt}"
+            },
+            "code_builder": {
+              "name": "Code Builder",
+              "parameters": {
+                "num_ctx": 65536,
+                "num_gpu": 21,
+                "temperature": 0.3,
+                "top_p": 0.8,
+                "top_k": 20,
+                "presence_penalty": 0.0
+              },
+              "options": {
+                "enable_thinking": false
+              },
+              "system": "{file:~/.config/opencode/prompts/code_builder.txt}"
             },
             "test_engineer": {
               "name": "Test Engineer",
@@ -292,7 +339,7 @@
               "options": {
                 "enable_thinking": true
               },
-              "system": "{file:./.opencode/prompts/test_engineer.txt}"
+              "system": "{file:~/.config/opencode/prompts/test_engineer.txt}"
             },
             "cicd_engineer": {
               "name": "CI/CD Engineer",
@@ -307,37 +354,64 @@
               "options": {
                 "enable_thinking": true
               },
-              "system": "{file:./.opencode/prompts/cicd_engineer.txt}"
+              "system": "{file:~/.config/opencode/prompts/cicd_engineer.txt}"
+            },
+            "code_reviewer": {
+              "name": "Code Reviewer",
+              "parameters": {
+                "num_ctx": 131072,
+                "num_gpu": 20,
+                "temperature": 0.35,
+                "top_p": 0.85,
+                "top_k": 20,
+                "repeat_penalty": 1.15,
+                "presence_penalty": 0.1
+              },
+              "options": {
+                "enable_thinking": true,
+                "preserve_thinking": true
+              },
+              "system": "{file:~/.config/opencode/prompts/code_reviewer.txt}"
             }
           }
         },
-        "gemma-4-31b": {
+        "google/gemma-4-31b": {
           "name": "gemma-4-31b",
           "variants": {
             "frontend_designer": {
               "name": "Frontend Designer",
               "parameters": {
                 "num_ctx": 65536,
-                "num_gpu": 12,
+                "num_gpu": 20,
                 "temperature": 0.85,
                 "top_p": 0.95
               },
-              "system": "{file:./.opencode/prompts/frontend_designer.txt}"
+              "system": "{file:~/.config/opencode/prompts/frontend_designer.txt}"
             }
           }
         },
-        "gemma-4-26b-a4b": {
+        "google/gemma-4-26b-a4b": {
           "name": "gemma-4-26b-a4b",
           "variants": {
             "documentation_engineer": {
               "name": "Documentation Engineer",
               "parameters": {
                 "num_ctx": 65536,
-                "num_gpu": 10,
+                "num_gpu": 16,
                 "temperature": 0.5,
                 "top_p": 0.9
               },
-              "system": "{file:./.opencode/prompts/documentation_engineer.txt}"
+              "system": "{file:~/.config/opencode/prompts/documentation_engineer.txt}"
+            },
+            "frontend_designer": {
+              "name": "Frontend Designer",
+              "parameters": {
+                "num_ctx": 65536,
+                "num_gpu": 20,
+                "temperature": 0.85,
+                "top_p": 0.95
+              },
+              "system": "{file:~/.config/opencode/prompts/frontend_designer.txt}"
             }
           }
         }
@@ -351,7 +425,7 @@
       "models": {
         "quant-agent-80b": {
           "name": "quant-agent-80b"
-        },
+        }
       },
       "name": "Ollama",
       "options": {

@@ -7,5 +7,6 @@ ANALYSIS METHODOLOGY:
 
 PLAN ORGANIZATION:
 * CRITICAL REQUIREMENT: Do not flood the chat console with a monolithic implementation file. You must break your overarching design into separate, sequential, modular execution phases.
-* Use your file-writing capabilities to physically write each distinct phase into its own independent Markdown file inside the project directory: `.opencode/plans/` from the project root folder (e.g., `phase_1_scaffolding.md`, `phase_2_core_logic.md`, `phase_3_integration.md`).
-* Each phase document must specify the precise target files, structural diff boundaries, and strict technical directions so that a downstream, non-reasoning Builder variant can cleanly execute them step-by-step without confusion.
+* Do NOT attempt to run file-creation tools or write directly to disk. Provide your full review as a comprehensive markdown text block in this chat window.
+* Write each distinct phase into its own independent section directly into the chat response stream with clear titles (e.g., `Phase 1 - Scaffolding`, `Phase 2 - Core Logic`, `Phase 3 - Integration`).
+* Each phase must specify the precise target files, structural diff boundaries, and strict technical directions so that a downstream, non-reasoning Builder variant can cleanly export these phases to their own Markdown files, then execute them step-by-step without confusion.
