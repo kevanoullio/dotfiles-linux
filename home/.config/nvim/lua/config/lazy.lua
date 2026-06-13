@@ -7,7 +7,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
+      { out,                            "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
@@ -25,11 +25,11 @@ vim.g.maplocalleader = "\\"
 local function load_plugins_from(dir)
   local plugin_list = {}
   local path = vim.fn.stdpath("config") .. "/lua/" .. dir
-  local files = vim.fn.globpath(path, "**/*.lua", false, true) -- Scan recursively
+  local files = vim.fn.globpath(path, "**/*.lua", false, true)   -- Scan recursively
 
   for _, file in ipairs(files) do
-    local module_name = file:match("lua/(.+)%.lua$"):gsub("/", ".") -- Convert path to module name
-    if not module_name:match("%.init$") then -- Avoid init.lua if present
+    local module_name = file:match("lua/(.+)%.lua$"):gsub("/", ".")     -- Convert path to module name
+    if not module_name:match("%.init$") then                            -- Avoid init.lua if present
       table.insert(plugin_list, require(module_name))
     end
   end
@@ -40,6 +40,34 @@ end
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
+    -- add LazyVim and import its plugins
+    { "LazyVim/LazyVim",                                import = "lazyvim.plugins" },
+    -- language extras (must come before general plugins)
+    { import = "lazyvim.plugins.extras.lang.astro" },
+    { import = "lazyvim.plugins.extras.lang.tailwind" },
+    { import = "lazyvim.plugins.extras.lang.typescript" },
+    { import = "lazyvim.plugins.extras.lang.json" },
+    { import = "lazyvim.plugins.extras.lang.clangd" },
+    { import = "lazyvim.plugins.extras.lang.dotnet" },
+    { import = "lazyvim.plugins.extras.lang.rust" },
+    { import = "lazyvim.plugins.extras.lang.zig" },
+    { import = "lazyvim.plugins.extras.lang.python" },
+    { import = "lazyvim.plugins.extras.lang.go" },
+    { import = "lazyvim.plugins.extras.lang.markdown" },
+    { import = "lazyvim.plugins.extras.lang.yaml" },
+    { import = "lazyvim.plugins.extras.lang.docker" },
+    { import = "lazyvim.plugins.extras.lang.toml" },
+    { import = "lazyvim.plugins.extras.lang.git" },
+    { import = "lazyvim.plugins.extras.lang.java" },
+    { import = "lazyvim.plugins.extras.lang.kotlin" },
+    { import = "lazyvim.plugins.extras.lang.dart" },
+    { import = "lazyvim.plugins.extras.lang.sql" },
+    { import = "lazyvim.plugins.extras.lang.julia" },
+    { import = "lazyvim.plugins.extras.lang.r" },
+    { import = "lazyvim.plugins.extras.lang.cmake" },
+    -- import/override with your plugins
+    -- { import = "plugins" },
+
     -- Load plugins from the plugins directory and its subdirectories
     unpack(load_plugins_from("plugins")),
   },
