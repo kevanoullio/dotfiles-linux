@@ -16,7 +16,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    { "LazyVim/LazyVim",                          import = "lazyvim.plugins" },
+    -- add LazyVim and import its plugins
+    { "LazyVim/LazyVim",                                import = "lazyvim.plugins" },
+    -- language extras (must come before general plugins)
     { import = "lazyvim.plugins.extras.lang.astro" },
     { import = "lazyvim.plugins.extras.lang.tailwind" },
     { import = "lazyvim.plugins.extras.lang.typescript" },
@@ -39,6 +41,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.julia" },
     { import = "lazyvim.plugins.extras.lang.r" },
     { import = "lazyvim.plugins.extras.lang.cmake" },
+    -- import/override with your plugins
     { import = "plugins" },
   },
   defaults = {
@@ -47,9 +50,9 @@ require("lazy").setup({
   },
   install = { colorscheme = { "habamax", "catppuccin", "gruvbox", "tokyonight" } },
   checker = {
-    enabled = true,
-    notify = false,
-  },
+    enabled = true, -- check for plugin updates periodically
+    notify = false, -- notify on update
+  },                -- automatically check for plugin updates
   performance = {
     rtp = {
       disabled_plugins = {
