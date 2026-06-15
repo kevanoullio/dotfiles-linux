@@ -1,12 +1,6 @@
--- Global variables
-vim.g.leader = " "
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
--- Bootstrap lazy.nvim and load plugins
 require("config.lazy")
-
--- Source key mappings (plugins must be sourced first)
-require('config.keymappings')
-
--- Source settings
-require('config.settings')
-
+require("config.options")
+require("config.keymappings")
