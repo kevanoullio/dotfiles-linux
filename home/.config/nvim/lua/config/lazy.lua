@@ -1,5 +1,3 @@
--- Bootstrap lazy.nvim package manager
--- https://github.com/folke/lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -16,33 +14,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
-
-local function load_plugins_from(dir)
-  local plugin_list = {}
-  local path = vim.fn.stdpath("config") .. "/lua/" .. dir
-  local files = vim.fn.globpath(path, "**/*.lua", false, true)   -- Scan recursively
-
-  for _, file in ipairs(files) do
-    local module_name = file:match("lua/(.+)%.lua$"):gsub("/", ".")     -- Convert path to module name
-    if not module_name:match("%.init$") then                            -- Avoid init.lua if present
-      table.insert(plugin_list, require(module_name))
-    end
-  end
-
-  return plugin_list
-end
-
--- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim",                                import = "lazyvim.plugins" },
-    -- language extras (must come before general plugins)
+    { "LazyVim/LazyVim",                          import = "lazyvim.plugins" },
     { import = "lazyvim.plugins.extras.lang.astro" },
     { import = "lazyvim.plugins.extras.lang.tailwind" },
     { import = "lazyvim.plugins.extras.lang.typescript" },
@@ -65,17 +39,26 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.julia" },
     { import = "lazyvim.plugins.extras.lang.r" },
     { import = "lazyvim.plugins.extras.lang.cmake" },
-    -- import/override with your plugins
-    -- { import = "plugins" },
-
-    -- Load plugins from the plugins directory and its subdirectories
-    unpack(load_plugins_from("plugins")),
+    { import = "plugins" },
   },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax", "catppuccin", "gruvbox" } },
-  -- automatically check for plugin updates
-  checker = { enabled = true },
+  defaults = {
+    lazy = false,
+    version = false,
+  },
+  install = { colorscheme = { "habamax", "catppuccin", "gruvbox", "tokyonight" } },
+  checker = {
+    enabled = true,
+    notify = false,
+  },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 })
-
-return {}
