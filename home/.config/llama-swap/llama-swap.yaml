@@ -1,0 +1,84 @@
+startPort: 10001
+healthCheckTimeout: 120
+logToStdout: "both"
+
+models:
+  gpt-oss:120b:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/gpt-oss-120b-GGUF/gpt-oss-120b-MXFP4-00001-of-00002.gguf \
+        --ctx-size 65536 \
+        --n-gpu-layers 8 \
+        --threads 7 \
+        --flash-attn on \
+        --cache-type-k q8_0 \
+        --cache-type-v q8_0 \
+
+  gpt-oss:20b:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/gpt-oss-20b-GGUF/gpt-oss-20b-MXFP4.gguf \
+        --ctx-size 65536 \
+        --n-gpu-layers 24 \
+        --threads 7 \
+        --flash-attn on \
+        --cache-type-k q8_0 \
+        --cache-type-v q8_0 \
+
+  qwen3-coder-next:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/Qwen3-Coder-Next-GGUF/Qwen3-Coder-Next-Q4_K_M.gguf \
+        --ctx-size 131072 \
+        --n-gpu-layers 12 \
+        --threads 7 \
+
+  qwen3.6:27b:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q4_K_M.gguf \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-27B-GGUF/mmproj-Qwen3.6-27B-BF16.gguf \
+        --ctx-size 65536 \
+        --n-gpu-layers 32 \
+        --threads 7 \
+
+  qwen3.6:35b-a3b:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-35B-A3B-GGUF/mmproj-Qwen3.6-35B-A3B-BF16.gguf \
+        --ctx-size 131072 \
+        --n-gpu-layers 20 \
+        --threads 7 \
+
+  gemma-4-31b-qat:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-31B-it-QAT-GGUF/gemma-4-31B-it-QAT-Q4_0.gguf \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-31B-it-QAT-GGUF/mmproj-gemma-4-31B-it-QAT-BF16.gguf \
+        --ctx-size 65536 \
+        --n-gpu-layers 21 \
+        --threads 7 \
+
+  gemma-4-26b-a4b-qat:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/gemma-4-26B-A4B-it-QAT-Q4_0.gguf \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/gemma-4-26B-A4B-it-QAT-Q4_0.gguf \
+        --ctx-size 65536 \
+        --n-gpu-layers 18 \
+        --threads 7 \
