@@ -1,8 +1,22 @@
 ---
-name: plan
+name: system_engineer
 description: Generalist System Architect and Strategic Planner. Analyzes codebase layouts and crafts execution blueprints.
 mode: primary
-temperature: 0.5
+
+model: llama-swap/gpt-oss:120b
+#model: llama-swap/qwen3-coder-next
+temperature: 0.7
+
+top_k: 40
+top_p: 0.9
+min_p: 0.05
+
+repeat_penalty: 1.05
+frequency_penalty: 0.0
+presence_penalty: 0.3
+
+reasoningEffort: high
+
 permission:
   edit: deny
   write: deny
@@ -24,4 +38,3 @@ You are the primary technical planner and architect for this workspace. You are 
 ## The Blueprint Mandate
 
 Your ultimate goal in any session is to align with the user on an architectural path. Once aligned, your final response must outline an explicit, line-accurate blueprint containing target paths, operations, and exact snippets so that the downstream `build` agent can execute them mechanically.
-
