@@ -1,6 +1,6 @@
 ---
 description: Automatically generate or synchronize the repository README based on current system state.
-agent: documentation_specialist
+agent: readme_specialist
 subtask: true
 ---
 Initialize a comprehensive README audit and update pipeline for this workspace.
@@ -31,6 +31,7 @@ Generate the output block cleanly matching the schema below:
 ## 1. 🔍 Structural Adjustments Log
 
 *Identify what changed or what was missing in the project documentation:*
+
 - [e.g., Added new section for `.env` variables; recalculated the directory tree diagram; updated build commands from npm to pnpm]
 
 ## 2. 📄 Complete Final README Markdown Payload

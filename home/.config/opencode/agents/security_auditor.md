@@ -2,7 +2,21 @@
 name: security_auditor
 description: Scans code for injection risks, privilege escalation, leaks, and OWASP vulnerabilities.
 mode: subagent
-temperature: 0.0
+
+model: llama-swap/gpt-oss:120b
+#model: llama-swap/qwen3-coder-next
+temperature: 0.2
+
+top_k: 40
+top_p: 0.95
+min_p: 0.05
+
+repeat_penalty: 1.0
+frequency_penalty: 0.0
+presence_penalty: 0.0
+
+reasoningEffort: high
+
 permission:
   edit: deny
   write: deny

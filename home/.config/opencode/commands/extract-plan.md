@@ -1,18 +1,44 @@
 ---
 description: Compiles the conversation's final architecture notes into a local plan file.
-model: local-swap/gpt-oss:20b
+agent: plan_extractor
+subtask: true
 ---
-Review our entire conversation history above. Extract the finalized engineering plan and write it cleanly as a unified, unambiguous, step-by-step technical plan.
+Initialize a conversation history parse and architectural plan compilation sequence.
 
-Format the output strictly with these target blocks:
+### Step 1: Directory Verification
 
-- **Target File**: [Exact Path]
-- **Operation**: [CREATE | MODIFY | DELETE]
-- **Line Range**: [Exact target line ranges]
-- **Exact Code Payload**:
+Verify the local environment has an active directory mapped for plan files:
 
-```text
-[Exact code block with zero abbreviations or placeholders]
-```
+- **Target Plan Directory State:** !`mkdir -p .opencode/plans && ls -d .opencode/plans`
 
-Save this content directly into the local workspace directory under `.opencode/plans/` as a .md file with an appropriate name. Do not modify any other file.
+### Step 2: History Parsing and Schema Injection
+
+Review the full conversation layout above. Focus your evaluation entirely on the technical architectural decisions, modifications, and file structures agreed upon in the final turns.
+
+Instruct your subagent process to extract these parameters and serialize them into a precise execution blueprint. Do not let the model shorten, abbreviate, or use comments like `// rest of code goes here`.
+
+Generate the output block cleanly matching the schema below:
+
+# 🗺️ Engineering Plan Extraction Blueprint
+
+## 1. ⚙️ Intent and Scope Log
+
+*Summarize the core target of this code generation run:*
+
+- **Target Files:** [List of paths relative to workspace root]
+- **Operation Types:** [e.g., CREATE `auth.ts`, MODIFY `router.ts`]
+
+## 2. 📄 Complete Standalone Plan Content
+
+Provide the raw engineering plan below. Ensure the markdown formatting matches our strict operational parser parameters:
+
+```markdown
+---
+target_file: [Exact Path]
+operation: [CREATE | MODIFY | DELETE]
+line_range: [Exact target line ranges, e.g., "1-45" or "Full"]
+---
+### Implementation Block
+
+```[language_id]
+[Absolute complete code block payload containing zero abbreviations or placeholders]

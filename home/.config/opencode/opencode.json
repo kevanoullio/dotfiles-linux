@@ -1,122 +1,88 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
-  "model": "lm-studio/openai/gpt-oss:20b",
+  "model": "lm-studio/qwen/qwen3.6:35b-a3b",
   "provider": {
     "lm-studio": {
+      "name": "LM Studio",
+      "options": {
+        "baseURL": "http://localhost:1234/v1"
+      },
       "models": {
         "openai/gpt-oss:120b": {
           "name": "gpt-oss:120b",
           "variants": {
-            "system_architect": {
-              "name": "System Architect",
+            "high": {
+              "name": "Reasoning High",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 7,
                 "temperature": 0.7,
                 "top_p": 0.9
               },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/system_architect.txt}"
+              "system": "Reasoning: high."
             },
-            "security_auditor": {
-              "name": "Security Auditor",
-              "reasoningEffort": "high",
+            "medium": {
+              "name": "Reasonign Medium",
+              "reasoningEffort": "medium",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 7,
                 "temperature": 0.35,
                 "repeat_penalty": 1.2,
                 "frequency_penalty": 0.25,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/security_auditor.txt}"
+              "system": "Reasoning: medium."
             },
-            "performance_auditor": {
-              "name": "Performance Auditor",
-              "reasoningEffort": "high",
+            "low": {
+              "name": "Reasoning Low",
+              "reasoningEffort": "low",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 7,
                 "temperature": 0.35,
                 "repeat_penalty": 1.2,
                 "frequency_penalty": 0.25,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/performance_auditor.txt}"
-            },
-            "code_reviewer": {
-              "name": "Code Reviewer",
-              "reasoningEffort": "high",
-              "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 7,
-                "temperature": 0.3,
-                "top_p": 0.85,
-                "repeat_penalty": 1.15,
-                "frequency_penalty": 0.3,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/code_reviewer.txt}"
+              "system": "Reasoning: low."
             }
           }
         },
         "openai/gpt-oss:20b": {
           "name": "gpt-oss:20b",
           "variants": {
-            "documentation_engineer": {
-              "name": "Documentation Engineer",
-              "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 22,
-                "temperature": 0.5,
-                "top_p": 0.9
-              },
-              "system": "Reasoning: medium.\n\n{file:~/.config/opencode/prompts/documentation_engineer.txt}"
-            },
-            "system_architect": {
-              "name": "System Architect",
+            "high": {
+              "name": "Reasoning High",
               "reasoningEffort": "high",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 22,
                 "temperature": 0.7,
                 "top_p": 0.9
               },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/system_architect.txt}"
+              "system": "Reasoning: high."
             },
-            "security_auditor": {
-              "name": "Security Auditor",
-              "reasoningEffort": "high",
+            "medium": {
+              "name": "Reasonign Medium",
+              "reasoningEffort": "medium",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 22,
                 "temperature": 0.35,
                 "repeat_penalty": 1.2,
                 "frequency_penalty": 0.25,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/security_auditor.txt}"
+              "system": "Reasoning: medium."
             },
-            "performance_auditor": {
-              "name": "Performance Auditor",
-              "reasoningEffort": "high",
+            "low": {
+              "name": "Reasoning Low",
+              "reasoningEffort": "low",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 22,
                 "temperature": 0.35,
                 "repeat_penalty": 1.2,
                 "frequency_penalty": 0.25,
                 "presence_penalty": 0.1
               },
-              "system": "Reasoning: high.\n\n{file:~/.config/opencode/prompts/performance_auditor.txt}"
+              "system": "Reasoning: low."
             },
             "plan_extractor": {
               "name": "Plan Extractor",
               "reasoningEffort": "low",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 22,
                 "temperature": 0.0,
                 "top_p": 1.0,
                 "top_k": 1,
@@ -130,8 +96,6 @@
               "name": "Code Builder",
               "reasoningEffort": "medium",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 22,
                 "temperature": 0.2,
                 "repeat_penalty": 1.15,
                 "frequency_penalty": 0.2,
@@ -144,23 +108,9 @@
         "qwen/qwen3-coder-next": {
           "name": "qwen3-coder-next",
           "variants": {
-            "refactor_specialist": {
-              "name": "Refactor Specialist",
-              "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
-                "temperature": 0.3,
-                "top_p": 0.8,
-                "top_k": 20,
-                "repeat_penalty": 1.05
-              },
-              "system": "{file:~/.config/opencode/prompts/refactor_specialist.txt}"
-            },
             "system_architect": {
               "name": "System Architect",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
                 "temperature": 0.7,
                 "top_p": 0.8,
                 "top_k": 20,
@@ -171,8 +121,6 @@
             "backend_engineer": {
               "name": "Backend Engineer",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
                 "temperature": 0.2,
                 "top_p": 0.8,
                 "top_k": 20,
@@ -183,8 +131,6 @@
             "security_auditor": {
               "name": "Security Auditor",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
                 "temperature": 0.25,
                 "top_p": 0.8,
                 "top_k": 20,
@@ -195,8 +141,6 @@
             "performance_auditor": {
               "name": "Performance Auditor",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
                 "temperature": 0.3,
                 "top_p": 0.8,
                 "top_k": 20,
@@ -207,8 +151,6 @@
             "code_reviewer": {
               "name": "Code Reviewer",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
                 "temperature": 0.2,
                 "top_p": 0.85,
                 "top_k": 20,
@@ -217,11 +159,19 @@
               },
               "system": "{file:~/.config/opencode/prompts/code_reviewer.txt}"
             },
+            "refactor_specialist": {
+              "name": "Refactor Specialist",
+              "parameters": {
+                "temperature": 0.3,
+                "top_p": 0.8,
+                "top_k": 20,
+                "repeat_penalty": 1.05
+              },
+              "system": "{file:~/.config/opencode/prompts/refactor_specialist.txt}"
+            },
             "debugging_specialist": {
               "name": "Debugging Specialist",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 12,
                 "temperature": 0.3,
                 "top_p": 0.85,
                 "top_k": 20,
@@ -237,8 +187,6 @@
             "system_architect": {
               "name": "System Architect",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 1.0,
                 "top_p": 0.95,
                 "top_k": 20,
@@ -253,8 +201,6 @@
             "security_auditor": {
               "name": "Security Auditor",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 0.2,
                 "top_p": 0.80,
                 "top_k": 20,
@@ -268,8 +214,6 @@
             "performance_auditor": {
               "name": "Performance Auditor",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 0.5,
                 "top_p": 0.85,
                 "top_k": 20,
@@ -283,8 +227,6 @@
             "dependency_auditor": {
               "name": "Dependency Auditor",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 0.4,
                 "top_p": 0.85,
                 "top_k": 20,
@@ -298,8 +240,6 @@
             "plan_extractor": {
               "name": "Plan Extractor",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 21,
                 "temperature": 0.0,
                 "top_p": 1.0,
                 "top_k": 1,
@@ -314,8 +254,6 @@
             "code_builder": {
               "name": "Code Builder",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 21,
                 "temperature": 0.3,
                 "top_p": 0.8,
                 "top_k": 20,
@@ -329,8 +267,6 @@
             "test_engineer": {
               "name": "Test Engineer",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 0.5,
                 "top_p": 0.9,
                 "top_k": 20,
@@ -344,8 +280,6 @@
             "cicd_engineer": {
               "name": "CI/CD Engineer",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 0.3,
                 "top_p": 0.85,
                 "top_k": 20,
@@ -359,8 +293,6 @@
             "code_reviewer": {
               "name": "Code Reviewer",
               "parameters": {
-                "num_ctx": 131072,
-                "num_gpu": 20,
                 "temperature": 0.35,
                 "top_p": 0.85,
                 "top_k": 20,
@@ -378,55 +310,94 @@
         "google/gemma-4-31b": {
           "name": "gemma-4-31b",
           "variants": {
+            "architect": {
+              "name": "System Architect",
+              "parameters": {
+                "temperature": 0.7,
+                "top_p": 0.95
+              },
+              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
+            },
             "frontend_designer": {
               "name": "Frontend Designer",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 20,
                 "temperature": 0.85,
                 "top_p": 0.95
               },
               "system": "{file:~/.config/opencode/prompts/frontend_designer.txt}"
+            },
+            "documentation_specialist": {
+              "name": "Documentation Specialist",
+              "parameters": {
+                "temperature": 0.5,
+                "top_p": 0.9
+              },
+              "system": "{file:~/.config/opencode/prompts/documentation_specialist.txt}"
             }
           }
         },
         "google/gemma-4-26b-a4b": {
           "name": "gemma-4-26b-a4b",
           "variants": {
-            "documentation_engineer": {
-              "name": "Documentation Engineer",
+            "architect": {
+              "name": "System Architect",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 16,
-                "temperature": 0.5,
-                "top_p": 0.9
+                "temperature": 0.7,
+                "top_p": 0.95
               },
-              "system": "{file:~/.config/opencode/prompts/documentation_engineer.txt}"
+              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
             },
             "frontend_designer": {
               "name": "Frontend Designer",
               "parameters": {
-                "num_ctx": 65536,
-                "num_gpu": 20,
                 "temperature": 0.85,
                 "top_p": 0.95
               },
               "system": "{file:~/.config/opencode/prompts/frontend_designer.txt}"
+            },
+            "documentation_specialist": {
+              "name": "Documentation Specialist",
+              "parameters": {
+                "temperature": 0.5,
+                "top_p": 0.9
+              },
+              "system": "{file:~/.config/opencode/prompts/documentation_specialist.txt}"
             }
           }
         }
-      },
-      "name": "LM Studio",
+      }
+    },
+    "llama-swap": {
+      "name": "Llama-Swap",
       "options": {
-        "baseURL": "http://localhost:1234/v1"
+        "baseURL": "http://localhost:8080/v1"
+      },
+      "models": {
+        "gpt-oss:120b": {
+          "name": "gpt-oss:120b"
+        },
+        "gpt-oss:20b": {
+          "name": "gpt-oss:20b"
+        },
+        "qwen3-coder-next": {
+          "name": "qwen3-coder-next"
+        },
+        "qwen3.6:27b": {
+          "name": "qwen3.6:27b"
+        },
+        "qwen3.6:35b-a3b": {
+          "name": "qwen3.6:35b-a3b"
+        },
+        "gemma-4-31b-qat": {
+          "name": "gemma-4-31b-qat"
+        },
+        "gemma-4-26b-a4b-qat": {
+          "name": "gemma-4-26b-a4b-qat"
+        }
       }
     },
     "ollama": {
-      "models": {
-        "quant-agent-80b": {
-          "name": "quant-agent-80b"
-        }
-      },
+      "models": {},
       "name": "Ollama",
       "options": {
         "baseURL": "http://localhost:11434/v1"

@@ -1,8 +1,24 @@
 ---
-name: frontend_designer
-description: Designs UI components, state management systems, and layout hierarchies.
+name: frontend_engineer
+description: Designs and engineers UI components, state management systems, and layout hierarchies.
 mode: primary
-temperature: 0.5
+
+model: llama-swap/qwen3.6:27b
+#model: llama-swap/gemma-4-31b-qat
+temperature: 0.9
+
+top_k: 40
+top_p: 0.8
+min_p: 0.05
+
+repeat_penalty: 1.00
+frequency_penalty: 0.0
+presence_penalty: 0.0
+
+options:
+  enable_thinking: true
+  preserve_thinking: false
+
 permission:
   edit: deny
   write: deny
@@ -10,7 +26,7 @@ permission:
   read: allow
   grep: allow
 ---
-# Persona: Frontend Designer Specialist
+# Persona: Frontend Designer and Engineer
 
 You are a master Frontend Designer and UI Engineer. You focus on component design, state isolation, semantic markup, and visual styling.
 
