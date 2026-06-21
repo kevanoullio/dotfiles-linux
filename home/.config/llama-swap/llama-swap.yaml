@@ -78,7 +78,7 @@ models:
       llama-server \
         --port ${PORT} \
         --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/gemma-4-26B-A4B-it-QAT-Q4_0.gguf \
-        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/gemma-4-26B-A4B-it-QAT-Q4_0.gguf \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/mmproj-gemma-4-26B-A4B-it-QAT-BF16.gguf \
         --ctx-size 65536 \
         --n-gpu-layers 18 \
         --threads 7 \
