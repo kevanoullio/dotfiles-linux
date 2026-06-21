@@ -9,40 +9,31 @@ Initialize an automated forensic bug triage and failure analysis pipeline.
 
 skill({ name: "debugging-standards" })
 
-### Step 2: Live Environment Diagnostic Harvesting
+### Step 2: Safe Workspace Diagnostic Harvesting
 
-Execute local terminal sweeps to collect active runtime exceptions, log dumps, and error contexts around the workspace:
+Gather safe workspace metadata to identify tool versions, framework environments, and localized project log structures without checking system processes:
 
-- **Recent Application Log Traces:** !`[ -f error.log ] && tail -n 50 error.log || [ -f combined.log ] && tail -n 50 combined.log || echo "No standard log files detected in root directory."`
-- **Active System Process Health:** !`ps aux | grep -E "(node|python|bun|cargo|go)" | grep -v grep | head -n 10 || echo "No primary runtime engines active."`
-- **Compiler/Runtime Panic Check:** !`git status -s | grep -E "crash|dump|log" || echo "No immediate external crash dumps located."`
+- **Local Project Runtimes:** !`[ -f package.json ] && echo "Node: $(node -v 2>&1 || echo 'N/A') | Bun: $(bun -v 2>&1 || echo 'N/A')" || [ -f pyproject.toml -o -f requirements.txt ] && echo "Python: $(python3 --version 2>&1 || echo 'N/A')" || [ -f Cargo.toml ] && echo "Rust: $(rustc --version 2>&1 || echo 'N/A')" || echo "Unknown Local Engine Profile."`
+- **Discovered Project Log Files:** !`find . -maxdepth 2 -type f \( -name "*.log" -o -name "*error*" -o -name "*.npm*" \) -not -path '*/.*' -not -path '*/node_modules/*' -not -path '*/.next/*' | head -n 10 || echo "No local workspace log files detected."`
+- **Recent Framework Build Exceptions:** !`[ -d .next ] && echo "Next.js Build Dir Present" || [ -d .nuxt ] && echo "Nuxt Build Dir Present" || echo "No explicit meta-framework cash targets."`
 
 ### Step 3: Forensic Triage Assignment
 
 Evaluate the gathered terminal error telemetry against your target files and active conversation history.
 
-Instruct your subagent process to mentally trace the logical pathways that triggered this system failure. The subagent must deliver a surgical breakdown detailing the true root cause, the exact files and lines involved, and an absolute zero-deviation patch to fix it.
+The `debugging_specialist` subagent must populate the following output variables for the plan writer:
 
-Generate the output block cleanly matching the schema below:
+- **intent_scope** – a mapping with `target_files` (list of file paths) and `operation_types` (list of actions such as CREATE, MODIFY).
+- **plan_blocks** – a list of objects, each containing:
+  - `path` – file to modify/create
+  - `operation` – CREATE / MODIFY / DELETE
+  - `language` – language identifier for the code block
+  - `code` – the full code payload (no truncation, no placeholders).
 
-# 🩺 Root Cause Analysis & Diagnostic Report
+These variables will be consumed by the `plan-writing` skill to emit a structured diagnostic report.
 
-## 1. 🚨 The Crime Scene (Failure Classification)
+Generate the output block cleanly matching the schema above.
 
-- **Error Signature:** [e.g., TypeError: Cannot read properties of undefined (reading 'split')]
-- **Failure Origin:** `path/to/target_file.ext` (Line X)
-- **Impact Radius:** [e.g., Blocks user authentication route completely]
+### Step 4: Emit Structured Diagnostic Report
 
-## 2. 🕵️ Forensic Investigation (Root Cause Analysis)
-
-*Explain exactly why this failed under the hood. Trace the memory, state changes, or logic gates that broke down:*
-
-- [Provide a deep, logical explanation of the execution flow right before the crash]
-
-## 3. 🩹 The Surgical Patch (Actionable Remediation)
-
-Provide the exact, complete code block modification required to permanently fix the bug. Do not truncate.
-
-```[language_id]
-[Insert complete corrected function or code block payload here]
-```
+skill({ name: "plan-writing" })
