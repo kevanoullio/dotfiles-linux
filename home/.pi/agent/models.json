@@ -1,0 +1,171 @@
+{
+  "providers": {
+    "llama-swap": {
+      "baseUrl": "http://localhost:8080/v1",
+      "api": "openai-completions",
+      "apiKey": "llama-swap",
+      "models": [
+        {
+          "id": "gpt-oss:120b",
+          "parameters": {
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "repeat_penalty": 1.2,
+            "frequency_penalty": 0.25,
+            "presence_penalty": 0.1
+          },
+          "reasoning": true,
+          "compat": {
+            "supportsreasoningeffort": true
+          },
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gpt-oss:20b",
+          "parameters": {
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "repeat_penalty": 1.2,
+            "frequency_penalty": 0.25,
+            "presence_penalty": 0.1
+          },
+          "reasoning": true,
+          "compat": {
+            "supportsReasoningEffort": true
+          },
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "qwen3.6:27b",
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "qwen3.6:35b-a3b",
+          "parameters": {
+            "temperature": 1.0,
+            "top_p": 0.95,
+            "top_k": 20,
+            "presence_penalty": 0.5
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gemma-4-31b-qat",
+          "parameters": {
+            "temperature": 1.0,
+            "top_k": 64,
+            "top_p": 0.95
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gemma-4-31b-qat-vision",
+          "parameters": {
+            "temperature": 1.0,
+            "top_k": 64,
+            "top_p": 0.95
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gemma-4-26b-a4b-qat",
+          "parameters": {
+            "temperature": 1.0,
+            "top_k": 64,
+            "top_p": 0.95
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gemma-4-26b-a4b-qat-vision",
+          "parameters": {
+            "temperature": 1.0,
+            "top_k": 64,
+            "top_p": 0.95
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        }
+      ]
+    }
+  }
+}

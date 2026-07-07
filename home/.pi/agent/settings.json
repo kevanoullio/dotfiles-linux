@@ -1,0 +1,15 @@
+{
+  "lastChangelogVersion": "0.80.3",
+  "theme": "dark",
+  "enableSkillCommands": true,
+  "terminal": {
+    "showTerminalProgress": false
+  },
+  "defaultProvider": "llama-swap",
+  "defaultModel": "gemma-4-26b-a4b-qat",
+  "defaultThinkingLevel": "high",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:@gotgenes/pi-permission-system"
+  ]
+}
