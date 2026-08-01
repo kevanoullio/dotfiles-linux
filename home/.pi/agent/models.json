@@ -65,7 +65,43 @@
           }
         },
         {
+          "id": "qwen3.6:27b-unsloth",
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
           "id": "qwen3.6:35b-a3b",
+          "parameters": {
+            "temperature": 1.0,
+            "top_p": 0.95,
+            "top_k": 20,
+            "presence_penalty": 0.5
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "qwen3.6:35b-a3b-unsloth",
           "parameters": {
             "temperature": 1.0,
             "top_p": 0.95,
@@ -106,7 +142,7 @@
           }
         },
         {
-          "id": "gemma-4-31b-qat-vision",
+          "id": "gemma-4-31b-qat-unsloth",
           "parameters": {
             "temperature": 1.0,
             "top_k": 64,
@@ -146,7 +182,47 @@
           }
         },
         {
-          "id": "gemma-4-26b-a4b-qat-vision",
+          "id": "gemma-4-26b-a4b-qat-unsloth",
+          "parameters": {
+            "temperature": 1.0,
+            "top_k": 64,
+            "top_p": 0.95
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gemma-4-12b-qat",
+          "parameters": {
+            "temperature": 1.0,
+            "top_k": 64,
+            "top_p": 0.95
+          },
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "qwen-chat-template"
+          },
+          "thinkingLevelMap": {
+            "off": "off",
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "enabled",
+            "xhigh": null
+          }
+        },
+        {
+          "id": "gemma-4-12b-unsloth",
           "parameters": {
             "temperature": 1.0,
             "top_k": 64,
