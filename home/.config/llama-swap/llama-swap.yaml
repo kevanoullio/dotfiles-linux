@@ -35,13 +35,33 @@ models:
       llama-server \
         --port ${PORT} \
         --model /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q4_K_M.gguf \
+        --n-gpu-layers 44 \
         --mmproj /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-27B-GGUF/mmproj-Qwen3.6-27B-BF16.gguf \
-        --no-mmproj \
+        --no-mmproj-offload \
         --threads 7 \
         --ctx-size 65536 \
+        --parallel 1 \
         --flash-attn on \
-        --fit on \
-        --fit-target 256 \
+        --fit off \
+        --batch-size 1024 \
+
+  qwen3.6:27b-unsloth:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q4_K_XL.gguf \
+        --n-gpu-layers 39 \
+        --mmproj /home/kevano/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/mmproj-F32.gguf \
+        --no-mmproj-offload \
+        --spec-type draft-mtp \
+        --spec-draft-ngl all \
+        --spec-draft-n-max 3 \
+        --threads 7 \
+        --ctx-size 65536 \
+        --parallel 1 \
+        --flash-attn on \
+        --fit off \
         --batch-size 1024 \
 
   qwen3.6:35b-a3b:
@@ -50,13 +70,31 @@ models:
       llama-server \
         --port ${PORT} \
         --model /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf \
+        --n-gpu-layers 23 \
         --mmproj /home/kevano/.lmstudio/models/lmstudio-community/Qwen3.6-35B-A3B-GGUF/mmproj-Qwen3.6-35B-A3B-BF16.gguf \
-        --no-mmproj \
+        --no-mmproj-offload \
         --threads 7 \
         --ctx-size 131072 \
+        --parallel 1 \
         --flash-attn on \
-        --fit on \
-        --fit-target 256 \
+        --fit off \
+        --batch-size 512 \
+
+  qwen3.6:35b-a3b-unsloth:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/unsloth/Qwen3.6-35B-A3B-MTP-GGUF/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \
+        --n-gpu-layers 22 \
+        --spec-type draft-mtp \
+        --spec-draft-ngl all \
+        --spec-draft-n-max 3 \
+        --threads 7 \
+        --ctx-size 131072 \
+        --parallel 1 \
+        --flash-attn on \
+        --fit off \
         --batch-size 512 \
 
   gemma-4-31b-qat:
@@ -65,7 +103,9 @@ models:
       llama-server \
         --port ${PORT} \
         --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-31B-it-QAT-GGUF/gemma-4-31B-it-QAT-Q4_0.gguf \
-        --n-gpu-layers 40 \
+        --n-gpu-layers 42 \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-31B-it-QAT-GGUF/mmproj-gemma-4-31B-it-QAT-BF16.gguf \
+        --no-mmproj-offload \
         --spec-draft-model /home/kevano/.lmstudio/models/Simplepotat/gemma-4-31b-it-qat-q4_0-assistant-gguf/gemma-4-31b-it-qat-q4_0-assistant.gguf \
         --spec-type draft-mtp \
         --spec-draft-ngl all \
@@ -78,21 +118,21 @@ models:
         --fit off \
         --batch-size 512 \
 
-  gemma-4-31b-qat-vision:
+  gemma-4-31b-qat-unsloth:
     ttl: 600
     cmd: |
       llama-server \
         --port ${PORT} \
-        --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-31B-it-QAT-GGUF/gemma-4-31B-it-QAT-Q4_0.gguf \
-        --n-gpu-layers 40 \
-        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-31B-it-QAT-GGUF/mmproj-gemma-4-31B-it-QAT-BF16.gguf \
+        --model /home/kevano/.lmstudio/models/unsloth/gemma-4-31B-it-qat-GGUF/gemma-4-31B-it-qat-UD-Q4_K_XL.gguf \
+        --n-gpu-layers 42 \
+        --mmproj /home/kevano/.lmstudio/models/unsloth/gemma-4-31B-it-qat-GGUF/mmproj-F32.gguf \
         --no-mmproj-offload \
-        --spec-draft-model /home/kevano/.lmstudio/models/Simplepotat/gemma-4-31b-it-qat-q4_0-assistant-gguf/gemma-4-31b-it-qat-q4_0-assistant.gguf \
+        --spec-draft-model /home/kevano/.lmstudio/models/unsloth/gemma-4-31B-it-qat-GGUF/gemma-4-31B-it-Q4_0-MTP.gguf \
         --spec-type draft-mtp \
         --spec-draft-ngl all \
         --spec-draft-n-max 3 \
         --threads 7 \
-        --ctx-size 32768 \
+        --ctx-size 65536 \
         --no-kv-offload \
         --parallel 1 \
         --flash-attn on \
@@ -105,35 +145,75 @@ models:
       llama-server \
         --port ${PORT} \
         --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/gemma-4-26B-A4B-it-QAT-Q4_0.gguf \
-        --n-gpu-layers 24 \
-        --spec-draft-model /home/kevano/.lmstudio/models/RachidAR/gemma-4-26B-A4B-it-qat-assistant-q4_0-gguf/gemma-4-26B-A4B-it-assistant-f16.gguf \
+        --n-gpu-layers 25 \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/mmproj-gemma-4-26B-A4B-it-QAT-BF16.gguf \
+        --no-mmproj-offload \
+        --spec-draft-model /home/kevano/.lmstudio/models/RachidAR/gemma-4-26B-A4B-it-qat-assistant-q4_0-gguf/gemma-4-26b-A4B-it-assistant-Q4_0.gguf \
         --spec-type draft-mtp \
         --spec-draft-ngl all \
         --spec-draft-n-max 3 \
         --threads 7 \
         --ctx-size 65536 \
-        --no-kv-offload \
         --parallel 1 \
         --flash-attn on \
         --fit off \
         --batch-size 1024 \
 
-  gemma-4-26b-a4b-qat-vision:
+  gemma-4-26b-a4b-qat-unsloth:
     ttl: 600
     cmd: |
       llama-server \
         --port ${PORT} \
-        --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/gemma-4-26B-A4B-it-QAT-Q4_0.gguf \
-        --n-gpu-layers 24 \
-        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-26B-A4B-it-QAT-GGUF/mmproj-gemma-4-26B-A4B-it-QAT-BF16.gguf \
+        --model /home/kevano/.lmstudio/models/unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf \
+        --n-gpu-layers 25 \
+        --mmproj /home/kevano/.lmstudio/models/unsloth/gemma-4-26B-A4B-it-qat-GGUF/mmproj-F32.gguf \
         --no-mmproj-offload \
-        --spec-draft-model /home/kevano/.lmstudio/models/RachidAR/gemma-4-26B-A4B-it-qat-assistant-q4_0-gguf/gemma-4-26B-A4B-it-assistant-f16.gguf \
+        --spec-draft-model /home/kevano/.lmstudio/models/unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-Q4_0-MTP.gguf \
         --spec-type draft-mtp \
         --spec-draft-ngl all \
-        --spec-draft-n-max 3  \
+        --spec-draft-n-max 3 \
         --threads 7 \
-        --ctx-size 32768 \
-        --no-kv-offload \
+        --ctx-size 65536 \
+        --parallel 1 \
+        --flash-attn on \
+        --fit off \
+        --batch-size 1024 \
+
+  gemma-4-12b-qat:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-12B-it-QAT-GGUF/gemma-4-12B-it-QAT-Q4_0.gguf \
+        --n-gpu-layers all \
+        --mmproj /home/kevano/.lmstudio/models/lmstudio-community/gemma-4-12B-it-QAT-GGUF/mmproj-gemma-4-12B-it-QAT-BF16.gguf \
+        --mmproj-offload \
+        --spec-draft-model /home/kevano/.lmstudio/models/unsloth/gemma-4-12B-it-qat-GGUF/gemma-4-12B-it-Q4_0-MTP.gguf \
+        --spec-type draft-mtp \
+        --spec-draft-ngl all \
+        --spec-draft-n-max 3 \
+        --threads 7 \
+        --ctx-size 131072 \
+        --parallel 1 \
+        --flash-attn on \
+        --fit off \
+        --batch-size 1024 \
+
+  gemma-4-12b-unsloth:
+    ttl: 600
+    cmd: |
+      llama-server \
+        --port ${PORT} \
+        --model /home/kevano/.lmstudio/models/unsloth/gemma-4-12b-it-GGUF/gemma-4-12b-it-UD-Q6_K_XL.gguf \
+        --n-gpu-layers all \
+        --mmproj /home/kevano/.lmstudio/models/unsloth/gemma-4-12b-it-GGUF/mmproj-F32.gguf \
+        --mmproj-offload \
+        --spec-draft-model /home/kevano/.lmstudio/models/unsloth/gemma-4-12b-it-GGUF/gemma-4-12b-it-Q8_0-MTP.gguf \
+        --spec-type draft-mtp \
+        --spec-draft-ngl all \
+        --spec-draft-n-max 3 \
+        --threads 7 \
+        --ctx-size 131072 \
         --parallel 1 \
         --flash-attn on \
         --fit off \
