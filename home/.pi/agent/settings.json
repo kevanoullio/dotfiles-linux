@@ -1,15 +1,16 @@
 {
-  "lastChangelogVersion": "0.80.3",
+  "lastChangelogVersion": "0.84.2",
   "theme": "dark",
   "enableSkillCommands": true,
   "terminal": {
     "showTerminalProgress": false
   },
-  "defaultProvider": "llama-swap",
-  "defaultModel": "gemma-4-26b-a4b-qat",
-  "defaultThinkingLevel": "high",
+  "defaultProvider": "llama-server",
+  "defaultModel": "qwen3.8-27b",
+  "defaultThinkingLevel": "medium",
   "packages": [
     "npm:pi-web-access",
     "npm:@gotgenes/pi-permission-system"
-  ]
+  ],
+  "hideThinkingBlock": false
 }

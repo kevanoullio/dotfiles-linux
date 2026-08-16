@@ -13,7 +13,7 @@ if [ $? != 0 ]; then
 
     # llama setup
     tmux new-window -t "$SESSION" -n "llama" -c "$PROJECT_ROOT"
-    tmux send-keys -t "$SESSION:llama" "llama-swap --config ~/.config/llama-swap/llama-swap.yaml"
+    tmux send-keys -t "$SESSION:llama" "llama-server --models-preset ~/.config/llama-server/models.ini --models-max 1 --port 8000 --api-key llama-server"
 
     # opencode
     tmux new-window -t "$SESSION" -n "opencode" -c "$PROJECT_ROOT"
