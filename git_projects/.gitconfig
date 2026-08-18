@@ -1,0 +1,20 @@
+[alias]
+    release = "!f() { \
+        set -e; \
+        CURRENT_BRANCH=$(git branch --show-current); \
+        echo 'Fetching latest origin states...'; \
+        git fetch origin; \
+        \
+        echo 'Verifying staging can fast-forward into main...'; \
+        if ! git merge-base --is-ancestor origin/main origin/staging; then \
+            echo 'Error: staging is not directly ahead of main. Fast-forward merge is not possible.'; \
+            exit 1; \
+        fi; \
+        \
+        echo 'Fast-forwarding main to staging...'; \
+        git checkout main && \
+        git pull --ff-only origin staging && \
+        ALLOW_RELEASE=1 git push origin main && \
+        git checkout \"$CURRENT_BRANCH\"; \
+        echo 'Production fast-forward merge successful!'; \
+    }; f"

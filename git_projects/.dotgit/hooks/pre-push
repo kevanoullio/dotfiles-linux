@@ -1,0 +1,17 @@
+#!/bin/sh
+protected_branches="main staging"
+
+while read local_ref local_sha remote_ref remote_sha; do
+	for branch in $protected_branches; do
+		if [ "$remote_ref" = "refs/heads/$branch" ]; then
+		if [ "$branch" = "main" ] && [ "$ALLOW_RELEASE" = "1" ]; then
+			exit 0
+		fi
+			echo "ERROR: Direct push to '$branch' is blocked locally."
+			echo "Submit a PR for 'staging', or use 'git release' for 'main'."
+			exit 1
+		fi
+	done
+done
+
+exit 0
