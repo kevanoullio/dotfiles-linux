@@ -15,18 +15,51 @@
         git fetch origin; \
         \
         echo 'Updating local staging and main to match origin...'; \
-        git fetch origin staging:staging main:main; \
+        git branch -f staging origin/staging && \
+        git branch -f main origin/main; \
         \
         echo 'Verifying staging can fast-forward into main...'; \
         if ! git merge-base --is-ancestor main staging; then \
-            echo 'Error: staging is not ahead of main. Fast-forward merge is not possible.'; \
+            echo 'Error: main is not an ancestor of staging. Fast-forward merge is not possible.'; \
             exit 1; \
         fi; \
         \
-        echo 'Fast-forwarding main to staging and pushing...'; \
-        git checkout main && \
-        git merge --ff-only staging && \
-        ALLOW_RELEASE=1 git push origin main && \
+        echo 'Checking out main...'; \
+        if ! git checkout main; then \
+            echo 'Error: Failed to check out main.'; \
+            echo 'You are still on '$CURRENT_BRANCH'.'; \
+            echo 'Manual steps:'; \
+            echo '  1. git checkout main'; \
+            echo '  2. git merge --ff-only staging'; \
+            echo '  3. ALLOW_RELEASE=1 git push origin main'; \
+            echo '  4. git checkout '$CURRENT_BRANCH; \
+            exit 1; \
+        fi; \
+        \
+        echo 'Merging staging into main (fast-forward only)...'; \
+        if ! git merge --ff-only staging; then \
+            echo 'Error: Fast-forward merge of staging into main failed.'; \
+            echo 'This usually means main has commits that staging does not.'; \
+            echo 'You are currently on the main branch.'; \
+            echo 'Manual steps:'; \
+            echo '  1. git merge --ff-only staging'; \
+            echo '  2. ALLOW_RELEASE=1 git push origin main'; \
+            echo '  3. git checkout '$CURRENT_BRANCH; \
+            exit 1; \
+        fi; \
+        \
+        echo 'Pushing main to origin...'; \
+        if ! ALLOW_RELEASE=1 git push origin main; then \
+            echo 'Error: Failed to push main to origin.'; \
+            echo 'You are currently on the main branch with a successful merge.'; \
+            echo 'Manual steps:'; \
+            echo '  1. ALLOW_RELEASE=1 git push origin main'; \
+            echo '  2. git checkout '$CURRENT_BRANCH; \
+            exit 1; \
+        fi; \
+        \
+        echo 'Returning to original branch...'; \
         git checkout \"$CURRENT_BRANCH\"; \
         echo 'Production fast-forward merge successful!'; \
+        if [ -n \"$CURRENT_BRANCH\" ]; then git checkout \"$CURRENT_BRANCH\"; fi; \
     }; f"
