@@ -1,0 +1,28 @@
+name: Reject Main Branch Pull Requests
+
+on:
+    pull_request_target:
+        branches:
+            - main
+        types:
+            - opened
+            - reopened
+
+jobs:
+    auto-close-pr:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Close PR and Post Explanation
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PR_URL: ${{ github.event.pull_request.html_url }}
+              run: |
+                  gh pr comment "$PR_URL" --body "**Pull Requests targeting \`main\` are not allowed.**
+
+                  Releases to \`main\` must be executed using the local fast-forward CLI tool:
+                  \`\`\`bash
+                  git release
+                  \`\`\`
+                  This PR has been automatically closed to preserve linear history."
+
+                  gh pr close "$PR_URL"
