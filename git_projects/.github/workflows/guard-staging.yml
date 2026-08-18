@@ -1,21 +1,24 @@
 name: Guard Staging Branch
 
 on:
-    push:
-        branches:
-            - staging
+  push:
+    branches:
+      - staging
 
 jobs:
-    verify-pr-origin:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Verify Push Originated From PR
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  PRS=$(gh api repos/${{ github.repository }}/commits/${{ github.sha }}/pulls)
-                  if [ "$PRS" = "[]" ]; then
-                    echo "ERROR: Direct pushes to staging are forbidden. Merge via PR."
-                    exit 1
-                  fi
-                  echo "Verified: Push originated from Pull Request."
+  verify-pr-origin:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Verify Push Originated From PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PRS=$(gh api repos/${{ github.repository }}/commits/${{ github.sha }}/pulls)
+          if [ "$PRS" = "[]" ]; then
+              echo "ERROR: Direct pushes to staging are forbidden. Merge via PR."
+              exit 1
+          fi
+          echo "Verified: Push originated from Pull Request."
