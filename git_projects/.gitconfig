@@ -1,19 +1,31 @@
+# Run this command to enable the production release alias:
+# `bash
+# git config --local include.path ../.gitconfig
+# `
+
 [alias]
     release = "!f() { \
         set -e; \
+        if [ -n \"$(git status --porcelain)\" ]; then \
+            echo 'Error: Working directory is dirty. Please commit or stash your changes before releasing.'; \
+            exit 1; \
+        fi; \
         CURRENT_BRANCH=$(git branch --show-current); \
-        echo 'Fetching latest origin states...'; \
+        echo 'Fetching latest origin state...'; \
         git fetch origin; \
         \
+        echo 'Updating local staging and main to match origin...'; \
+        git fetch origin staging:staging main:main; \
+        \
         echo 'Verifying staging can fast-forward into main...'; \
-        if ! git merge-base --is-ancestor origin/main origin/staging; then \
-            echo 'Error: staging is not directly ahead of main. Fast-forward merge is not possible.'; \
+        if ! git merge-base --is-ancestor main staging; then \
+            echo 'Error: staging is not ahead of main. Fast-forward merge is not possible.'; \
             exit 1; \
         fi; \
         \
-        echo 'Fast-forwarding main to staging...'; \
+        echo 'Fast-forwarding main to staging and pushing...'; \
         git checkout main && \
-        git pull --ff-only origin staging && \
+        git merge --ff-only staging && \
         ALLOW_RELEASE=1 git push origin main && \
         git checkout \"$CURRENT_BRANCH\"; \
         echo 'Production fast-forward merge successful!'; \
