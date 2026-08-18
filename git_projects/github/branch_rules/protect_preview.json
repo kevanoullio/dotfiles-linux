@@ -1,0 +1,53 @@
+{
+  "id": 17998237,
+  "name": "protect_preview",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "kevanoullio/vintique-sound-website",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "refs/heads/preview"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": false,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "Build",
+            "integration_id": 15368
+          },
+          {
+            "context": "Unit Tests",
+            "integration_id": 15368
+          },
+          {
+            "context": "Integration Tests",
+            "integration_id": 15368
+          },
+          {
+            "context": "E2E Tests",
+            "integration_id": 15368
+          }
+        ]
+      }
+    },
+    {
+      "type": "code_quality",
+      "parameters": {
+        "severity": "errors"
+      }
+    }
+  ],
+  "bypass_actors": []
+}
