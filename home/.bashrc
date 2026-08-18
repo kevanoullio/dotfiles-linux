@@ -24,25 +24,24 @@ source "$OMARCHY_PATH/default/bash/rc"
 
 
 # ==============================================================================
-# SSH AGENT AUTO-START & PROCESS REUSE
+# SSH AGENT — attach to a running agent, start one if none is active
 # ==============================================================================
-# Find an existing ssh-agent process owned by the current user
-SSH_AGENT_PID=$(pgrep -u "$USER" -x ssh-agent | head -n 1)
+SSH_ENV="$HOME/.ssh/agent-env"
 
-if [ -n "$SSH_AGENT_PID" ]; then
-    # Agent is running: recover its socket path dynamically from /tmp
-    SSH_AUTH_SOCK=$(find /tmp/ssh-* -type s -u "$USER" -name "agent.*" 2>/dev/null | head -n 1)
-    export SSH_AUTH_SOCK
-    export SSH_AGENT_PID
-else
-    # No agent running: spawn a new one silently
-    eval "$(ssh-agent -s)" > /dev/null
+# Restore the agent's environment from a previous shell (if any)
+if [ -f "$SSH_ENV" ]; then
+    . "$SSH_ENV" > /dev/null
+    export SSH_AUTH_SOCK SSH_AGENT_PID
 fi
 
-# If no keys are currently loaded in memory, prompt for passphrase
-if ! ssh-add -l > /dev/null 2>&1; then
-    ssh-add ~/.ssh/id_ed25519
+# Start a new agent if the recorded one isn't alive
+if ! kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
+    eval "$(ssh-agent -s)"
+    env | grep -E '^(SSH_AUTH_SOCK|SSH_AGENT_PID)=' > "$SSH_ENV"
 fi
+
+# Load the key if it isn't in the agent yet (asks for passphrase once)
+ssh-add -l > /dev/null 2>&1 || ssh-add ~/.ssh/id_ed25519
 # <<< ssh-agent end <<<
 
 
