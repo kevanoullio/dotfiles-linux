@@ -3,7 +3,16 @@
 
 # All the default Omarchy aliases and functions
 # (don't mess with these directly, just overwrite them here!)
-source ~/.local/share/omarchy/default/bash/rc
+# /etc/omarchy.conf is written by omarchy-dev-link. When absent, force the
+# package default instead of preserving a stale inherited dev-link value before
+# we decide which rc file to source.
+if [[ -f /etc/omarchy.conf ]]; then
+  source /etc/omarchy.conf
+  export OMARCHY_PATH="${OMARCHY_PATH:-/usr/share/omarchy}"
+else
+  export OMARCHY_PATH=/usr/share/omarchy
+fi
+source "$OMARCHY_PATH/default/bash/rc"
 
 # Add your own exports, aliases, and functions here.
 #
@@ -14,6 +23,38 @@ source ~/.local/share/omarchy/default/bash/rc
 . "$HOME/.cargo/env"
 
 
+# ==============================================================================
+# SSH AGENT AUTO-START & PROCESS REUSE
+# ==============================================================================
+# Find an existing ssh-agent process owned by the current user
+SSH_AGENT_PID=$(pgrep -u "$USER" -x ssh-agent | head -n 1)
+
+if [ -n "$SSH_AGENT_PID" ]; then
+    # Agent is running: recover its socket path dynamically from /tmp
+    SSH_AUTH_SOCK=$(find /tmp/ssh-* -type s -u "$USER" -name "agent.*" 2>/dev/null | head -n 1)
+    export SSH_AUTH_SOCK
+    export SSH_AGENT_PID
+else
+    # No agent running: spawn a new one silently
+    eval "$(ssh-agent -s)" > /dev/null
+fi
+
+# If no keys are currently loaded in memory, prompt for passphrase
+if ! ssh-add -l > /dev/null 2>&1; then
+    ssh-add ~/.ssh/id_ed25519
+fi
+# <<< ssh-agent end <<<
+
+
+# yazi defaults
+export EDITOR="nvim"
+export VISUAL="nvim"
+# yazi defaults end
+
+
+# ==============================================================================
+# CONDA RELATED ACTIVITIES
+# ==============================================================================
 # Disable conda automatic activation of base python
 export CONDA_AUTO_ACTIVATE_BASE=false
 
@@ -30,11 +71,10 @@ else
     fi
 fi
 unset __conda_setup
-# <<< conda initialize <<<
-
+# <<< conda initialize end <<<
 
 # Prevents bash: hash: hashing disabled warning from conda/Omarchy
-export CONDA_DISABLE_HASH_R=1
+#export CONDA_DISABLE_HASH_R=1
 
 
 # >>> mise initialize >>>
@@ -54,6 +94,13 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+
+# go
+export GOPATH=$HOME/Development/
+export GOMODCACHE=$HOME/Development/go/pkg/mod/
+export GOCACHE=$HOME/Development/go/cache/
+# go end
 
 
 # flutter
