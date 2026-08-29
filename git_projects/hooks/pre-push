@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Global pre-push hook for the `git release` workflow.
+#
+# Delivered to every repo via core.hooksPath (no copying into .git/hooks).
+#
+# On the machine, copy the whole `hooks/` folder to:
+#   ~/.config/git/hooks/
+# and point git at it:
+#   git config --global core.hooksPath ~/.config/git/hooks
+#
+# `release-common.sh` lives in the SAME folder as this hook, so the pair is
+# self-contained: copying `hooks/` gives you everything it needs.
+#
+# Enforcement (all LOCAL, accident-prevention only):
+#   - Direct push to STAGING            -> always blocked (use a PR).
+#   - Direct push to PRODUCTION         -> blocked UNLESS the release bypass
+#                                          key is supplied (i.e. via `git release`).
+#   - Any other branch                  -> allowed.
+#
+# Branch names and the bypass key are resolved by release-common.sh, the same
+# logic used by the `release` alias, so both always agree.
+#
+# SECURITY NOTE: this is a client-side guard to prevent *accidental* direct or
+# force pushes. It is bypassable (git push --no-verify) and provides no real
+# protection against a determined user on the same machine. Server-side
+# force-push protection is provided by the GitHub "Block force pushes"
+# (non_fast_forward) branch rule.
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$SCRIPT_DIR/release-common.sh"
+
+RELEASE_BYPASS_ALLOWED=0
+if release_bypass_allowed; then
+	RELEASE_BYPASS_ALLOWED=1
+fi
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+	[ -n "$remote_ref" ] || continue
+
+	prod=$(release_branch prod)
+	staging=$(release_branch staging)
+
+	case "$remote_ref" in
+		"refs/heads/$staging")
+			echo "ERROR: Direct push to '$staging' is blocked locally."
+			echo "Submit a pull request against '$staging' instead."
+			exit 1
+			;;
+		"refs/heads/$prod")
+			if [ "$RELEASE_BYPASS_ALLOWED" -ne 1 ]; then
+				echo "ERROR: Direct push to '$prod' is blocked locally."
+				echo "Use 'git release' to fast-forward '$staging' into '$prod' and push."
+				echo "(Or run: git push --no-verify origin $remote_ref)"
+				exit 1
+			fi
+			;;
+	esac
+done
+
+exit 0
