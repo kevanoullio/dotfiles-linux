@@ -5,9 +5,9 @@
 # ==============================================================================
 # Usage:
 #   tmux-session              # nvim → bash (default)
-#   tmux-session --basic      # git → ai → nvim → bash (-gan)
-#   tmux-session --web        # web mode: git → web(left/right) → build → test → debug → ai → files → nvim → bash
-#   tmux-session --compile    # compile mode: git → build → test → debug → ai → files → nvim → bash
+#   tmux-session --basic      # git → ai → nvim → files → bash (-gan)
+#   tmux-session --web        # web mode: git → web(left/right) → build → test → debug → ai → nvim → files → bash
+#   tmux-session --compile    # compile mode: git → build → test → debug → ai → nvim → files → bash
 #   tmux-session -gbtdan      # stackable short flags (order doesn't matter)
 #   tmux-session --web -v     # combine mode with extra short flags
 # ==============================================================================
@@ -16,7 +16,7 @@
 command -v tmux >/dev/null 2>&1 || { echo "Error: tmux is not installed." >&2; exit 1; }
 
 # Session name from PWD
-SESSION=$(basename "$PWD")
+SESSION=$(basename "$PWD" | tr '.' '-')
 
 # ==============================================================================
 # Mode flags (mutually exclusive)
@@ -412,14 +412,14 @@ if $HAS_AI; then
     add_window "ai" "pi" "no"
 fi
 
-# 8. files
-if $HAS_FILES; then
-    add_window "files" "yazi" "yes"
-fi
-
-# 9. nvim
+# 8. nvim
 if $HAS_NVIM; then
     add_window "nvim" "nvim" "yes"
+fi
+
+# 9. files
+if $HAS_FILES; then
+    add_window "files" "yazi" "yes"
 fi
 
 # 10. bash (always last)
