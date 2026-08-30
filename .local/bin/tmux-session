@@ -1,0 +1,469 @@
+#!/usr/bin/env bash
+
+# ==============================================================================
+# tmux-session — Global tmux session manager
+# ==============================================================================
+# Usage:
+#   tmux-session              # nvim → bash (default)
+#   tmux-session --basic      # git → ai → nvim → bash (-gan)
+#   tmux-session --web        # web mode: git → web(left/right) → build → test → debug → ai → files → nvim → bash
+#   tmux-session --compile    # compile mode: git → build → test → debug → ai → files → nvim → bash
+#   tmux-session -gbtdan      # stackable short flags (order doesn't matter)
+#   tmux-session --web -v     # combine mode with extra short flags
+# ==============================================================================
+
+# Check if tmux is installed
+command -v tmux >/dev/null 2>&1 || { echo "Error: tmux is not installed." >&2; exit 1; }
+
+# Session name from PWD
+SESSION=$(basename "$PWD")
+
+# ==============================================================================
+# Mode flags (mutually exclusive)
+# ==============================================================================
+MODE=""  # "web", "compile", or "basic"
+
+# Short flags (stackable, any order)
+HAS_GIT=false
+HAS_DOCKER=false
+HAS_BUILD=false
+HAS_TEST=false
+HAS_DEBUG=false
+HAS_AI=false
+HAS_FILES=false
+HAS_NVIM=false
+
+# Parse flags
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --web)
+            if [ -n "$MODE" ]; then
+                echo "Error: Cannot use --web with $MODE. Use --web, --compile, or --basic (not combined)." >&2
+                exit 1
+            fi
+            MODE="web"
+            shift
+            ;;
+        --compile)
+            if [ -n "$MODE" ]; then
+                echo "Error: Cannot use --compile with $MODE. Use --web, --compile, or --basic (not combined)." >&2
+                exit 1
+            fi
+            MODE="compile"
+            shift
+            ;;
+        --basic)
+            if [ -n "$MODE" ]; then
+                echo "Error: Cannot use --basic with $MODE. Use --basic for minimal setup, or --web/--compile for full mode." >&2
+                exit 1
+            fi
+            if $HAS_BUILD || $HAS_TEST || $HAS_DEBUG; then
+                echo "Error: Cannot use --basic with -b/-t/-d. Use --web or --compile if you need build/test/debug." >&2
+                exit 1
+            fi
+            MODE="basic"
+            HAS_GIT=true
+            HAS_AI=true
+            HAS_FILES=true
+            HAS_NVIM=true
+            shift
+            ;;
+        -g)
+            HAS_GIT=true
+            shift
+            ;;
+        -v)
+            HAS_DOCKER=true
+            shift
+            ;;
+        -b)
+            HAS_BUILD=true
+            shift
+            ;;
+        -t)
+            HAS_TEST=true
+            shift
+            ;;
+        -d)
+            HAS_DEBUG=true
+            shift
+            ;;
+        -a)
+            HAS_AI=true
+            shift
+            ;;
+        -f)
+            HAS_FILES=true
+            shift
+            ;;
+        -n)
+            HAS_NVIM=true
+            shift
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
+# Validate: -b/-t/-d require a mode
+if ($HAS_BUILD || $HAS_TEST || $HAS_DEBUG) && [ -z "$MODE" ]; then
+    echo "Error: Build/test/debug (-b/-t/-d) require a mode: --web or --compile" >&2
+    exit 1
+fi
+
+# Apply --basic defaults (--basic = -gan)
+if [ "$MODE" = "basic" ]; then
+    HAS_GIT=true
+    HAS_AI=true
+    HAS_NVIM=true
+fi
+
+# Apply --web defaults
+if [ "$MODE" = "web" ]; then
+    HAS_GIT=true
+    HAS_BUILD=true
+    HAS_TEST=true
+    HAS_DEBUG=true
+    HAS_AI=true
+    HAS_FILES=true
+    HAS_NVIM=true
+fi
+
+# Apply --compile defaults
+if [ "$MODE" = "compile" ]; then
+    HAS_GIT=true
+    HAS_BUILD=true
+    HAS_TEST=true
+    HAS_DEBUG=true
+    HAS_AI=true
+    HAS_FILES=true
+    HAS_NVIM=true
+fi
+
+# Apply defaults for no mode (tmux-session = -n)
+if [ -z "$MODE" ]; then
+    HAS_NVIM=true
+fi
+
+# Check if session already exists
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+    tmux attach-session -t "$SESSION"
+    exit 0
+fi
+
+# ==============================================================================
+# Window queue (created in order; bash is always appended last)
+# ==============================================================================
+WINDOWS=()  # entries: "name|command|execute"
+
+add_window() {
+    WINDOWS+=("$1|$2|$3")
+}
+
+# ==============================================================================
+# Detect web package manager
+# ==============================================================================
+detect_web_pkg_manager() {
+    if [ -f "pnpm-lock.yaml" ]; then
+        echo "pnpm"
+    elif [ -f "package-lock.json" ]; then
+        echo "npm"
+    elif [ -f "bun.lockb" ]; then
+        echo "bun"
+    else
+        echo "pnpm"  # default
+    fi
+}
+
+# ==============================================================================
+# Cheatsheet functions — compile mode
+# ==============================================================================
+compile_build_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  BUILD COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  C (gcc):                                           │
+│    gcc -o app main.c -lm                            │
+│    gcc -Wall -Wextra -O2 -o app main.c             │
+│    gcc -g -O0 -o app main.c    (debug)             │
+│                                                     │
+│  C++ (g++):                                         │
+│    g++ -o app main.cpp -std=c++17                  │
+│    g++ -Wall -Wextra -O2 -o app main.cpp           │
+│    g++ -g -O0 -o app main.cpp    (debug)           │
+│                                                     │
+│  CMake:                                             │
+│    cmake -B build -S . -DCMAKE_BUILD_TYPE=Release   │
+│    cmake --build build                              │
+│    ccmake build        (interactive config UI)      │
+│                                                     │
+│  Make:                                              │
+│    make                                             │
+│    make clean                                       │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+compile_test_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  TEST COMMANDS                                      │
+├─────────────────────────────────────────────────────┤
+│  CMake:                                             │
+│    ctest --output-on-failure                        │
+│    ctest -R test_name   (run specific test)         │
+│                                                     │
+│  Make:                                              │
+│    make test                                        │
+│    make check                                       │
+│                                                     │
+│  GCC coverage:                                      │
+│    gcc -fprofile-arcs -ftest-coverage test.c        │
+│    gcov test.c.gcov                                 │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+compile_debug_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  DEBUG COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  GDB:                                               │
+│    gdb ./a.out                                      │
+│    gdb -ex run -ex bt ./a.out   (run + backtrace)  │
+│                                                     │
+│  Valgrind:                                          │
+│    valgrind --tool=memcheck --leak-check=full ./a.out │
+│    valgrind --tool=helgrind ./a.out   (data races)  │
+│                                                     │
+│  LLDB (if gdb not available):                       │
+│    lldb ./a.out                                     │
+│    lldb -o run ./a.out                              │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+# ==============================================================================
+# Cheatsheet functions — web mode
+# ==============================================================================
+web_build_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  BUILD COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm build            (production build)         │
+│                                                     │
+│  npm:                                               │
+│    npm run build         (production build)         │
+│                                                     │
+│  bun:                                               │
+│    bun build             (production build)         │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+web_test_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  TEST COMMANDS                                      │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm test             (run tests)                │
+│                                                     │
+│  npm:                                               │
+│    npm test              (run tests)                │
+│                                                     │
+│  bun:                                               │
+│    bun test              (run tests)                │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+web_debug_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  DEBUG COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm debug            (debug mode)               │
+│                                                     │
+│  npm:                                               │
+│    npm run debug         (debug mode)               │
+│                                                     │
+│  bun:                                               │
+│    bun debug             (debug mode)               │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+web_backend_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  BACKEND COMMANDS                                   │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm dev              (start dev server)         │
+│    pnpm build            (production build)         │
+│    pnpm test             (run tests)                │
+│    pnpm debug            (debug mode)               │
+│                                                     │
+│  npm:                                               │
+│    npm run dev           (start dev server)         │
+│    npm run build         (production build)         │
+│    npm test              (run tests)                │
+│    npm run debug         (debug mode)               │
+│                                                     │
+│  bun:                                               │
+│    bun dev               (start dev server)         │
+│    bun build             (production build)         │
+│    bun test              (run tests)                │
+│    bun debug             (debug mode)               │
+│                                                     │
+│  Database:                                          │
+│    supabase start        (local supabase)           │
+│    supabase stop         (stop local supabase)      │
+│    pg_ctl start          (local PostgreSQL)         │
+│    pg_ctl stop           (stop PostgreSQL)          │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+web_frontend_cheatsheet() {
+    cat <<'CHEAT'
+┌─────────────────────────────────────────────────────┐
+│  FRONTEND COMMANDS                                  │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm dev              (start dev server)         │
+│    pnpm build            (production build)         │
+│    pnpm test             (run tests)                │
+│                                                     │
+│  npm:                                               │
+│    npm run dev           (start dev server)         │
+│    npm run build         (production build)         │
+│    npm test              (run tests)                │
+│                                                     │
+│  bun:                                               │
+│    bun dev               (start dev server)         │
+│    bun build             (production build)         │
+│    bun test              (run tests)                │
+└─────────────────────────────────────────────────────┘
+CHEAT
+}
+
+# ==============================================================================
+# Queue windows in fixed order (bash always appended last)
+# ==============================================================================
+
+# 1. git
+if $HAS_GIT; then
+    add_window "git" "lazygit" "yes"
+fi
+
+# 2. docker (if -v flag)
+if $HAS_DOCKER; then
+    add_window "docker" "lazydocker" "yes"
+fi
+
+# 3. web (web mode only: single window with two panes)
+if [ "$MODE" = "web" ]; then
+    add_window "web" "" "split"
+fi
+
+# 4. build
+if $HAS_BUILD; then
+    if [ "$MODE" = "web" ]; then
+        add_window "build" "web_build_cheatsheet" "cheatsheet"
+    elif [ "$MODE" = "compile" ]; then
+        add_window "build" "compile_build_cheatsheet" "cheatsheet"
+    else
+        add_window "build" "make" "no"
+    fi
+fi
+
+# 5. test
+if $HAS_TEST; then
+    if [ "$MODE" = "web" ]; then
+        add_window "test" "web_test_cheatsheet" "cheatsheet"
+    elif [ "$MODE" = "compile" ]; then
+        add_window "test" "compile_test_cheatsheet" "cheatsheet"
+    else
+        add_window "test" "make test" "no"
+    fi
+fi
+
+# 6. debug
+if $HAS_DEBUG; then
+    if [ "$MODE" = "web" ]; then
+        add_window "debug" "web_debug_cheatsheet" "cheatsheet"
+    elif [ "$MODE" = "compile" ]; then
+        add_window "debug" "compile_debug_cheatsheet" "cheatsheet"
+    else
+        add_window "debug" "gdb ./a.out" "no"
+    fi
+fi
+
+# 7. ai
+if $HAS_AI; then
+    add_window "ai" "pi" "no"
+fi
+
+# 8. files
+if $HAS_FILES; then
+    add_window "files" "yazi" "yes"
+fi
+
+# 9. nvim
+if $HAS_NVIM; then
+    add_window "nvim" "nvim" "yes"
+fi
+
+# 10. bash (always last)
+add_window "bash" "" ""
+
+# ==============================================================================
+# Create the session in final order (no reordering needed)
+# ==============================================================================
+for _i in "${!WINDOWS[@]}"; do
+    IFS='|' read -r _wname _wcmd _wexec <<< "${WINDOWS[$_i]}"
+
+    if [ "$_i" -eq 0 ]; then
+        tmux new-session -d -s "$SESSION" -n "$_wname" -c "$PWD"
+    else
+        tmux new-window -d -t "$SESSION" -n "$_wname" -c "$PWD"
+    fi
+
+    # Cheatsheet: write to temp file, display with cat
+    if declare -f "$_wcmd" >/dev/null 2>&1; then
+        _cheat_tmp=$(mktemp)
+        "$_wcmd" > "$_cheat_tmp"
+        tmux send-keys -t "$SESSION:$_wname" "cat $_cheat_tmp" C-m
+    # Execute a command (send-keys + C-m)
+    elif [ "$_wexec" = "yes" ]; then
+        tmux send-keys -t "$SESSION:$_wname" "$_wcmd" C-m
+    # Prefill a command (send-keys without C-m)
+    elif [ -n "$_wcmd" ]; then
+        tmux send-keys -t "$SESSION:$_wname" "$_wcmd"
+    fi
+
+    # Special handling for web (two-pane split window)
+    if [ "$_wname" = "web" ]; then
+        _cheat_bk=$(mktemp)
+        _cheat_fe=$(mktemp)
+        web_backend_cheatsheet > "$_cheat_bk"
+        tmux send-keys -t "$SESSION:$_wname.1" "cat $_cheat_bk" C-m
+
+        # Split horizontally (left/right panes)
+        tmux split-window -h -t "$SESSION:$_wname.1"
+
+        web_frontend_cheatsheet > "$_cheat_fe"
+        tmux send-keys -t "$SESSION:$_wname.2" "cat $_cheat_fe" C-m
+    fi
+done
+
+# Attach (session stays on the first window)
+tmux attach-session -t "$SESSION"
