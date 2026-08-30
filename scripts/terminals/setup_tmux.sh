@@ -39,6 +39,9 @@ SCRIPT_DIR=$(get_script_dir)
 # Copy my tmux configuration file
 copy_file "$SCRIPT_DIR/../../home/.tmux.conf" "$HOME/.tmux.conf"
 
+# Copy tmux-session script to local bin
+copy_file "$SCRIPT_DIR/../../.local/bin/tmux-session" "$HOME/.local/bin/tmux-session"
+
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
     "tmux" "tmux --version | head -n1" \
