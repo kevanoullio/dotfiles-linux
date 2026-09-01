@@ -36,6 +36,9 @@ fi
 # Get the directory of the script
 SCRIPT_DIR=$(get_script_dir)
 
+# Ensure destination directories exist
+create_directory "$HOME/.local/bin"
+
 # Copy my tmux configuration file
 copy_file "$SCRIPT_DIR/../../home/.tmux.conf" "$HOME/.tmux.conf"
 
