@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
 # apply_rules.sh — apply the release-workflow branch rulesets to a GitHub repo.
 #

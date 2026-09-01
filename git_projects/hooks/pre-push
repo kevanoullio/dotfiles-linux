@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Global pre-push hook for the `git release` workflow.
 #

@@ -1,9 +1,9 @@
 {
-  "id": 16101056,
+  "id": 21945996,
   "name": "protect_staging",
   "target": "branch",
   "source_type": "Repository",
-  "source": "kevanoullio/vintique-sound-website",
+  "source": "kevanoullio/omarchy-local-ai-dashboard",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -26,8 +26,10 @@
         "require_code_owner_review": true,
         "require_last_push_approval": false,
         "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
         "allowed_merge_methods": [
-          "squash"
+          "squash",
+          "rebase"
         ]
       }
     },
@@ -38,32 +40,10 @@
       }
     },
     {
-      "type": "required_status_checks",
-      "parameters": {
-        "strict_required_status_checks_policy": false,
-        "do_not_enforce_on_create": false,
-        "required_status_checks": [
-          {
-            "context": "Build",
-            "integration_id": 15368
-          },
-          {
-            "context": "Unit Tests",
-            "integration_id": 15368
-          },
-          {
-            "context": "Integration Tests",
-            "integration_id": 15368
-          },
-          {
-            "context": "E2E Tests",
-            "integration_id": 15368
-          }
-        ]
-      }
+      "type": "non_fast_forward"
     },
     {
-      "type": "non_fast_forward"
+      "type": "required_linear_history"
     }
   ],
   "bypass_actors": []

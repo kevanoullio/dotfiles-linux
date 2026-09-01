@@ -25,6 +25,9 @@ pm_install neovim ripgrep unzip npm || { echo "Failed to install Neovim dependen
 # Get the directory of the script
 SCRIPT_DIR=$(get_script_dir)
 
+# Ensure destination directory exists
+create_directory "$HOME/.config/nvim"
+
 # Copy Neovim configuration files
 copy_file "$SCRIPT_DIR/../../home/.config/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 copy_directory "$SCRIPT_DIR/../../home/.config/nvim/lua" "$HOME/.config/nvim/lua"
