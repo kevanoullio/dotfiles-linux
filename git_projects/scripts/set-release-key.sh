@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
 # set-release-key.sh — provision the local release bypass key.
 #

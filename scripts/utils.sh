@@ -171,25 +171,35 @@ copy_file() {
         exit 1
     fi
 
-    create_directory "$(dirname "$dest")"
+    # Ensure parent directory exists; fail with clear error if not
+    local dest_dir
+    dest_dir=$(dirname "$dest")
+    if [ ! -d "$dest_dir" ]; then
+        echo "Error: Parent directory '$dest_dir' does not exist. Create it first." >&2
+        exit 1
+    fi
 
     if [ -f "$dest" ]; then
-        read -p "File '$dest' already exists. Do you want to overwrite it? (y/n): " choice
-        case "$choice" in
-            y|Y)
-                if ! cp -f "$src" "$dest"; then
-                    echo "Error: Failed to copy '$src' to '$dest'" >&2
-                    exit 1
-                fi
-                echo "Successfully copied '$src' to '$dest'."
-                ;;
-            n|N)
-                echo "Skipped copying '$src' to '$dest'."
-                ;;
-            *)
-                echo "Invalid choice. Skipped copying '$src' to '$dest'."
-                ;;
-        esac
+        while true; do
+            read -p "File '$dest' already exists. Do you want to overwrite it? (y/N): " choice
+            case "$choice" in
+                y|Y)
+                    if ! cp -f "$src" "$dest"; then
+                        echo "Error: Failed to copy '$src' to '$dest'" >&2
+                        exit 1
+                    fi
+                    echo "Successfully copied '$src' to '$dest'."
+                    break
+                    ;;
+                n|N|"")
+                    echo "Skipped copying '$src' to '$dest'."
+                    break
+                    ;;
+                *)
+                    echo "Invalid entry. Please enter 'y', 'n', or press Enter (defaults to No)."
+                    ;;
+            esac
+        done
     else
         if ! cp -f "$src" "$dest"; then
             echo "Error: Failed to copy '$src' to '$dest'" >&2
