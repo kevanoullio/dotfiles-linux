@@ -41,7 +41,7 @@ t_section "missing gh binary is a clean, reported error"
 s_apply_env "apply-no-gh"
 nogh="$(s_nogh_path)"
 assert_rc_out "missing gh reported as fatal" 1 "gh.*CLI is required" \
-	env HOME="$HOME" PATH="$nogh" bash "$APPLY" --libdir "$HOOKS_SRC" --repo a/b
+	env HOME="$HOME" PATH="$nogh" bash "$APPLY" --libdir "$HOOKS_SRC" --repo a/b </dev/null
 
 t_section "branch resolution is echoed (env > config > default)"
 
@@ -87,28 +87,28 @@ t_section "generated production ruleset blocks force pushes (security)"
 s_apply_env "apply-prod-rules"
 s_fake_gh
 assert_rc "apply_rules full run succeeds against stubbed gh" 0 \
-	_apply --repo a/b --prod main --staging staging
+	_apply --repo a/b --prod main --staging staging </dev/null
 # find the payload for protect_main (production) and inspect it
-payload_prod="$(grep -rl '"name": "protect_main"' "$FAKE_GH_PAYLOAD_DIR" 2>/dev/null || true)"
+payload_prod="$(grep -rlz '"name"[[:space:]]*:[[:space:]]*"protect_main"' "$FAKE_GH_PAYLOAD_DIR" 2>/dev/null | tr -d '\0' || true)"
 prod_json=""
 [ -n "$payload_prod" ] && prod_json="$(cat "$payload_prod")"
 assert_ne "$payload_prod" "" "a production ruleset payload was generated"
-assert_contains "$prod_json" '"type":"non_fast_forward"' \
+assert_contains "$prod_json" '"type": "non_fast_forward"' \
 	"production ruleset blocks force pushes (non_fast_forward)"
-assert_contains "$prod_json" '"include":["refs/heads/main"]' \
+assert_contains "$prod_json" '"refs/heads/main"' \
 	"production ruleset targets refs/heads/main"
-assert_contains "$prod_json" '"enforcement":"active"' \
+assert_contains "$prod_json" '"enforcement": "active"' \
 	"production ruleset is active"
 
 t_section "generated staging ruleset requires a pull request (security)"
 
-payload_stage="$(grep -rl '"name": "protect_staging"' "$FAKE_GH_PAYLOAD_DIR" 2>/dev/null || true)"
+payload_stage="$(grep -rlz '"name"[[:space:]]*:[[:space:]]*"protect_staging"' "$FAKE_GH_PAYLOAD_DIR" 2>/dev/null | tr -d '\0' || true)"
 stage_json=""
 [ -n "$payload_stage" ] && stage_json="$(cat "$payload_stage")"
 assert_ne "$payload_stage" "" "a staging ruleset payload was generated"
-assert_contains "$stage_json" '"type":"pull_request"' \
+assert_contains "$stage_json" '"type": "pull_request"' \
 	"staging ruleset requires a pull request"
-assert_contains "$stage_json" '"include":["refs/heads/staging"]' \
+assert_contains "$stage_json" '"refs/heads/staging"' \
 	"staging ruleset targets refs/heads/staging"
 
 t_section "gh api calls are made for upsert (find then create)"

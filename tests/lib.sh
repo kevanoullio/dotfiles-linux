@@ -156,9 +156,12 @@ s_hooks() {
 
 # s_hooks_at <name> <libdir> — like s_hooks but with an explicit release.libdir
 # and hooksPath (used by the libdir-hardening tests to point at various dirs).
+# A literal $HOME in <libdir> is re-rooted onto the NEW sandbox home: the
+# caller's own $HOME would have expanded before s_env switched sandboxes.
 s_hooks_at() {
 	local name="$1" libdir="$2"
 	s_hooks "$name"
+	libdir="${libdir//"\$HOME"/$HOME}"
 	git config --file "$GIT_CONFIG_GLOBAL" release.libdir "$libdir"
 }
 
@@ -231,16 +234,20 @@ EOF
 # s_nogh_path — print a PATH that includes the tools apply_rules.sh needs
 # (git/jq/sed/head/...) but NOT `gh`, so the "gh CLI is required" branch can be
 # exercised deterministically regardless of whether gh is installed machine-wide.
+# Builds a private bin dir of symlinks to exactly those tools: reusing the
+# tools' own directories would leak a machine-wide gh that shares a directory
+# with git (e.g. /usr/bin/gh).
 s_nogh_path() {
-	local need=(git jq sed head uniq grep)
-	local p="" d b
+	local need=(git jq sed head uniq grep cat bash env sh)
+	local bin="$SANDBOX/nogh-bin" b d
+	mkdir -p "$bin"
 	for b in "${need[@]}"; do
 		if command -v "$b" >/dev/null 2>&1; then
-			d="$(dirname "$(command -v "$b")")"
-			case ":$p:" in *":$d:"*) ;; *) p="$p:$d" ;; esac
+			d="$(command -v "$b")"
+			[ -e "$bin/$b" ] || ln -sf "$d" "$bin/$b"
 		fi
 	done
-	printf '%s\n' "$p"
+	printf '%s\n' "$bin"
 }
 
 # ---------------------------------------------------------------------------

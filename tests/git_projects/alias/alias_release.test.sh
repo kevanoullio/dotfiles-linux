@@ -40,7 +40,7 @@ s_repo "release-happy"
 ( cd "$WORK" && s_key )
 out=""
 rc=0
-out="$(cd "$WORK" && git release 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release 2>&1 <<<YES)" || rc=$?
 assert_eq "$rc" "0" "git release succeeds (rc 0)"
 assert_contains "$out" "Production fast-forward merge successful!" "prints success"
 assert_eq "$(git -C "$WORK" rev-parse origin/main)" "$(git -C "$WORK" rev-parse origin/staging)" \
@@ -58,7 +58,7 @@ s_repo "release-config"
 ( cd "$WORK" && seed_branches prod staging )
 ( cd "$WORK" && s_key )
 rc=0
-out="$(cd "$WORK" && git release 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release 2>&1 <<<YES)" || rc=$?
 assert_eq "$rc" "0" "custom-named release succeeds"
 assert_eq "$(git -C "$WORK" rev-parse origin/prod)" "$(git -C "$WORK" rev-parse origin/staging)" \
 	"custom origin/prod advances to origin/staging"
@@ -68,7 +68,7 @@ t_section "happy path with branch names via environment"
 s_repo "release-env"
 ( cd "$WORK" && seed_branches prod stage )
 rc=0
-out="$(cd "$WORK" && GIT_RELEASE_PRODUCTION=prod GIT_RELEASE_STAGING=stage git release 2>&1)" || rc=$?
+out="$(cd "$WORK" && GIT_RELEASE_PRODUCTION=prod GIT_RELEASE_STAGING=stage git release 2>&1 <<<YES)" || rc=$?
 assert_eq "$rc" "0" "env-named release succeeds"
 assert_eq "$(git -C "$WORK" rev-parse origin/prod)" "$(git -C "$WORK" rev-parse origin/stage)" \
 	"env prod advances to env staging"
@@ -78,7 +78,7 @@ t_section "argument validation"
 s_repo "release-arg"
 ( cd "$WORK" && seed_branches main staging )
 assert_rc_out "unknown argument rejected" 2 "Unknown argument" \
-	bash -c 'cd "$1" && git release --bogus' _ "$WORK"
+	bash -c 'cd "$1" && git release --bogus' _ "$WORK" </dev/null
 
 t_section "dirty working tree aborts"
 
@@ -86,7 +86,7 @@ s_repo "release-dirty"
 ( cd "$WORK" && seed_branches main staging )
 ( cd "$WORK" && echo dirty >untracked && true )
 rc=0
-out="$(cd "$WORK" && git release 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release 2>&1 </dev/null)" || rc=$?
 assert_eq "$rc" "1" "dirty tree aborts (rc 1)"
 assert_contains "$out" "Working directory is dirty" "prints dirty-tree message"
 
@@ -95,10 +95,10 @@ t_section "local commits on prod abort (never auto-pushed)"
 s_repo "release-prod-local"
 ( cd "$WORK" && seed_branches main staging )
 # local-only commit on prod
-( cd "$WORK" && git checkout -q main && echo b >h && git commit -qam "localb" && git checkout -q staging )
+( cd "$WORK" && git checkout -q main && echo b >>f && git commit -qam "localb" && git checkout -q staging )
 ( cd "$WORK" && s_key )
 rc=0
-out="$(cd "$WORK" && git release 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release 2>&1 </dev/null)" || rc=$?
 assert_eq "$rc" "1" "local prod commits abort (rc 1)"
 assert_contains "$out" "ABORT: local branch 'main' has 1 commit" "identifies prod branch"
 
@@ -107,10 +107,10 @@ t_section "local commits on staging abort (never auto-pushed)"
 s_repo "release-staging-local"
 ( cd "$WORK" && seed_branches main staging )
 # local-only commit on staging
-( cd "$WORK" && echo c >i && git commit -qam "localc" )
+( cd "$WORK" && echo c >>g && git commit -qam "localc" )
 ( cd "$WORK" && s_key )
 rc=0
-out="$(cd "$WORK" && git release 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release 2>&1 </dev/null)" || rc=$?
 assert_eq "$rc" "1" "local staging commits abort (rc 1)"
 assert_contains "$out" "ABORT: local branch 'staging' has 1 commit" "identifies staging branch"
 
@@ -120,7 +120,7 @@ s_repo "release-continue-none"
 ( cd "$WORK" && seed_branches main staging )
 ( cd "$WORK" && s_key )
 rc=0
-out="$(cd "$WORK" && git release --continue 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release --continue 2>&1 </dev/null)" || rc=$?
 assert_eq "$rc" "1" "--continue with nothing to resume exits 1"
 assert_contains "$out" "Nothing to resume" "prints nothing-to-resume message"
 
@@ -130,10 +130,10 @@ s_repo "release-continue-ff"
 ( cd "$WORK" && seed_branches main staging )
 # local prod is a clean fast-forward ahead of origin/prod (the state left by an
 # interrupted release that merged but could not push)
-( cd "$WORK" && git checkout -q main && echo r >j && git commit -qam "resume" && git checkout -q staging )
+( cd "$WORK" && git checkout -q main && echo r >>f && git commit -qam "resume" && git checkout -q staging )
 ( cd "$WORK" && s_key )
 rc=0
-out="$(cd "$WORK" && git release --continue 2>&1)" || rc=$?
+out="$(cd "$WORK" && git release --continue 2>&1 <<<YES)" || rc=$?
 assert_eq "$rc" "0" "--continue resumes and pushes (rc 0)"
 assert_contains "$out" "Resuming" "prints resuming message"
 assert_eq "$(git -C "$WORK" rev-parse origin/main)" "$(git -C "$WORK" rev-parse main)" \
