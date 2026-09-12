@@ -63,7 +63,7 @@ s_repo "hook-real-prod-block"
 ( cd "$WORK" && s_key sekret )
 ( cd "$WORK" && echo one >f && git add f && git commit -qm one && s_push_bypass main )
 ( cd "$WORK" && git checkout -qb staging && echo two >g && git add g && git commit -qm two && s_push_bypass staging )
-( cd "$WORK" && git checkout -q main && echo b >h && git commit -qam b )
+( cd "$WORK" && git checkout -q main && echo b >>f && git commit -qam b )
 rc=0
 out="$(cd "$WORK" && git push origin main 2>&1)" || rc=$?
 assert_ne "$rc" "0" "prod push without key fails"

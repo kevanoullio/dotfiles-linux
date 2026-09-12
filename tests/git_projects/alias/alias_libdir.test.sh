@@ -25,7 +25,7 @@ assert_rc_out \
 
 t_section "release.libdir missing release-common.sh"
 
-s_hooks_at "libdir-missing" "$HOME/missing-lib"
+s_hooks_at "libdir-missing" '$HOME/missing-lib'
 wd="$SANDBOX/w"
 git init -q -b main "$wd"
 assert_rc_out \
@@ -35,7 +35,7 @@ assert_rc_out \
 
 t_section "release-common.sh must not be a symlink"
 
-s_hooks_at "libdir-symlink" "$HOME/sym-lib"
+s_hooks_at "libdir-symlink" '$HOME/sym-lib'
 mkdir -p "$HOME/sym-lib"
 ln -s /tmp/never "$HOME/sym-lib/release-common.sh"
 wd="$SANDBOX/w"
@@ -47,7 +47,7 @@ assert_rc_out \
 
 t_section "release-common.sh must not be group- or world-writable"
 
-s_hooks_at "libdir-writable" "$HOME/.config/git/hooks"
+s_hooks_at "libdir-writable" '$HOME/.config/git/hooks'
 chmod g+w "$HOME/.config/git/hooks/release-common.sh"
 wd="$SANDBOX/w"
 git init -q -b main "$wd"
@@ -59,7 +59,7 @@ assert_rc_out \
 t_section "release-common.sh must be owned by the current user"
 
 if [ "$(id -u)" -eq 0 ]; then
-	s_hooks_at "libdir-owner" "$HOME/.config/git/hooks"
+	s_hooks_at "libdir-owner" '$HOME/.config/git/hooks'
 	chown 1:1 "$HOME/.config/git/hooks/release-common.sh"
 	wd="$SANDBOX/w"
 	git init -q -b main "$wd"
@@ -73,10 +73,10 @@ fi
 
 t_section "valid release.libdir passes hardening (sources the library)"
 
+s_hooks_at "libdir-valid" '$HOME/valid-lib'
 marker="$SANDBOX/sourced-ok"
 libdir="$HOME/valid-lib"
 s_stub_lib "$libdir" "$marker"
-s_hooks_at "libdir-valid" "$libdir"
 wd="$SANDBOX/w"
 git init -q -b main "$wd"
 rc=0
@@ -87,10 +87,10 @@ assert_eq "$([ -f "$marker" ] && echo yes || echo no)" "yes" \
 
 t_section "source must not happen when hardening rejects"
 
+s_hooks_at "libdir-rejected" '$HOME/rejected-lib'
 marker2="$SANDBOX/not-sourced"
 libdir2="$HOME/rejected-lib"
 s_stub_lib "$libdir2" "$marker2"
-s_hooks_at "libdir-rejected" "$libdir2"
 chmod o+w "$libdir2/release-common.sh"
 wd="$SANDBOX/w"
 git init -q -b main "$wd"
