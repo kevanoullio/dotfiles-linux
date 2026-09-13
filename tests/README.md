@@ -1,94 +1,74 @@
 # git_projects Test Suite
 
-Bash unit tests for the **git_projects** security/workflow tooling (pre-push hooks, `release` alias, `release-common.sh` library, and `apply_rules.sh` script).
+BATS (Bash Automated Testing System) tests for the **git_projects** security/workflow tooling (pre-push hooks, `release` alias, `release-common.sh` library, and `apply_rules.sh` script).
 
 ## Prerequisites
 
 | Requirement | Why |
 |---|---|
-| `bash` (4.0+) | Tests use `mapfile`, process substitution, `local` scoping |
+| `bats` (1.0+) | Test framework — install via `scripts/dev_env/setup_bats.sh` |
 | `git` (2.28+) | Sandbox repos, `git init`, `git config` |
 | `jq` | Used by `apply_rules.sh` and its tests |
 | `sed`, `head`, `uniq`, `grep` | Tooling chain for `apply_rules.sh` tests |
-| `gh` (optional) | Only needed for `apply_rules.test.sh` — a fake `gh` is auto-injected when available |
-
-All other dependencies are self-contained in `lib.sh`.
 
 ## Quick Start
 
 ```bash
-# Run the entire suite from the repo root
-bash tests/run.sh
+# Run the entire suite
+bats -r tests/git_projects/
 
-# Run from within tests/
-cd tests && bash run.sh
+# Run a specific file
+bats tests/git_projects/hooks/pre_push.bats
+
+# Filter by test name (regex)
+bats --filter "staging" tests/git_projects/
 ```
 
-A non-zero exit code means one or more test files failed.
+A non-zero exit code means one or more tests failed.
 
-## Running Subsets
-
-The runner accepts an optional **pattern** argument. Only test files whose path contains the pattern are executed:
+## CI / Formatters
 
 ```bash
-# Only hook-related tests
-bash tests/run.sh hooks
+# TAP output
+bats --formatter tap -r tests/git_projects/
 
-# Only alias-related tests
-bash tests/run.sh alias
+# JUnit XML (GitHub Actions / CI dashboards)
+bats --formatter junit -r tests/git_projects/
 
-# Only script-related tests
-bash tests/run.sh scripts
-```
+# Parallel execution (requires GNU parallel)
+bats --jobs 4 -r tests/git_projects/
 
-## Running a Single Test
-
-Each `*.test.sh` is self-contained and can be run directly:
-
-```bash
-# Run a single test file
-bash tests/git_projects/hooks/release_common.test.sh
-
-bash tests/git_projects/alias/alias_release.test.sh
-
-bash tests/git_projects/scripts/apply_rules.test.sh
+# Timing info
+bats -T -r tests/git_projects/
 ```
 
 ## Test File Layout
 
 ```
 tests/
-├── run.sh                  # Test runner (discovers and executes *.test.sh)
-├── lib.sh                  # Shared test harness (sourced by every test)
-├── test-findings.md        # Audit findings and known issues
-├── .tmp/                   # Auto-generated sandbox directories (ignored)
-└── git_projects/
-    ├── hooks/
-    │   ├── release_common.test.sh   # Branch-name resolution, key reading
-    │   └── pre_push.test.sh         # Pre-push hook blocking logic
-    ├── alias/
-    │   ├── alias_release.test.sh    # `git release` alias happy/error paths
-    │   └── alias_libdir.test.sh     # release.libdir hardening
-    └── scripts/
-        ├── set_release_key.test.sh  # Key generation & provisioning
-        └── apply_rules.test.sh      # GitHub branch ruleset application
+├── helpers/
+│   └── sandbox.bash              # Shared sandbox builders (loaded via `load`)
+├── git_projects/
+│   ├── hooks/
+│   │   ├── release_common.bats   # Branch-name resolution, key reading, bypass logic
+│   │   └── pre_push.bats         # Pre-push hook blocking logic
+│   ├── alias/
+│   │   ├── alias_release.bats    # `git release` alias happy/error paths
+│   │   └── alias_libdir.bats     # release.libdir hardening
+│   └── scripts/
+│       ├── set_release_key.bats  # Key generation & provisioning
+│       └── apply_rules.bats      # GitHub branch ruleset application
+├── README.md
+└── test-findings.md              # Historical audit reference
 ```
 
-## Test Harness (`lib.sh`)
+## Sandbox Helpers (`tests/helpers/sandbox.bash`)
 
-Every `*.test.sh` sources `lib.sh` which provides:
+Loaded in each `.bats` file via:
 
-### Assertion Helpers
-
-| Function | Signature | Description |
-|---|---|---|
-| `assert_eq` | `assert_eq <actual> <expected> <message>` | Compare two strings |
-| `assert_ne` | `assert_ne <actual> <not-expected> <message>` | Assert inequality |
-| `assert_contains` | `assert_contains <string> <substring> <message>` | Check substring inclusion |
-| `assert_rc` | `assert_rc <message> <expected_rc> <cmd> [args...]` | Assert exit code of a command |
-| `assert_rc_out` | `assert_rc_out <message> <expected_rc> <grep-pattern> <cmd> [args...]` | Assert exit code AND output matches a grep pattern |
-
-### Sandbox Builders
+```bash
+load ../../helpers/sandbox.bash
+```
 
 | Function | Description |
 |---|---|
@@ -97,26 +77,15 @@ Every `*.test.sh` sources `lib.sh` which provides:
 | `s_hooks_at <name> <libdir>` | Like `s_hooks` with an explicit `release.libdir` |
 | `s_key [value]` | Provisions the release bypass key file (mode 0600) |
 | `s_repo [name]` | Creates a bare `origin.git` + a working clone on `main` |
+| `s_push_bypass <branch>` | Pushes a branch to origin, bypassing pre-push (setup only) |
 | `s_stub_lib <libdir> <marker>` | Writes a minimal `release-common.sh` stub for hardening tests |
-| `s_fake_gh` | Installs a fake `gh` CLI that records calls for verification |
+| `s_fake_gh` | Installs a fake `gh` CLI that records calls and captures payloads |
 | `s_nogh_path` | Returns a PATH with required tools but without `gh` |
 
-### Logging
+Sandboxes use `$BATS_TEST_TMPDIR` (auto-cleaned by BATS after each test).
 
-| Function | Description |
-|---|---|
-| `t_section <name>` | Prints a section header |
-| `t_run <name>` | Sets the current test context name |
-| `t_summary` | Prints pass/fail counts; returns non-zero if any assertions failed |
+## Installing BATS
 
-Each test file must end by calling `t_summary` or `exit`ing with the appropriate code.
-
-## Environment Variables
-
-| Variable | Purpose |
-|---|---|
-| `TESTS_HOME` | Directory containing the `tests/` tree (auto-set by `run.sh` and `lib.sh`) |
-
-## Known Issues
-
-See [`test-findings.md`](./test-findings.md) for the latest audit findings and required fixes.
+```bash
+bash scripts/dev_env/setup_bats.sh
+```
