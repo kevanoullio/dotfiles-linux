@@ -1,0 +1,15 @@
+┌─────────────────────────────────────────────────────┐
+│  DEBUG COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  GDB:                                               │
+│    gdb ./a.out                                      │
+│    gdb -ex run -ex bt ./a.out   (run + backtrace)  │
+│                                                     │
+│  Valgrind:                                          │
+│    valgrind --tool=memcheck --leak-check=full ./a.out │
+│    valgrind --tool=helgrind ./a.out   (data races)  │
+│                                                     │
+│  LLDB (if gdb not available):                       │
+│    lldb ./a.out                                     │
+│    lldb -o run ./a.out                              │
+└─────────────────────────────────────────────────────┘

@@ -1,0 +1,22 @@
+┌─────────────────────────────────────────────────────┐
+│  BUILD COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  C (gcc):                                           │
+│    gcc -o app main.c -lm                            │
+│    gcc -Wall -Wextra -O2 -o app main.c             │
+│    gcc -g -O0 -o app main.c    (debug)             │
+│                                                     │
+│  C++ (g++):                                         │
+│    g++ -o app main.cpp -std=c++17                  │
+│    g++ -Wall -Wextra -O2 -o app main.cpp           │
+│    g++ -g -O0 -o app main.cpp    (debug)           │
+│                                                     │
+│  CMake:                                             │
+│    cmake -B build -S . -DCMAKE_BUILD_TYPE=Release   │
+│    cmake --build build                              │
+│    ccmake build        (interactive config UI)      │
+│                                                     │
+│  Make:                                              │
+│    make                                             │
+│    make clean                                       │
+└─────────────────────────────────────────────────────┘
