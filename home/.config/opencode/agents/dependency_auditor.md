@@ -3,8 +3,8 @@ name: dependency_auditor
 description: Multi-language package auditor. Scans manifests for security vulnerabilities and safe upgrade paths.
 mode: subagent
 
-model: llama-swap/qwen3.6:35b-a3b
-#model: llama-swap/qwen3-coder-next
+model: llama-server/qwen3.6-35b-a3b
+#model: llama-server/qwen3-coder-next
 temperature: 0.4
 
 top_k: 40

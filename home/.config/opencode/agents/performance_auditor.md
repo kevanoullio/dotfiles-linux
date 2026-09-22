@@ -3,8 +3,8 @@ name: performance_auditor
 description: Computational profile analyst. Profiles execution speeds, database queries, memory layouts, and algorithmic complexity.
 mode: subagent
 
-model: llama-swap/qwen3-coder-next
-#model: llama-swap/gemma-4-26b-a4b-qat
+model: llama-server/qwen3.6-35b-a3b
+#model: llama-server/gemma-4-26b-a4b-qat
 temperature: 0.5
 
 top_k: 40
@@ -14,6 +14,10 @@ min_p: 0.05
 repeat_penalty: 1.0
 frequency_penalty: 0.0
 presence_penalty: 0.1
+
+options:
+  enable_thinking: true
+  preserve_thinking: false
 
 permission:
   edit: deny

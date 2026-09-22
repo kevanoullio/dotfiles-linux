@@ -3,7 +3,7 @@ name: plan_extractor
 description: Parses conversation history and writes a structured plan to disk.
 mode: primary
 
-model: llama-swap/gpt-oss:20b
+model: llama-server/gpt-oss-20b
 temperature: 0.0
 
 top_k: 1
