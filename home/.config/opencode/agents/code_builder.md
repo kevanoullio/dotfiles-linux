@@ -3,7 +3,7 @@ name: code_builder
 description: Zero-deviation mechanical implementation engine. Executes local markdown plans with absolute precision.
 mode: primary
 
-model: llama-swap/gpt-oss:20b
+model: llama-server/gpt-oss-20b
 temperature: 0.0
 
 # Note: At temp 0.0, top_k and top_p are bypassed by greedy decoding

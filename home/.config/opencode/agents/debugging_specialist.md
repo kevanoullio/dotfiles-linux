@@ -3,8 +3,8 @@ name: debugging_specialist
 description: Deeply analyzes stack traces, tracks race conditions, and locates root causes.
 mode: subagent
 
-model: llama-swap/qwen3-coder-next
-#model: llama-swap/gemma-4-26b-a4b-qat
+#model: llama-server/qwen3.6:35b-a3b
+model: llama-server/gemma-4-26b-a4b-qat
 temperature: 0.15
 
 top_k: 20

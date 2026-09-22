@@ -3,7 +3,7 @@ name: readme_specialist
 description: Reviews entire codebase or specified and relevant sections in order to generate updates to the repository README file.
 mode: subagent
 
-model: llama-swap/gpt-oss:20b
+model: llama-server/gpt-oss-20b
 temperature: 0.5
 
 top_k: 30

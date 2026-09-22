@@ -3,8 +3,8 @@ name: refactor_engineer
 description: Cleans technical debt, decouples coupled components, and optimizes abstractions.
 mode: primary
 
-model: llama-swap/gpt-oss:120b
-#model: llama-swap/qwen3-coder-next
+model: llama-server/gpt-oss-120b
+#model: llama-server/qwen3.6:35b-a3b
 temperature: 0.3
 
 top_k: 20
@@ -16,6 +16,9 @@ frequency_penalty: 0.0
 presence_penalty: 0.1
 
 reasoningEffort: high
+#options:
+#  enable_thinking: true
+#  preserve_thinking: false
 
 permission:
   edit: deny

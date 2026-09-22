@@ -1,403 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
-  "model": "llama-server/qwen3.8-27b",
+  "model": "llama-server/qwen3.8-27b-fast",
   "provider": {
-    "lm-studio": {
-      "name": "LM Studio",
-      "options": {
-        "baseURL": "http://localhost:1234/v1"
-      },
-      "models": {
-        "qwen/qwen3.8:27b": {
-          "name": "qwen3.8:27b",
-          "variants": {
-            "system_architect": {
-              "name": "System Architect",
-              "parameters": {
-                "temperature": 0.7,
-                "top_p": 0.8,
-                "top_k": 20,
-                "repeat_penalty": 1.05
-              },
-              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
-            },
-            "backend_engineer": {
-              "name": "Backend Engineer",
-              "parameters": {
-                "temperature": 0.2,
-                "top_p": 0.8,
-                "top_k": 20,
-                "repeat_penalty": 1.1
-              },
-              "system": "{file:~/.config/opencode/prompts/backend_engineer.txt}"
-            },
-            "security_auditor": {
-              "name": "Security Auditor",
-              "parameters": {
-                "temperature": 0.25,
-                "top_p": 0.8,
-                "top_k": 20,
-                "repeat_penalty": 1.05
-              },
-              "system": "{file:~/.config/opencode/prompts/security_auditor.txt}"
-            },
-            "performance_auditor": {
-              "name": "Performance Auditor",
-              "parameters": {
-                "temperature": 0.3,
-                "top_p": 0.8,
-                "top_k": 20,
-                "repeat_penalty": 1.05
-              },
-              "system": "{file:~/.config/opencode/prompts/performance_auditor.txt}"
-            },
-            "code_reviewer": {
-              "name": "Code Reviewer",
-              "parameters": {
-                "temperature": 0.2,
-                "top_p": 0.85,
-                "top_k": 20,
-                "repeat_penalty": 1.1,
-                "presence_penalty": 0.1
-              },
-              "system": "{file:~/.config/opencode/prompts/code_reviewer.txt}"
-            },
-            "refactor_specialist": {
-              "name": "Refactor Specialist",
-              "parameters": {
-                "temperature": 0.3,
-                "top_p": 0.8,
-                "top_k": 20,
-                "repeat_penalty": 1.05
-              },
-              "system": "{file:~/.config/opencode/prompts/refactor_specialist.txt}"
-            },
-            "debugging_specialist": {
-              "name": "Debugging Specialist",
-              "parameters": {
-                "temperature": 0.3,
-                "top_p": 0.85,
-                "top_k": 20,
-                "repeat_penalty": 1.05
-              },
-              "system": "{file:~/.config/opencode/prompts/debugging_specialist.txt}"
-            }
-          }
-        },
-        "qwen/qwen3.6:35b-a3b": {
-          "name": "qwen3.6:35b-a3b",
-          "variants": {
-            "system_architect": {
-              "name": "System Architect",
-              "parameters": {
-                "temperature": 1.0,
-                "top_p": 0.95,
-                "top_k": 20,
-                "presence_penalty": 0.5
-              },
-              "options": {
-                "enable_thinking": true,
-                "preserve_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
-            },
-            "security_auditor": {
-              "name": "Security Auditor",
-              "parameters": {
-                "temperature": 0.2,
-                "top_p": 0.80,
-                "top_k": 20,
-                "presence_penalty": 0.0
-              },
-              "options": {
-                "enable_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/security_auditor.txt}"
-            },
-            "performance_auditor": {
-              "name": "Performance Auditor",
-              "parameters": {
-                "temperature": 0.5,
-                "top_p": 0.85,
-                "top_k": 20,
-                "presence_penalty": 0.1
-              },
-              "options": {
-                "enable_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/performance_auditor.txt}"
-            },
-            "dependency_auditor": {
-              "name": "Dependency Auditor",
-              "parameters": {
-                "temperature": 0.4,
-                "top_p": 0.85,
-                "top_k": 20,
-                "presence_penalty": 0.1
-              },
-              "options": {
-                "enable_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/dependency_auditor.txt}"
-            },
-            "plan_extractor": {
-              "name": "Plan Extractor",
-              "parameters": {
-                "temperature": 0.0,
-                "top_p": 1.0,
-                "top_k": 1,
-                "repeat_penalty": 1.0,
-                "presence_penalty": 0.0
-              },
-              "options": {
-                "enable_thinking": false
-              },
-              "system": "{file:~/.config/opencode/prompts/plan_extractor.txt}"
-            },
-            "code_builder": {
-              "name": "Code Builder",
-              "parameters": {
-                "temperature": 0.3,
-                "top_p": 0.8,
-                "top_k": 20,
-                "presence_penalty": 0.0
-              },
-              "options": {
-                "enable_thinking": false
-              },
-              "system": "{file:~/.config/opencode/prompts/code_builder.txt}"
-            },
-            "test_engineer": {
-              "name": "Test Engineer",
-              "parameters": {
-                "temperature": 0.5,
-                "top_p": 0.9,
-                "top_k": 20,
-                "presence_penalty": 0.1
-              },
-              "options": {
-                "enable_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/test_engineer.txt}"
-            },
-            "cicd_engineer": {
-              "name": "CI/CD Engineer",
-              "parameters": {
-                "temperature": 0.3,
-                "top_p": 0.85,
-                "top_k": 20,
-                "presence_penalty": 0.0
-              },
-              "options": {
-                "enable_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/cicd_engineer.txt}"
-            },
-            "code_reviewer": {
-              "name": "Code Reviewer",
-              "parameters": {
-                "temperature": 0.35,
-                "top_p": 0.85,
-                "top_k": 20,
-                "repeat_penalty": 1.15,
-                "presence_penalty": 0.1
-              },
-              "options": {
-                "enable_thinking": true,
-                "preserve_thinking": true
-              },
-              "system": "{file:~/.config/opencode/prompts/code_reviewer.txt}"
-            }
-          }
-        },
-        "google/gemma-4-31b": {
-          "name": "gemma-4-31b",
-          "variants": {
-            "off": {
-              "name": "Off",
-              "options": {
-                "enable_thinking": false
-              }
-            },
-            "high": {
-              "name": "High",
-              "reasoningEffort": "high",
-              "options": {
-                "enable_thinking": true
-              }
-            },
-            "architect": {
-              "name": "System Architect",
-              "parameters": {
-                "temperature": 0.7,
-                "top_p": 0.95
-              },
-              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
-            },
-            "frontend_designer": {
-              "name": "Frontend Designer",
-              "parameters": {
-                "temperature": 0.85,
-                "top_p": 0.95
-              },
-              "system": "{file:~/.config/opencode/prompts/frontend_designer.txt}"
-            },
-            "documentation_specialist": {
-              "name": "Documentation Specialist",
-              "parameters": {
-                "temperature": 0.5,
-                "top_p": 0.9
-              },
-              "system": "{file:~/.config/opencode/prompts/documentation_specialist.txt}"
-            }
-          }
-        },
-        "google/gemma-4-26b-a4b": {
-          "name": "gemma-4-26b-a4b",
-          "variants": {
-            "off": {
-              "name": "Off",
-              "options": {
-                "enable_thinking": false
-              }
-            },
-            "high": {
-              "name": "High",
-              "reasoningEffort": "high",
-              "options": {
-                "enable_thinking": true
-              }
-            },
-            "architect": {
-              "name": "System Architect",
-              "parameters": {
-                "temperature": 0.7,
-                "top_p": 0.95
-              },
-              "system": "{file:~/.config/opencode/prompts/system_architect.txt}"
-            },
-            "frontend_designer": {
-              "name": "Frontend Designer",
-              "parameters": {
-                "temperature": 0.85,
-                "top_p": 0.95
-              },
-              "system": "{file:~/.config/opencode/prompts/frontend_designer.txt}"
-            },
-            "documentation_specialist": {
-              "name": "Documentation Specialist",
-              "parameters": {
-                "temperature": 0.5,
-                "top_p": 0.9
-              },
-              "system": "{file:~/.config/opencode/prompts/documentation_specialist.txt}"
-            }
-          }
-        },
-        "openai/gpt-oss-120b": {
-          "name": "gpt-oss-120b",
-          "variants": {
-            "high": {
-              "name": "Reasoning High",
-              "reasoningEffort": "high",
-              "parameters": {
-                "temperature": 0.7,
-                "top_p": 0.9
-              },
-              "system": "Reasoning: high."
-            },
-            "medium": {
-              "name": "Reasonign Medium",
-              "reasoningEffort": "medium",
-              "parameters": {
-                "temperature": 0.35,
-                "repeat_penalty": 1.2,
-                "frequency_penalty": 0.25,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: medium."
-            },
-            "low": {
-              "name": "Reasoning Low",
-              "reasoningEffort": "low",
-              "parameters": {
-                "temperature": 0.35,
-                "repeat_penalty": 1.2,
-                "frequency_penalty": 0.25,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: low."
-            }
-          }
-        },
-        "openai/gpt-oss-20b": {
-          "name": "gpt-oss-20b",
-          "variants": {
-            "off": {
-              "name": "Off",
-              "options": {
-                "enable_thinking": false
-              }
-            },
-            "high": {
-              "name": "Reasoning High",
-              "reasoningEffort": "high",
-              "parameters": {
-                "temperature": 0.7,
-                "top_p": 0.9
-              },
-              "system": "Reasoning: high."
-            },
-            "med": {
-              "name": "Reasoning Medium",
-              "reasoningEffort": "medium",
-              "parameters": {
-                "temperature": 0.35,
-                "repeat_penalty": 1.2,
-                "frequency_penalty": 0.25,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: medium."
-            },
-            "low": {
-              "name": "Reasoning Low",
-              "reasoningEffort": "low",
-              "parameters": {
-                "temperature": 0.35,
-                "repeat_penalty": 1.2,
-                "frequency_penalty": 0.25,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: low."
-            },
-            "plan_extractor": {
-              "name": "Plan Extractor",
-              "reasoningEffort": "low",
-              "parameters": {
-                "temperature": 0.0,
-                "top_p": 1.0,
-                "top_k": 1,
-                "repeat_penalty": 1.0,
-                "frequency_penalty": 0.0,
-                "presence_penalty": 0.0
-              },
-              "system": "Reasoning: low.\n\n{file:~/.config/opencode/prompts/plan_extractor.txt}"
-            },
-            "code_builder": {
-              "name": "Code Builder",
-              "parameters": {
-                "temperature": 0.2,
-                "repeat_penalty": 1.15,
-                "frequency_penalty": 0.2,
-                "presence_penalty": 0.1
-              },
-              "system": "Reasoning: medium.\n\n{file:~/.config/opencode/prompts/code_builder.txt}"
-            }
-          }
-        }
-      }
-    },
     "llama-server": {
       "name": "Llama-Server",
       "options": {
@@ -405,50 +10,6 @@
         "apiKey": "llama-server"
       },
       "models": {
-        "qwen3.8-27b": {
-          "name": "qwen3.8-27b",
-          "variants": {
-            "off": {
-              "name": "Thinking Disabled",
-              "reasoningEffort": "none",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": false
-                }
-              }
-            },
-            "low": {
-              "name": "Fast (low)",
-              "reasoningEffort": "low",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true,
-                  "preserve_thinking": true
-                }
-              }
-            },
-            "med": {
-              "name": "Balanced (medium)",
-              "reasoningEffort": "medium",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true,
-                  "preserve_thinking": true
-                }
-              }
-            },
-            "xhigh": {
-              "name": "Max Reasoning (xhigh)",
-              "reasoningEffort": "xhigh",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true,
-                  "preserve_thinking": true
-                }
-              }
-            }
-          }
-        },
         "qwen3.8-27b-fast": {
           "name": "qwen3.8-27b-fast",
           "variants": {
@@ -488,6 +49,50 @@
                 "chat_template_kwargs": {
                   "enable_thinking": true,
                   "preserve_thinking": false
+                }
+              }
+            }
+          }
+        },
+        "qwen3.8-27b": {
+          "name": "qwen3.8-27b",
+          "variants": {
+            "off": {
+              "name": "Thinking Disabled",
+              "reasoningEffort": "none",
+              "body": {
+                "chat_template_kwargs": {
+                  "enable_thinking": false
+                }
+              }
+            },
+            "low": {
+              "name": "Fast (low)",
+              "reasoningEffort": "low",
+              "body": {
+                "chat_template_kwargs": {
+                  "enable_thinking": true,
+                  "preserve_thinking": true
+                }
+              }
+            },
+            "med": {
+              "name": "Balanced (medium)",
+              "reasoningEffort": "medium",
+              "body": {
+                "chat_template_kwargs": {
+                  "enable_thinking": true,
+                  "preserve_thinking": true
+                }
+              }
+            },
+            "xhigh": {
+              "name": "Max Reasoning (xhigh)",
+              "reasoningEffort": "xhigh",
+              "body": {
+                "chat_template_kwargs": {
+                  "enable_thinking": true,
+                  "preserve_thinking": true
                 }
               }
             }
@@ -581,92 +186,6 @@
               }
             }
           }
-        },
-        "gpt-oss-120b": {
-          "name": "gpt-oss-120b",
-          "variants": {
-            "off": {
-              "name": "Off",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": false
-                }
-              }
-            },
-            "low": {
-              "name": "Low",
-              "reasoningEffort": "low",
-              "system": "Reasoning: low.",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true
-                }
-              }
-            },
-            "med": {
-              "name": "Medium",
-              "reasoningEffort": "medium",
-              "system": "Reasoning: medium.",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true
-                }
-              }
-            },
-            "high": {
-              "name": "High",
-              "reasoningEffort": "high",
-              "system": "Reasoning: high.",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true
-                }
-              }
-            }
-          }
-        },
-        "gpt-oss-20b": {
-          "name": "gpt-oss-20b",
-          "variants": {
-            "off": {
-              "name": "Off",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": false
-                }
-              }
-            },
-            "low": {
-              "name": "Low",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true
-                }
-              },
-              "reasoningEffort": "low",
-              "system": "Reasoning: low."
-            },
-            "med": {
-              "name": "Medium",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true
-                }
-              },
-              "reasoningEffort": "medium",
-              "system": "Reasoning: medium."
-            },
-            "high": {
-              "name": "High",
-              "body": {
-                "chat_template_kwargs": {
-                  "enable_thinking": true
-                }
-              },
-              "reasoningEffort": "high",
-              "system": "Reasoning: high."
-            }
-          }
         }
       }
     },
@@ -743,6 +262,13 @@
           }
         }
       }
+    },
+    "lm-studio": {
+      "name": "LM Studio",
+      "options": {
+        "baseURL": "http://localhost:1234/v1"
+      },
+      "models": {}
     }
   }
 }

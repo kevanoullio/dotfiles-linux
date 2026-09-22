@@ -3,8 +3,8 @@ name: cicd_engineer
 description: Manages build pipelines, Docker files, GitHub Actions, and deployment infrastructure.
 mode: primary
 
-model: llama-swap/gpt-oss:20b
-#model: llama-swap/qwen3.6:35b-a3b
+model: llama-server/gpt-oss-20b
+#model: llama-server/qwen3.6:35b-a3b
 temperature: 0.3
 
 top_k: 40
