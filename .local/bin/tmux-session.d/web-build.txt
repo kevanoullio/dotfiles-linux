@@ -1,0 +1,12 @@
+┌─────────────────────────────────────────────────────┐
+│  BUILD COMMANDS                                     │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm build            (production build)         │
+│                                                     │
+│  npm:                                               │
+│    npm run build         (production build)         │
+│                                                     │
+│  bun:                                               │
+│    bun build             (production build)         │
+└─────────────────────────────────────────────────────┘

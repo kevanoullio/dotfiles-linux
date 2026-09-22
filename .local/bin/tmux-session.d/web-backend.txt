@@ -1,0 +1,23 @@
+┌─────────────────────────────────────────────────────┐
+│  BACKEND                                            │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm dev              (start API server)         │
+│    pnpm db:migrate       (run migrations)           │
+│                                                     │
+│  npm:                                               │
+│    npm run dev           (start API server)         │
+│    npm run db:migrate    (run migrations)           │
+│                                                     │
+│  bun:                                               │
+│    bun dev               (start API server)         │
+│    bun run db:migrate    (run migrations)           │
+│                                                     │
+│  Database:                                          │
+│    supabase start        (local supabase)           │
+│    supabase stop         (stop local supabase)      │
+│    psql -d mydb          (connect to postgres)      │
+│                                                     │
+│  API:                                               │
+│    curl localhost:3001   (test endpoint)            │
+└─────────────────────────────────────────────────────┘

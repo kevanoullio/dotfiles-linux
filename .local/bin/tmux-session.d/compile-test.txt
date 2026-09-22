@@ -1,0 +1,15 @@
+┌─────────────────────────────────────────────────────┐
+│  TEST COMMANDS                                      │
+├─────────────────────────────────────────────────────┤
+│  CMake:                                             │
+│    ctest --output-on-failure                        │
+│    ctest -R test_name   (run specific test)         │
+│                                                     │
+│  Make:                                              │
+│    make test                                        │
+│    make check                                       │
+│                                                     │
+│  GCC coverage:                                      │
+│    gcc -fprofile-arcs -ftest-coverage test.c        │
+│    gcov test.c.gcov                                 │
+└─────────────────────────────────────────────────────┘
