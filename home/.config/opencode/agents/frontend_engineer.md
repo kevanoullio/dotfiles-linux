@@ -3,8 +3,8 @@ name: frontend_engineer
 description: Designs and engineers UI components, state management systems, and layout hierarchies.
 mode: primary
 
-model: llama-swap/qwen3.6:27b
-#model: llama-swap/gemma-4-31b-qat
+model: llama-server/qwen3.8-27b
+#model: llama-server/gemma-4-31b-qat
 temperature: 0.9
 
 top_k: 40
