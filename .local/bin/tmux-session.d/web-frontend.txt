@@ -1,0 +1,18 @@
+┌─────────────────────────────────────────────────────┐
+│  FRONTEND                                           │
+├─────────────────────────────────────────────────────┤
+│  pnpm:                                              │
+│    pnpm dev              (dev server)               │
+│    pnpm lint             (run linter)               │
+│                                                     │
+│  npm:                                               │
+│    npm run dev           (dev server)               │
+│    npm run lint          (run linter)               │
+│                                                     │
+│  bun:                                               │
+│    bun dev               (dev server)               │
+│    bun lint              (run linter)               │
+│                                                     │
+│  Type check:                                        │
+│    npx tsc --noEmit                                 │
+└─────────────────────────────────────────────────────┘

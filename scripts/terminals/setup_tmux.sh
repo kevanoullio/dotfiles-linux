@@ -36,8 +36,9 @@ create_directory "$HOME/.local/bin"
 # Copy my tmux configuration file
 copy_file "$SCRIPT_DIR/../../home/.tmux.conf" "$HOME/.tmux.conf"
 
-# Copy tmux-session script to local bin
+# Copy tmux-session script and cheat sheet files to local bin
 copy_file "$SCRIPT_DIR/../../.local/bin/tmux-session" "$HOME/.local/bin/tmux-session"
+copy_directory "$SCRIPT_DIR/../../.local/bin/tmux-session.d" "$HOME/.local/bin/tmux-session.d"
 
 # Print completion message
 print_completion_message "$env_title" "$env_verb" \
