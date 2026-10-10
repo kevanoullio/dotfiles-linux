@@ -1,0 +1,19 @@
+┌─────────────────────────────────────────────────────┐
+│  LINT COMMANDS                                      │
+├─────────────────────────────────────────────────────┤
+│  under the hood (biome):                            │
+│    lint     = biome check .                         │
+│    format   = biome format --write .                │
+│                                                     │
+│  pnpm:                                              │
+│    pnpm lint               (lint / check code)      │
+│    pnpm format             (auto-format in place)   │
+│                                                     │
+│  npm:                                               │
+│    npm run lint            (lint / check code)      │
+│    npm run format          (auto-format in place)   │
+│                                                     │
+│  bun:                                               │
+│    bun lint                (lint / check code)      │
+│    bun format              (auto-format in place)   │
+└─────────────────────────────────────────────────────┘
