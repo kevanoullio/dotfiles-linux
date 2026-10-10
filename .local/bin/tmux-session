@@ -6,9 +6,9 @@
 # Usage:
 #   tmux-session              # nvim → bash (default)
 #   tmux-session --basic      # git → ai → nvim → files → bash (-gan)
-#   tmux-session --web        # web mode: git → web(left/right) → build → test → debug → ai → nvim → files → bash
-#   tmux-session --compile    # compile mode: git → build → test → debug → ai → nvim → files → bash
-#   tmux-session -gbtdan      # stackable short flags (order doesn't matter)
+#   tmux-session --web        # web mode: git → web(left/right) → build/lint → test/debug → ai → nvim → files → bash
+#   tmux-session --compile    # compile mode: git → build/lint → test/debug → ai → nvim → files → bash
+#   tmux-session -gbltdan     # stackable short flags (order doesn't matter)
 #   tmux-session --web -v     # combine mode with extra short flags
 # ==============================================================================
 
@@ -30,6 +30,7 @@ MODE=""  # "web", "compile", or "basic"
 HAS_GIT=false
 HAS_DOCKER=false
 HAS_BUILD=false
+HAS_LINT=false
 HAS_TEST=false
 HAS_DEBUG=false
 HAS_AI=false
@@ -60,10 +61,6 @@ while [[ $# -gt 0 ]]; do
                 echo "Error: Cannot use --basic with $MODE. Use --basic for minimal setup, or --web/--compile for full mode." >&2
                 exit 1
             fi
-            if $HAS_BUILD || $HAS_TEST || $HAS_DEBUG; then
-                echo "Error: Cannot use --basic with -b/-t/-d. Use --web or --compile if you need build/test/debug." >&2
-                exit 1
-            fi
             MODE="basic"
             HAS_GIT=true
             HAS_AI=true
@@ -81,6 +78,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -b)
             HAS_BUILD=true
+            shift
+            ;;
+        -l)
+            HAS_LINT=true
             shift
             ;;
         -t)
@@ -109,10 +110,16 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Validate: -b/-t/-d require a mode
-if ($HAS_BUILD || $HAS_TEST || $HAS_DEBUG) && [ -z "$MODE" ]; then
-    echo "Error: Build/test/debug (-b/-t/-d) require a mode: --web or --compile" >&2
-    exit 1
+# Validate: -b/-l/-t/-d are only valid with --web/--compile (not no-mode, not --basic)
+if $HAS_BUILD || $HAS_LINT || $HAS_TEST || $HAS_DEBUG; then
+    if [ -z "$MODE" ]; then
+        echo "Error: Build/lint/test/debug (-b/-l/-t/-d) require a mode: --web or --compile" >&2
+        exit 1
+    fi
+    if [ "$MODE" = "basic" ]; then
+        echo "Error: Cannot use --basic with -b/-l/-t/-d. Use --web or --compile if you need build/lint/test/debug." >&2
+        exit 1
+    fi
 fi
 
 # Apply --basic defaults (--basic = -gan)
@@ -126,6 +133,7 @@ fi
 if [ "$MODE" = "web" ]; then
     HAS_GIT=true
     HAS_BUILD=true
+    HAS_LINT=true
     HAS_TEST=true
     HAS_DEBUG=true
     HAS_AI=true
@@ -137,6 +145,7 @@ fi
 if [ "$MODE" = "compile" ]; then
     HAS_GIT=true
     HAS_BUILD=true
+    HAS_LINT=true
     HAS_TEST=true
     HAS_DEBUG=true
     HAS_AI=true
@@ -200,55 +209,32 @@ if [ "$MODE" = "web" ]; then
     add_window "web" "" "split"
 fi
 
-# 4. build
-if $HAS_BUILD; then
-    if [ "$MODE" = "web" ]; then
-        add_window "build" "$CHEAT_DIR/web-build.txt" "cheatsheet"
-    elif [ "$MODE" = "compile" ]; then
-        add_window "build" "$CHEAT_DIR/compile-build.txt" "cheatsheet"
-    else
-        add_window "build" "make" "no"
-    fi
+# 4. build/lint (two-pane split: left=build, right=lint)
+if $HAS_BUILD || $HAS_LINT; then
+    add_window "build/lint" "" "split"
 fi
 
-# 5. test
-if $HAS_TEST; then
-    if [ "$MODE" = "web" ]; then
-        add_window "test" "$CHEAT_DIR/web-test.txt" "cheatsheet"
-    elif [ "$MODE" = "compile" ]; then
-        add_window "test" "$CHEAT_DIR/compile-test.txt" "cheatsheet"
-    else
-        add_window "test" "make test" "no"
-    fi
+# 5. test/debug (two-pane split: left=test, right=debug)
+if $HAS_TEST || $HAS_DEBUG; then
+    add_window "test/debug" "" "split"
 fi
 
-# 6. debug
-if $HAS_DEBUG; then
-    if [ "$MODE" = "web" ]; then
-        add_window "debug" "$CHEAT_DIR/web-debug.txt" "cheatsheet"
-    elif [ "$MODE" = "compile" ]; then
-        add_window "debug" "$CHEAT_DIR/compile-debug.txt" "cheatsheet"
-    else
-        add_window "debug" "gdb ./a.out" "no"
-    fi
-fi
-
-# 7. ai
+# 6. ai
 if $HAS_AI; then
     add_window "ai" "pi" "no"
 fi
 
-# 8. nvim
+# 7. nvim
 if $HAS_NVIM; then
     add_window "nvim" "nvim" "yes"
 fi
 
-# 9. files
+# 8. files
 if $HAS_FILES; then
     add_window "files" "yazi" "yes"
 fi
 
-# 10. bash (always last)
+# 9. bash (always last)
 add_window "bash" "" ""
 
 # ==============================================================================
@@ -282,6 +268,30 @@ for _i in "${!WINDOWS[@]}"; do
         tmux split-window -h -t "$SESSION:$_wname.1"
 
         tmux send-keys -t "$SESSION:$_wname.2" "cat \"$CHEAT_DIR/web-frontend.txt\"" C-m
+    fi
+
+    # Special handling for build/lint (two-pane split: left=build, right=lint)
+    if [ "$_wname" = "build/lint" ] && [ "$_wexec" = "split" ]; then
+        if [ "$MODE" = "web" ]; then
+            _left="$CHEAT_DIR/web-build.txt";  _right="$CHEAT_DIR/web-lint.txt"
+        else
+            _left="$CHEAT_DIR/compile-build.txt";  _right="$CHEAT_DIR/compile-lint.txt"
+        fi
+        tmux send-keys -t "$SESSION:$_wname.1" "cat \"$_left\"" C-m
+        tmux split-window -h -t "$SESSION:$_wname.1"
+        tmux send-keys -t "$SESSION:$_wname.2" "cat \"$_right\"" C-m
+    fi
+
+    # Special handling for test/debug (two-pane split: left=test, right=debug)
+    if [ "$_wname" = "test/debug" ] && [ "$_wexec" = "split" ]; then
+        if [ "$MODE" = "web" ]; then
+            _left="$CHEAT_DIR/web-test.txt";  _right="$CHEAT_DIR/web-debug.txt"
+        else
+            _left="$CHEAT_DIR/compile-test.txt";  _right="$CHEAT_DIR/compile-debug.txt"
+        fi
+        tmux send-keys -t "$SESSION:$_wname.1" "cat \"$_left\"" C-m
+        tmux split-window -h -t "$SESSION:$_wname.1"
+        tmux send-keys -t "$SESSION:$_wname.2" "cat \"$_right\"" C-m
     fi
 done
 

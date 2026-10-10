@@ -1,0 +1,14 @@
+┌─────────────────────────────────────────────────────┐
+│  LINT COMMANDS                                      │
+├─────────────────────────────────────────────────────┤
+│  clang-tidy (linter):                               │
+│    clang-tidy main.cpp                              │
+│    clang-tidy --checks=bugprone-* *.cpp             │
+│                                                     │
+│  clang-format (formatter):                          │
+│    clang-format --style=LLVM -i main.cpp            │
+│    clang-format --style=LLVM main.cpp   (preview)   │
+│                                                     │
+│  cppcheck (static analysis):                        │
+│    cppcheck --enable=all .                          │
+└─────────────────────────────────────────────────────┘

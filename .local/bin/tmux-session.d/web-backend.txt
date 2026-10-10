@@ -2,20 +2,19 @@
 │  BACKEND                                            │
 ├─────────────────────────────────────────────────────┤
 │  pnpm:                                              │
-│    pnpm dev              (start API server)         │
 │    pnpm db:migrate       (run migrations)           │
 │                                                     │
 │  npm:                                               │
-│    npm run dev           (start API server)         │
 │    npm run db:migrate    (run migrations)           │
 │                                                     │
 │  bun:                                               │
-│    bun dev               (start API server)         │
 │    bun run db:migrate    (run migrations)           │
 │                                                     │
-│  Database:                                          │
-│    supabase start        (local supabase)           │
-│    supabase stop         (stop local supabase)      │
+│  Database (local Supabase):                         │
+│    pnpm exec supabase init     (init local config)  │
+│    pnpm exec supabase start    (start the stack)    │
+│    pnpm exec supabase status   (show stack status)  │
+│    pnpm exec supabase stop     (stop the stack)     │
 │    psql -d mydb          (connect to postgres)      │
 │                                                     │
 │  API:                                               │
