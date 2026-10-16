@@ -5,15 +5,24 @@
 │    lint     = biome check .                         │
 │    format   = biome format --write .                │
 │                                                     │
+│  under the hood (check):                            │
+│    astro    = astro check                           │
+│    sveltekit= svelte-check                          │
+│    nuxt     = nuxi typecheck                        │
+│    next/vite= tsc --noEmit                          │
+│                                                     │
 │  pnpm:                                              │
 │    pnpm lint               (lint / check code)      │
 │    pnpm format             (auto-format in place)   │
+│    pnpm check              (type check)             │
 │                                                     │
 │  npm:                                               │
 │    npm run lint            (lint / check code)      │
 │    npm run format          (auto-format in place)   │
+│    npm run check           (type check)             │
 │                                                     │
 │  bun:                                               │
 │    bun lint                (lint / check code)      │
 │    bun format              (auto-format in place)   │
+│    bun check               (type check)             │
 └─────────────────────────────────────────────────────┘
