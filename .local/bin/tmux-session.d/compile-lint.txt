@@ -1,6 +1,13 @@
 ┌─────────────────────────────────────────────────────┐
 │  LINT COMMANDS                                      │
 ├─────────────────────────────────────────────────────┤
+│  Type check (no emit):                              │
+│    gcc -fsyntax-only main.c                         │
+│    g++ -fsyntax-only main.cpp                       │
+│                                                     │
+│  cppcheck (static analysis):                        │
+│    cppcheck --enable=all .                          │
+│                                                     │
 │  clang-tidy (linter):                               │
 │    clang-tidy main.cpp                              │
 │    clang-tidy --checks=bugprone-* *.cpp             │
@@ -9,6 +16,6 @@
 │    clang-format --style=LLVM -i main.cpp            │
 │    clang-format --style=LLVM main.cpp   (preview)   │
 │                                                     │
-│  cppcheck (static analysis):                        │
-│    cppcheck --enable=all .                          │
+│  clang (static analyzer):                           │
+│    clang --analyze main.cpp                         │
 └─────────────────────────────────────────────────────┘
