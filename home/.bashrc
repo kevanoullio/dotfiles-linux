@@ -86,15 +86,6 @@ export PATH="$PATH:/home/kevano/.lmstudio/bin"
 # End of LM Studio CLI section
 
 
-# pnpm
-export PNPM_HOME="/home/kevano/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-
 # go
 export GOPATH=$HOME/Development/
 export GOMODCACHE=$HOME/Development/go/pkg/mod/
