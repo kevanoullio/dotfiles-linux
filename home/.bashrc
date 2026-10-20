@@ -172,8 +172,20 @@ eval "$(starship init bash)"
 # Load Starship nerd-font preset at startup (NOTE: overwrites startship.toml file)
 starship preset nerd-font-symbols -o ~/.config/starship.toml
 
-# -----------------------------------------------------------------------------
-# 13. Miscellaneous Startup Commands
-# -----------------------------------------------------------------------------
-# Launch fastfetch at startup
-fastfetch
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/kevano/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# go
+export GOPATH=$HOME/Development/
+export GOMODCACHE=$HOME/Development/go/pkg/mod/
+export GOCACHE=$HOME/Development/go/cache/
+# go end
+
+
+# flutter
+export PATH="$PATH:$HOME/Development/flutter/bin"
+export CHROME_EXECUTABLE=chromium
+# flutter end
