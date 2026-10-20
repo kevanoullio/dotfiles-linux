@@ -1,30 +1,37 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": false,
+  "update": "disable",
   "model": "llama-server/qwen3.8-27b-fast",
-  "provider": {
+  "providers": {
     "llama-server": {
       "name": "Llama-Server",
-      "options": {
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": {
         "baseURL": "http://localhost:8080/v1",
-        "apiKey": "llama-server"
+        "apiKey": "local"
       },
       "models": {
         "qwen3.8-27b-fast": {
           "name": "qwen3.8-27b-fast",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Thinking Disabled",
-              "reasoningEffort": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": false
                 }
               }
             },
-            "low": {
+            {
+              "id": "low",
               "name": "Fast (low)",
-              "reasoningEffort": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -32,9 +39,12 @@
                 }
               }
             },
-            "med": {
+            {
+              "id": "med",
               "name": "Balanced (medium)",
-              "reasoningEffort": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -42,9 +52,12 @@
                 }
               }
             },
-            "xhigh": {
+            {
+              "id": "xhigh",
               "name": "Max Reasoning (xhigh)",
-              "reasoningEffort": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -52,23 +65,29 @@
                 }
               }
             }
-          }
+          ]
         },
         "qwen3.8-27b": {
           "name": "qwen3.8-27b",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Thinking Disabled",
-              "reasoningEffort": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": false
                 }
               }
             },
-            "low": {
+            {
+              "id": "low",
               "name": "Fast (low)",
-              "reasoningEffort": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -76,9 +95,12 @@
                 }
               }
             },
-            "med": {
+            {
+              "id": "med",
               "name": "Balanced (medium)",
-              "reasoningEffort": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -86,9 +108,12 @@
                 }
               }
             },
-            "xhigh": {
+            {
+              "id": "xhigh",
               "name": "Max Reasoning (xhigh)",
-              "reasoningEffort": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -96,12 +121,13 @@
                 }
               }
             }
-          }
+          ]
         },
         "qwen3.6-35b-a3b": {
           "name": "qwen3.6-35b-a3b",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Off",
               "body": {
                 "chat_template_kwargs": {
@@ -109,9 +135,12 @@
                 }
               }
             },
-            "high": {
+            {
+              "id": "high",
               "name": "High",
-              "reasoningEffort": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -119,12 +148,13 @@
                 }
               }
             }
-          }
+          ]
         },
         "gemma-4-31b-qat": {
           "name": "gemma-4-31b-qat",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Off",
               "body": {
                 "chat_template_kwargs": {
@@ -132,21 +162,25 @@
                 }
               }
             },
-            "high": {
+            {
+              "id": "high",
               "name": "High",
-              "reasoningEffort": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true
                 }
               }
             }
-          }
+          ]
         },
         "gemma-4-26b-a4b-qat": {
           "name": "gemma-4-26b-a4b-qat",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Off",
               "body": {
                 "chat_template_kwargs": {
@@ -154,21 +188,25 @@
                 }
               }
             },
-            "high": {
+            {
+              "id": "high",
               "name": "High",
-              "reasoningEffort": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true
                 }
               }
             }
-          }
+          ]
         },
         "gemma-4-12b-qat": {
           "name": "gemma-4-12b-qat",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Off",
               "body": {
                 "chat_template_kwargs": {
@@ -176,29 +214,33 @@
                 }
               }
             },
-            "high": {
+            {
+              "id": "high",
               "name": "High",
-              "reasoningEffort": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true
                 }
               }
             }
-          }
+          ]
         }
       }
     },
     "ollama": {
       "name": "Ollama",
-      "options": {
+      "settings": {
         "baseURL": "http://localhost:11434/v1"
       },
       "models": {
         "qwen3.6:35b-a3b": {
           "name": "qwen3.6:35b-a3b",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Off",
               "body": {
                 "chat_template_kwargs": {
@@ -206,9 +248,12 @@
                 }
               }
             },
-            "high": {
+            {
+              "id": "high",
               "name": "High",
-              "reasoningEffort": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true,
@@ -216,12 +261,13 @@
                 }
               }
             }
-          }
+          ]
         },
         "gpt-oss:20b": {
           "name": "gpt-oss:20b",
-          "variants": {
-            "off": {
+          "variants": [
+            {
+              "id": "off",
               "name": "Off",
               "body": {
                 "chat_template_kwargs": {
@@ -229,46 +275,54 @@
                 }
               }
             },
-            "low": {
+            {
+              "id": "low",
               "name": "Low",
+              "settings": {
+                "reasoningEffort": "low"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true
                 }
               },
-              "reasoningEffort": "low",
               "system": "Reasoning: low."
             },
-            "med": {
+            {
+              "id": "med",
               "name": "Medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true
                 }
               },
-              "reasoningEffort": "medium",
               "system": "Reasoning: medium."
             },
-            "high": {
+            {
+              "id": "high",
               "name": "High",
+              "settings": {
+                "reasoningEffort": "high"
+              },
               "body": {
                 "chat_template_kwargs": {
                   "enable_thinking": true
                 }
               },
-              "reasoningEffort": "high",
               "system": "Reasoning: high."
             }
-          }
+          ]
         }
       }
     },
-    "lm-studio": {
+    "lmstudio": {
       "name": "LM Studio",
-      "options": {
+      "settings": {
         "baseURL": "http://localhost:1234/v1"
-      },
-      "models": {}
+      }
     }
   }
 }
