@@ -70,7 +70,7 @@ if [ ! -f "$RELEASE_KEY_FILE" ]; then
     echo "  1. Create a key file now (interactive)"
     echo "  2. Set it via environment variable: export GIT_RELEASE_KEY='<your-key>'"
     echo ""
-    read -p "Create release key file now? (y/n): " create_key
+    read -p "Create release key file now? [y/N]: " create_key
     if [ "$create_key" = "y" ] || [ "$create_key" = "Y" ]; then
         echo "Enter your release bypass key (or press Enter to generate a random one):"
         read -r key_input
