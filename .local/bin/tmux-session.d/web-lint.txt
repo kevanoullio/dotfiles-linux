@@ -1,6 +1,10 @@
 ┌─────────────────────────────────────────────────────┐
 │  LINT COMMANDS                                      │
 ├─────────────────────────────────────────────────────┤
+│  under the hood (eslint + prettier):                │
+│    lint     = eslint .                              │
+│    format   = prettier --write .                    │
+│                                                     │
 │  under the hood (biome):                            │
 │    lint     = biome check .                         │
 │    format   = biome format --write .                │

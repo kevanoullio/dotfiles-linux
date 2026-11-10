@@ -47,8 +47,18 @@ _detect_package_manager() {
 # Convenience wrappers (used by scripts):
 # if a supported package manager is detected, eval executes the update command.
 pm_update() { _detect_package_manager || return 1; eval "$PKG_UPDATE_COMMAND"; }
-# ... eval executes the full command, combining the install command and the package names.
-pm_install() { _detect_package_manager || return 1; eval "$PKG_INSTALL_COMMAND" "$@"; }
+# ... Prompts before running (defaults to No); on yes, eval executes the full
+# command, combining the install command and the package names.
+pm_install() {
+    _detect_package_manager || return 1
+    local choice
+    read -p "Proceed with installation? [y/N]: " choice
+    case "$choice" in
+        y|Y) ;;
+        *) echo "Skipped package installation." ; return 1 ;;
+    esac
+    eval "$PKG_INSTALL_COMMAND" "$@"
+}
 
 # Helper: check if a block already exists in the target rc file
 # Usage: _block_exists_in_file <title> <verb> [rc_file]
@@ -182,7 +192,7 @@ copy_file() {
 
     if [ -f "$dest" ]; then
         while true; do
-            read -p "File '$dest' already exists. Do you want to overwrite it? (y/N): " choice
+            read -p "File '$dest' already exists. Do you want to overwrite it? [y/N]: " choice
             case "$choice" in
                 y|Y)
                     if ! cp -f "$src" "$dest"; then
@@ -224,12 +234,22 @@ copy_directory() {
 
     local overwrite_all=0
     if [ "$prompt_for_dir" -eq 1 ] && [ -d "$dest_dir" ]; then
-        read -p "Directory '$dest_dir' already exists. Do you want to overwrite the entire directory? (y/n): " choice
-        case "$choice" in
-            y|Y) overwrite_all=1 ;;
-            n|N) overwrite_all=0 ;;
-            *) echo "Invalid choice. Skipping directory copy."; return 0 ;;
-        esac
+        while true; do
+            read -p "Directory '$dest_dir' already exists. Do you want to overwrite the entire directory? [y/N]: " choice
+            case "$choice" in
+                y|Y)
+                    overwrite_all=1
+                    break
+                    ;;
+                n|N|"")
+                    overwrite_all=0
+                    break
+                    ;;
+                *)
+                    echo "Invalid entry. Please enter 'y', 'n', or press Enter (defaults to No)."
+                    ;;
+            esac
+        done
     elif [ -d "$dest_dir" ]; then
         overwrite_all=0
     fi

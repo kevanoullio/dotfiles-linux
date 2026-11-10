@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim",                                import = "lazyvim.plugins" },
+    { "LazyVim/LazyVim",                                    import = "lazyvim.plugins" },
     -- language extras (must come before general plugins)
     { import = "lazyvim.plugins.extras.lang.astro" },
     { import = "lazyvim.plugins.extras.lang.tailwind" },
@@ -41,6 +41,9 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.julia" },
     { import = "lazyvim.plugins.extras.lang.r" },
     { import = "lazyvim.plugins.extras.lang.cmake" },
+    -- Linting and Formatting
+    { import = "lazyvim.plugins.extras.linting.eslint" },
+    { import = "lazyvim.plugins.extras.formatting.prettier" },
     -- import/override with your plugins
     { import = "plugins" },
   },
