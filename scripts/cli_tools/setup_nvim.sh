@@ -33,6 +33,16 @@ copy_file "$SCRIPT_DIR/../../home/.config/nvim/init.lua" "$HOME/.config/nvim/ini
 copy_directory "$SCRIPT_DIR/../../home/.config/nvim/lua" "$HOME/.config/nvim/lua"
 copy_file "$SCRIPT_DIR/../../home/.config/nvim/lazyvim.json" "$HOME/.config/nvim/lazyvim.json"
 
+# Omarchy drives nvim's colorscheme through lua/plugins/theme.lua, which must
+# be a symlink to the staged theme's neovim.lua (that is how nvim follows
+# `omarchy theme set`, and Omarchy's own migrations repair it the same way).
+# cp -f dereferences symlinks, so restore the link after copying. On machines
+# without Omarchy, the copied file stays as a static fallback colorscheme.
+if [ -f "$HOME/.local/state/omarchy/current/theme/neovim.lua" ]; then
+    ln -sfn ../../../../.local/state/omarchy/current/theme/neovim.lua \
+        "$HOME/.config/nvim/lua/plugins/theme.lua"
+fi
+
 # lazy.nvim is bootstrapped automatically by lazy.lua on first launch
 echo "lazy.nvim will be installed automatically on first Neovim launch."
 
